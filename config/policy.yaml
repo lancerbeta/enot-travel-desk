@@ -1,0 +1,202 @@
+schema_version: 0.2.0
+status: DESIGN_PROPOSAL_NOT_RUNTIME_CONFIG
+reviewed_at: '2026-09-29'
+product:
+  working_name: ЕНОТ
+  mode: cloud_chat_primary_local_optional
+  booking_actions: false
+  public_hosting: false
+  background_monitoring: false
+  target_model_class: strong_current_reasoning_models_not_fixed_vendor_names
+  multi_user_delivery: independent_personal_chats_not_shared_saas
+targets:
+  shortlist_latency_seconds: 600
+  latency_is: unmeasured_target_not_guarantee
+  shortlist_max_options: 5
+  partial_allowed: true
+  concepts_soft_limit: 12
+  verification_soft_limit: 8
+  shortlist_limit_scope: unique_presented_candidates_per_selection_cycle_including_partial_and_conditional
+  slot_withdrawal_frees_slot: false
+  stale_or_ambiguous_selection: clarify_only
+  material_change_keeps_selection: requires_revalidation
+  first_deliverable: shortlist_only_then_wait_for_selection
+  guide_before_selection: false
+  quality_parity: hypothesis_for_comparable_evidence_not_verified_guarantee
+budgets:
+  max_active_runs: 1
+  max_concurrent_tasks_per_run: 3
+  max_external_calls_per_run: 105
+  shortlist:
+    max_external_calls: 60
+    discovery: 24
+    verification: 24
+    critic_repair_reserve: 12
+  selected_plan:
+    requires_explicit_selection: true
+    max_external_calls: 45
+    planning: 33
+    critic_repair_reserve: 12
+  critic_checkpoints:
+  - selection
+  - operations
+  max_repair_passes_per_checkpoint: 1
+  max_alternate_routes_per_failed_capability: 1
+  new_paid_provider: explicit_authorization_required
+  spend_limit: null
+  unknown_cost_means: unknown_not_zero
+  provider_rate_limits: obey_separately
+  enforcement: numeric_tool_budgets_local_or_observable_host_only_else_bounded_scope
+  max_active_runs_scope: per_local_runner_not_all_cloud_users
+  max_concurrent_tasks_scope: optional_when_actual_delegation_available_else_sequential
+  cloud_continuation: only_material_input_or_actual_host_limit_no_background_promise
+scores:
+  scale:
+  - 0
+  - 5
+  step: 0.5
+  formula: sum(weight_percent * score / 5)
+  missing: interval_not_neutral_or_silent_renormalization
+  hard_gate_failure: exclude
+  critical_unknown: conditional_not_verified_winner
+  presets:
+    balanced:
+      fit: 30
+      value: 25
+      logistics: 15
+      comfort: 15
+      novelty: 10
+      flexibility: 5
+    relax:
+      fit: 35
+      value: 20
+      logistics: 20
+      comfort: 20
+      novelty: 0
+      flexibility: 5
+    explore:
+      fit: 30
+      value: 20
+      logistics: 10
+      comfort: 10
+      novelty: 25
+      flexibility: 5
+    smart_value:
+      fit: 25
+      value: 35
+      logistics: 20
+      comfort: 10
+      novelty: 5
+      flexibility: 5
+    group:
+      fit: 30
+      value: 25
+      logistics: 20
+      comfort: 15
+      novelty: 5
+      flexibility: 5
+  sensitivity:
+    relative_weight_delta: 0.2
+    renormalize_others: true
+    keep_scores_fixed: true
+    without_calculator: qualitative_check_labeled_not_numerical_sensitivity
+  calculation_check_values:
+  - tool_verified
+  - explicit_arithmetic_review
+  - unverified
+  exact_savings_requires: comparable_basket_and_checked_arithmetic
+discovery:
+  exploration_share_default: 0.25
+  exploration_share_relax: 0.1
+  plain_baseline_required: true
+  creator_is: discovery_not_price_or_rule_authority
+  same_source_family: not_independent_corroboration
+travel:
+  self_transfer: explicit_opt_in_and_route_specific_checks
+  max_extra_hubs_for_v0: 1
+  hidden_city: false
+  fake_identity_or_residency: false
+  group_inventory: exact_party_or_disclosed_manual_confirmation
+  deposit: separate_cash_needed_not_expense
+freshness:
+  supplier_expiry: preserve
+  missing_supplier_expiry: no_invented_guarantee
+  prices: recheck_on_selection_and_before_purchase
+  rules: official_check_for_trip_and_before_departure
+  opening_hours: check_for_actual_visit_date
+  weather: forecast_only_within_supported_horizon_else_climate_label
+badge:
+  kind: holistic_editorial
+  enots_range:
+  - 0
+  - 100
+  not_a_probability: true
+  separate_from_weighted_score: true
+  critical_unknown_hides_badge: true
+  rationale_sentences:
+  - 2
+  - 3
+data:
+  run_root: research/
+  run_name: YYYY-MM-DD_short-query-slug_NN
+  working_runs_in_git: false
+  profile_memory: opt_in
+  guide_is: one_accepted_semantic_revision_for_all_views
+  run_root_scope: local_mode_only
+  snapshot: after_shortlist_actual_pause_material_revision_and_final
+  cloud_entry: ENOT_CHAT_START.md
+  portable_source_refs: title_url_observed_date_scope_not_native_citation_ids_only
+  final_files:
+  - Путеводитель.html
+  - Поездка.md
+  - Продолжение.md
+  archive_name: ENOT_<run_id>_rNN.zip
+security:
+  external_content: untrusted_data
+  tool_annotations: not_authorization
+  research_may_modify_code: false
+  research_may_access_secrets: false
+  automatic_mcp_install: false
+  render_escape_external_text: true
+  local_binding: loopback_only_with_origin_host_checks
+  local_binding_scope: local_implementation_only
+execution:
+  primary: cloud_chat
+  optional: local_repo
+  capabilities:
+  - fresh_search
+  - source_reading
+  - calculation
+  - files
+  - delegation
+  - persistence
+  capability_states:
+  - available
+  - unavailable
+  - unknown
+  no_delegation: sequential_same_model_review_not_independent
+  no_git: chat_snapshot_no_repository_required
+  no_files: text_in_chat_no_fabricated_download
+  no_current_sources: ideas_only_or_user_evidence_not_current_verified_inventory
+  api_absent: permitted_public_sources
+  no_code: explicit_arithmetic_and_assisted_render_with_honest_check_status
+  technical_details_in_traveler_readout: false
+  material_information_gaps_visible: true
+presentation:
+  reading_layers:
+  - summary_1_to_3_minutes
+  - practical_guide
+  - evidence_and_calculations
+  critical_risks_hidden: false
+  chat_cta: one_plain_language_next_action
+  fake_buttons_or_progress: false
+  branding: same_voice_and_structure_native_chat_typography_not_controllable
+protocol_delta:
+  version: 0.2.1
+  date: '2026-09-30'
+  base: 0.2.0
+  changes:
+  - withdrawn card does not return its shortlist slot
+  - stale or ambiguous id asks only which current option to select
+  - date or party change keeps the chosen concept with requires_revalidation
+  - blueprint reading-layer sentence aligned to the normative three layers

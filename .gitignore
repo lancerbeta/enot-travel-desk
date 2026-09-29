@@ -1,0 +1,20 @@
+# Личные поездки и внешние материалы по умолчанию не попадают в Git.
+research/
+private/
+raw/
+.cache/
+.browser/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*auth.json
+*cookies*.json
+*storage-state*.json
+*.log
+.venv/
+__pycache__/
+node_modules/
+dist/
+# exports/ содержит только вручную очищенные и явно разрешённые материалы.

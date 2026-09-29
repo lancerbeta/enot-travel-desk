@@ -1,0 +1,196 @@
+{
+  "project": "ENOT",
+  "bundle_version": "0.2.1",
+  "supersedes": "0.2.0",
+  "research_date": "2026-09-30",
+  "revision_scope": "a0_a1_method_delta_and_mechanical_checks_live_pilot_not_run",
+  "type": "blueprint_and_starter_not_application",
+  "entrypoints": {
+    "traveler": "ENOT_CHAT_START.md",
+    "developer": "README.md",
+    "visual_reference": "design-preview.html",
+    "atom_status": "docs/atoms/A0_A1/ACCEPTANCE.md"
+  },
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 424,
+      "sha256": "919943e67c547b69fc4971721268a9c190fa6913a104a60d9d57ebd7dbca6922"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 8509,
+      "sha256": "597a2823af6887f9a6e62fc6ee910b8e169d15f7c45b269c0faec84d6a816cd8"
+    },
+    {
+      "path": "BLUEPRINT.md",
+      "bytes": 58714,
+      "sha256": "515782fe01ccff4aa78e5fd33127c97ff2932877817f29c817b9dad7b2e9df25"
+    },
+    {
+      "path": "ENOT_CHAT_START.md",
+      "bytes": 33193,
+      "sha256": "b7b5911414030f030a444727a25e6fa7b4e086ea4d9faa2070fa7ee4a6a6870c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 9140,
+      "sha256": "587eb10420f01f2a31d347b8bef7779ec120fba6dc4c6f90d98ee364070565e4"
+    },
+    {
+      "path": "STATE.md",
+      "bytes": 6104,
+      "sha256": "5cf377f8e997bd84d67612b15ebf847e5fc678cb72a7436c6b0abb26e84c802b"
+    },
+    {
+      "path": "VALIDATION.md",
+      "bytes": 5568,
+      "sha256": "d8212a94bc748463c7d203eda2d79b02adcd12d4f602f655a233b7064aace726"
+    },
+    {
+      "path": "config/policy.yaml",
+      "bytes": 6270,
+      "sha256": "22eb389036862c6ce7191d23cadb2e2b687b9ca3c89ac433548693564867d8e6"
+    },
+    {
+      "path": "config/sources.yaml",
+      "bytes": 14351,
+      "sha256": "29efaba3ea670ff83534df57a4f479eac32399c10205ed81af16fce6800e3242"
+    },
+    {
+      "path": "design-preview.html",
+      "bytes": 32527,
+      "sha256": "b385a383a9ba179aa7af71b8a4ae48c0ceb9739c33b203d2cc9420ae18ea57f8"
+    },
+    {
+      "path": "docs/CONTRACTS.md",
+      "bytes": 30354,
+      "sha256": "8268833699f5f8d9f68bd309328da379df5efd7f879765a4f1ba2e56092085e0"
+    },
+    {
+      "path": "docs/CRITIC_REVIEW.md",
+      "bytes": 12470,
+      "sha256": "31da0e5f1c41de7031e156230fdb18af1fc60eaa9727426add4e105cf2dabc8b"
+    },
+    {
+      "path": "docs/DELIVERY_PLAN.md",
+      "bytes": 16134,
+      "sha256": "a3b6c42a7cc44e0f333d11c042b129fed9685bf64626f99c00ce662742fd7188"
+    },
+    {
+      "path": "docs/RESEARCH_AND_REUSE.md",
+      "bytes": 17147,
+      "sha256": "1e5b9ec68959484af82220fea74a66b7cd3cd61b424cc4b84d1ca6ed034b2469"
+    },
+    {
+      "path": "docs/SOURCES.md",
+      "bytes": 23221,
+      "sha256": "19fb356035ba7aaad2f191bf7063bd2d8acd0b0cbf89bae15cdb70caa7c4e604"
+    },
+    {
+      "path": "docs/UX_BRANDBOOK.md",
+      "bytes": 13234,
+      "sha256": "7159e78e8bc998b8183674e76cf5fa3c297047a1a57ad93618e8b8a771ad738c"
+    },
+    {
+      "path": "docs/WORKFLOW.md",
+      "bytes": 19195,
+      "sha256": "fe702365750e489cce33b91f6a9b786bf7e1942408a51b6db5487b3d642e6828"
+    },
+    {
+      "path": "docs/atoms/A0_A1/ACCEPTANCE.md",
+      "bytes": 8875,
+      "sha256": "9b8febff93a049376155b013ed89512a90f782d77f220b8f9a32e3a50cfd69cc"
+    },
+    {
+      "path": "docs/atoms/A0_A1/EXECUTOR_COMMAND.md",
+      "bytes": 19917,
+      "sha256": "31a5f61cb714e95938f01d1d636e2df577547faba7549c2ad1a06175d9ec71b6"
+    },
+    {
+      "path": "docs/atoms/A0_A1/PILOT_PACKET.md",
+      "bytes": 5528,
+      "sha256": "17e043be07159a51a8f8bce60114b9daa605001a352e74360ed248863be683c7"
+    },
+    {
+      "path": "docs/atoms/A0_A1/PRD_SSD.md",
+      "bytes": 61726,
+      "sha256": "8c6811654ae31f802c49849c46fc209ef840454fd1fbc9e53b1bfcb27da27bf2"
+    },
+    {
+      "path": "docs/atoms/A0_A1/evidence/synthetic-render/Поездка.md",
+      "bytes": 1171,
+      "sha256": "bd4c9520c23078488ba6a71ae86faaaa569120a7ee43e6293e5a7384a4bfb1d7"
+    },
+    {
+      "path": "docs/atoms/A0_A1/evidence/synthetic-render/Продолжение.md",
+      "bytes": 555,
+      "sha256": "dc28c98925c53c44c0d370bf5dd5f36b23fcf63dafb6ae63314e90d70e2f6fd1"
+    },
+    {
+      "path": "docs/atoms/A0_A1/evidence/synthetic-render/Путеводитель.html",
+      "bytes": 2262,
+      "sha256": "c927d6cef9698d52bfde98d9360f1ae5aafb0e14267d50e9c6dc893d33690d29"
+    },
+    {
+      "path": "enotcheck/__init__.py",
+      "bytes": 99,
+      "sha256": "b4e55b476bb555a2170bbb53c719f54ec795b4ab3adaa0d52f9509895fa9dd3c"
+    },
+    {
+      "path": "enotcheck/budget.py",
+      "bytes": 3492,
+      "sha256": "10ee7d881d9c025d6155821f4c87b377c0756f79a23dcbc4de3f25933d683388"
+    },
+    {
+      "path": "enotcheck/evidence.py",
+      "bytes": 1256,
+      "sha256": "81b179a244cb21eab4362a9f5f4a9c4492db084c9287a37fad9aa0aa41ceddd0"
+    },
+    {
+      "path": "enotcheck/render.py",
+      "bytes": 7869,
+      "sha256": "01b84431f992c284988ab7851696b615594d7091ddb3950ddf739ca94fa986e1"
+    },
+    {
+      "path": "enotcheck/score.py",
+      "bytes": 2895,
+      "sha256": "a19c575d528c672da850fff988e5c6646a8977edfbdba349c0ad2b4961004df4"
+    },
+    {
+      "path": "enotcheck/selection.py",
+      "bytes": 1583,
+      "sha256": "e5c98321df223c0936d4f12eee757057b3fe59ee4f7df0d6ddc1adf1cc5d9c02"
+    },
+    {
+      "path": "enotcheck/slots.py",
+      "bytes": 1189,
+      "sha256": "20a5b83f9ef4bce61d8d8f340e65fb26671d780e72b9e287f0cfe638622b8e8f"
+    },
+    {
+      "path": "enotcheck/snapshot.py",
+      "bytes": 1557,
+      "sha256": "d81aa38176c2a2fa2bee5b564109800d15ddc4b67322e0e024a9c9d15fdd7ad0"
+    },
+    {
+      "path": "evals/scenarios.yaml",
+      "bytes": 13309,
+      "sha256": "13e3c40878f8b4e263469bf49dce8ded5a7e58967ab23ec9b251f74fdd16ae24"
+    },
+    {
+      "path": "examples/score-demo.json",
+      "bytes": 1470,
+      "sha256": "904cb871fac03e59ad0f2cacd7a99da886495c5c685306e3d6d85e62ae083748"
+    },
+    {
+      "path": "tests/test_a0_a1_mechanics.py",
+      "bytes": 16354,
+      "sha256": "35d55227e7b8ef9433c0526c5e47bb12dd8ac9975a72d4c366f14a2196164ffc"
+    },
+    {
+      "path": "tests/test_a0_a1_seams.py",
+      "bytes": 8457,
+      "sha256": "1b3f696c01feac6517d2d0a2e11a6589853a53b8be960bb818c06fcd1a54908c"
+    }
+  ]
+}

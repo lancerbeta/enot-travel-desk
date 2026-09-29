@@ -1,0 +1,61 @@
+{
+  "fixture_type": "synthetic_design_only",
+  "not_real_trip": true,
+  "not_production_evidence": true,
+  "title": "Дом у воды — вымышленный пример",
+  "party": {
+    "adults": 2,
+    "nights": 2
+  },
+  "weighted_score": {
+    "weights": {
+      "fit": 30,
+      "value": 25,
+      "logistics": 15,
+      "comfort": 15,
+      "novelty": 10,
+      "flexibility": 5
+    },
+    "scores": {
+      "fit": 4.5,
+      "value": 4.0,
+      "logistics": 4.0,
+      "comfort": 4.5,
+      "novelty": 3.5,
+      "flexibility": 3.5
+    },
+    "expected_total": 83.0
+  },
+  "editorial_badge": {
+    "enots": 87,
+    "separate_from_weighted_score": true,
+    "demo_only": true,
+    "rationale": [
+      "Цельный спокойный ритм",
+      "Немного организации",
+      "Свободный день без обязательной программы"
+    ]
+  },
+  "budget": {
+    "currency": "RUB",
+    "scope": "whole_party",
+    "cost_lines": {
+      "lodging": 24000,
+      "door_to_door": 4000,
+      "food": 9000,
+      "activities": 4000,
+      "misc": 2000,
+      "reserve": 5000
+    },
+    "expected_spend": 48000,
+    "refundable_deposit": 8000,
+    "expected_cash_needed": 56000,
+    "synthetic_comparable_baseline": 60000,
+    "expected_savings_percent": 20
+  },
+  "evidence": {
+    "all_values": "FICTIONAL_FOR_LAYOUT_AND_ARITHMETIC_ONLY",
+    "actual_availability": "NOT_CHECKED",
+    "provider_offers": []
+  }
+}

@@ -1,0 +1,384 @@
+schema_version: 0.1.0
+status: STARTER_REGISTER_NOT_LIVE_PROVIDER_CONFIGURATION
+reviewed_at: '2026-09-29'
+policy: Read source capabilities, not every source on every run. No automatic installation
+  or paid access. All source facts must be scoped to the trip.
+sources:
+- id: S01
+  name: Aviasales Data API
+  url: https://support.travelpayouts.com/hc/en-us/articles/203956163-Aviasales-Data-API
+  purposes:
+  - flight_discovery
+  - price_direction
+  authority_for: cached_search_observations
+  never_proves:
+  - current_inventory
+  - full_party_bookability
+  access_route: api_requires_own_access
+  review_level: document_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: high
+  notes: Кэш поисков; использовать для discovery, не доказательства текущей покупки.
+- id: S40
+  name: Aviasales API FAQ
+  url: https://support.travelpayouts.com/hc/en-us/articles/204529267-FAQ-about-Aviasales-API
+  purposes:
+  - flight_verification_candidate
+  authority_for: live_search_if_access_granted
+  never_proves:
+  - automatic_entitlement
+  access_route: partner_api
+  review_level: document_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: normal
+  notes: Data API и live search имеют разные условия доступа/использования.
+- id: S02
+  name: 'Booking.com Demand API: prerequisites'
+  url: https://developers.booking.com/demand/docs/getting-started/prerequisites
+  purposes:
+  - stay_verification_candidate
+  authority_for: provider_offer_in_exact_scope
+  never_proves:
+  - reservation_without_order
+  - access_for_everyone
+  access_route: managed_partner_api
+  review_level: document_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: normal
+  notes: Партнёрский доступ, договор и идентификаторы; не публичный API без условий.
+- id: S03
+  name: 'Яндекс Путешествия: партнёрский API'
+  url: https://yandex.ru/support/travel-distr/ru/instruments/partner-api
+  purposes:
+  - rf_stay_verification_candidate
+  authority_for: provider_offer_in_exact_scope
+  never_proves:
+  - automatic_api_access
+  access_route: partner_api
+  review_level: document_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: high
+  notes: Запрос партнёрского доступа; кандидаты для цен/размещения в РФ.
+- id: S05
+  name: 'Ostrovok API: integration guide'
+  url: https://docs-api.ostrovok.ru/docs/integration-guide/
+  purposes:
+  - rf_stay_verification_candidate
+  authority_for: provider_offer_in_exact_scope
+  never_proves:
+  - automatic_api_access
+  access_route: partner_api
+  review_level: document_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: normal
+  notes: Партнёрская интеграция; не обязательная зависимость первого среза.
+- id: S04
+  name: 'Duffel: Offers'
+  url: https://duffel.com/docs/api/offers
+  purposes:
+  - flight_verification_candidate
+  authority_for: time_limited_offer
+  never_proves:
+  - held_inventory
+  - all_carriers_or_regions
+  access_route: api_with_own_access
+  review_level: document_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: normal
+  notes: Параметры offer и expires_at; предложение не бессрочно.
+- id: S34
+  name: Skiplagged MCP
+  url: https://skiplagged.github.io/mcp/
+  purposes:
+  - flight_discovery
+  - flight_verification_candidate
+  authority_for: returned_offer_subject_to_validation
+  never_proves:
+  - all_regions
+  - hidden_city_safety
+  access_route: official_mcp_preflight_required
+  review_level: document_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: normal
+  notes: Кандидат для поискового read-only маршрута; покрытие/фильтрация hidden-city/доступ
+    не тестировались.
+- id: S43
+  name: Суточно.ру
+  url: https://sutochno.ru/
+  purposes:
+  - group_stay_discovery
+  authority_for: listing_and_supplier_conditions
+  never_proves:
+  - exact_party_availability_without_search
+  access_route: public_search_or_manual
+  review_level: landing_search_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: high
+  notes: Семя для самостоятельного размещения; публичный открытый API не подтверждён.
+- id: S44
+  name: Level.Travel
+  url: https://level.travel/
+  purposes:
+  - package_baseline_candidate
+  authority_for: no_claims_until_successful_read
+  never_proves:
+  - prices_from_failed_page
+  access_route: public_search_or_manual
+  review_level: retrieval_failed
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: normal
+  notes: Получена ошибка страницы; реальные цены/доступность не читались.
+- id: S15
+  name: Atlas Obscura
+  url: https://www.atlasobscura.com/
+  purposes:
+  - experience_discovery
+  authority_for: editorial_or_community_observation
+  never_proves:
+  - exclusivity
+  - live_hours
+  - visa_permission
+  access_route: permitted_public_read
+  review_level: landing_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: high
+  notes: Необычные места и подборки; есть sponsored content, требуется проверка на
+    месте/у оператора.
+- id: S16
+  name: Spotted by Locals
+  url: https://www.spottedbylocals.com/
+  purposes:
+  - experience_discovery
+  authority_for: local_editorial_observation
+  never_proves:
+  - unconditional_access
+  - live_availability
+  access_route: permitted_public_read
+  review_level: landing_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: high
+  notes: Локальные городские находки; доступ/актуальность конкретной статьи проверяются
+    при использовании.
+- id: S17
+  name: The Man in Seat 61
+  url: https://www.seat61.com/
+  purposes:
+  - rail_ferry_discovery
+  - logistics_tactics
+  authority_for: author_transport_guidance
+  never_proves:
+  - current_ticket_inventory
+  access_route: permitted_public_read
+  review_level: landing_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: high
+  notes: Идеи поездов/паромов и тактика; автор раскрывает рекламу/affiliate, не источник
+    live stock.
+- id: S18
+  name: Форум Винского
+  url: https://forum.awd.ru/
+  purposes:
+  - field_reports
+  - negative_evidence
+  authority_for: dated_anecdotes
+  never_proves:
+  - official_entry_rights
+  - guaranteed_card_acceptance
+  access_route: permitted_public_read
+  review_level: landing_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: high
+  notes: Датированные полевые наблюдения и контрсвидетельства; не юридическое основание
+    въезда.
+- id: S19
+  name: Tripster
+  url: https://experience.tripster.ru/
+  purposes:
+  - experience_discovery
+  - operator_lookup
+  authority_for: operator_listing_in_scope
+  never_proves:
+  - capacity_without_exact_search
+  access_route: public_search_or_manual
+  review_level: landing_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: high
+  notes: Локальные активности; дата, язык, состав и реальная доступность уточняются
+    отдельно.
+- id: S20
+  name: Awesome Digital Nomads
+  url: https://github.com/cbovis/awesome-digital-nomads
+  purposes:
+  - source_discovery
+  authority_for: curated_links
+  never_proves:
+  - freshness_of_linked_sources
+  access_route: public_read
+  review_level: readme_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: low
+  notes: Около 1.1k stars; начальные категории/ресурсы, не эталон их свежести.
+- id: S21
+  name: YouTube captions.download
+  url: https://developers.google.com/youtube/v3/docs/captions/download
+  purposes:
+  - creator_discovery_access_policy
+  authority_for: api_permission_requirements
+  never_proves:
+  - permission_for_arbitrary_subtitles
+  access_route: authorized_api_or_user_provided_material
+  review_level: document_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: normal
+  notes: Скачивание зависит от авторизации и полномочий; нельзя обещать любые субтитры.
+- id: S41
+  name: RUSSPASS
+  url: https://russpass.ru/
+  purposes:
+  - rf_experience_discovery_candidate
+  authority_for: no_claims_until_successful_read
+  never_proves:
+  - facts_from_failed_read
+  access_route: public_read_preflight_required
+  review_level: retrieval_failed
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: normal
+  notes: Прямое чтение в этом исследовании не удалось; семя для отдельной проверки,
+    не подтверждённый источник.
+- id: S42
+  name: Культура.РФ
+  url: https://www.culture.ru/
+  purposes:
+  - rf_events_discovery_candidate
+  authority_for: no_claims_until_successful_read
+  never_proves:
+  - actual_opening_hours_from_missing_page
+  access_route: public_read_preflight_required
+  review_level: retrieval_failed
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: normal
+  notes: Прямое чтение в этом исследовании не удалось; не считать сведения подтверждёнными.
+- id: S23
+  name: Google Maps URLs
+  url: https://developers.google.com/maps/documentation/urls/get-started
+  purposes:
+  - map_deep_links
+  authority_for: url_format
+  never_proves:
+  - journey_duration
+  - offline_map_availability
+  access_route: link_builder
+  review_level: document_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: high
+  notes: Без API key; api=1; ограничения URL/waypoints, отдельные ссылки и сегменты.
+- id: S35
+  name: AWeirdDev/flights
+  url: https://github.com/AWeirdDev/flights
+  purposes:
+  - experimental_flight_discovery
+  authority_for: unofficial_extraction_if_allowed
+  never_proves:
+  - stability
+  - supplier_authorization
+  access_route: quarantined_experiment
+  review_level: readme_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: low
+  notes: Около 2.1k stars, MIT; неофициальный Google Flights scraper, только экспериментальный
+    кандидат.
+- id: S06
+  name: Amadeus for Developers
+  url: https://github.com/amadeus4dev
+  purposes:
+  - deprecated_dependency_warning
+  authority_for: deprecation_status
+  never_proves:
+  - available_self_service_backend
+  access_route: do_not_enable
+  review_level: document_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  priority: low
+  notes: Архивирована 17.07.2026, SDK deprecated. Страница официального пресс-релиза
+    не открылась этим инструментом; live endpoints не тестировались.
+on_demand_routes:
+- id: airline_direct
+  when: chosen_flight
+  resolve: official airline or ticket seller page for exact itinerary
+  requires: verify host identity, scope, dates, baggage, terms
+- id: stay_direct
+  when: chosen_lodging
+  resolve: official property or authorized seller
+  requires: rooms/beds/party/check-in/taxes/cancel and actual offer
+- id: entry_and_transit
+  when: international_trip
+  resolve: destination/transit immigration authority and official consular sources
+  requires: passport/residence/visa facts supplied by traveler, travel date; no inferred
+    entitlement
+- id: health_and_emergency
+  when: selected_guide
+  resolve: official emergency/health authority and chosen insurer
+  requires: logistics and contact verification; not diagnosis or guarantee of coverage
+- id: local_transport_events_weather
+  when: selected_destination_dates
+  resolve: official local operators/venues/weather providers
+  requires: actual visit date, service area, timetable or supported forecast horizon
+capability_observations:
+- id: OBS-2026-09-30-CURSOR-DEV
+  plane: development_executor
+  not_clean_traveler_pilot: true
+  host_label: Cursor local agent on Windows
+  observed_at: '2026-09-30'
+  method_version: 0.2.1
+  scope: fixed pilot brief A0A1-PILOT-BRIEF-01, not a personal trip
+  channels:
+    search: available_snippets_only
+    primary_page_read: unavailable
+    calculation: available
+    files: available
+    zip: not_created
+    delegation: not_used
+  documentary_vs_live: Search snippets are not read conditions. No supplier page body was read. Local arithmetic and file export are separate from travel inventory.
+  notes: WebSearch on 2026-09-30 returned third-party pages about RZD and Kazan trains. Those snippets were not used as offers and do not apply to 2026-10-16. WebFetch of https://www.rzd.ru/ and https://kazan.dzvr.ru/ was blocked by session tool policy before a page body was returned. One alternate read was not completed. Gap remains — no primary transport or lodging terms for the brief. This observation does not transfer to a clean cloud chat.
