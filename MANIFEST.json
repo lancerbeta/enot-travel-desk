@@ -13,6 +13,11 @@
   },
   "files": [
     {
+      "path": ".github/workflows/ci.yml",
+      "bytes": 359,
+      "sha256": "1ea2ae336d6629e8ae53d20e129f0b61c90758c4a2bdac49325bf792aa7b0c06"
+    },
+    {
       "path": ".gitignore",
       "bytes": 424,
       "sha256": "919943e67c547b69fc4971721268a9c190fa6913a104a60d9d57ebd7dbca6922"
@@ -24,13 +29,13 @@
     },
     {
       "path": "BLUEPRINT.md",
-      "bytes": 59539,
-      "sha256": "52a978c4d0a11637afe15c7a16a97963b63787e396671aee9f906b068df28ee4"
+      "bytes": 60685,
+      "sha256": "5d43c6ee08519d00a35bc97262bbe0e0f31efc7b0c642bfaa6867bfca961aac3"
     },
     {
       "path": "ENOT_CHAT_START.md",
-      "bytes": 36021,
-      "sha256": "0bd63aa0fe17e64c72ff466e547002a649aab82476fe63dd97e35c513b5f0b76"
+      "bytes": 36213,
+      "sha256": "f9f4ca3d962e4cca4761fb2db33958016b8e36d2b0ab18f47d8f8dbe5ffb04bd"
     },
     {
       "path": "README.md",
@@ -39,8 +44,8 @@
     },
     {
       "path": "STATE.md",
-      "bytes": 6020,
-      "sha256": "02bab6950a42501445aacc392ed592c4368e44ee22fddd95ddca92add43c902b"
+      "bytes": 6168,
+      "sha256": "4b13697c4d25f6d833910dbfd50be371cbc8d762fa068cf8c38734d86fb3fe4b"
     },
     {
       "path": "VALIDATION.md",
@@ -74,8 +79,8 @@
     },
     {
       "path": "docs/DELIVERY_PLAN.md",
-      "bytes": 16258,
-      "sha256": "311b3d9975f968e6f255afca80a71b6a2155bd8d329cef5a69b29bce989dffaa"
+      "bytes": 17432,
+      "sha256": "856bc27c2990062a5070e77a7c24d77643578065c7700a5f844de73cabe86248"
     },
     {
       "path": "docs/RESEARCH_AND_REUSE.md",
@@ -109,8 +114,8 @@
     },
     {
       "path": "docs/atoms/A0_A1/PILOT_PACKET.md",
-      "bytes": 6211,
-      "sha256": "e56b80822fc0e324312f5ad4eff51668c61c842fb94c4c962c469f0cad49e3a6"
+      "bytes": 6456,
+      "sha256": "b66193b11488bd3fc9edbe20cccb36b1ac19dc25af5975a02ee315fa7a67dd56"
     },
     {
       "path": "docs/atoms/A0_A1/PRD_SSD.md",
