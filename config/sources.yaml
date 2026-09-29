@@ -1,9 +1,745 @@
-schema_version: 0.1.0
-status: STARTER_REGISTER_NOT_LIVE_PROVIDER_CONFIGURATION
-reviewed_at: '2026-09-29'
-policy: Read source capabilities, not every source on every run. No automatic installation
-  or paid access. All source facts must be scoped to the trip.
-sources:
+schema_version: 0.3.0
+status: ROUTING_PRIOR_NOT_WHITELIST_NOT_LIVE_INVENTORY
+reviewed_at: '2026-09-30'
+policy: 'The registry is a routing prior for the owner. It is not a closed whitelist,
+  not a price database, and not permission to book or pay. A useful primary source
+  may be read before it is added here. Trip prices and inventory stay in trip Evidence,
+  never in this file.
+
+  '
+layers:
+  stable_registry: runtime_sources
+  capability_observations: capability_observations
+  trip_evidence: not_stored_here
+refresh:
+  scheduled_crawler: false
+  when:
+  - on_use_if_unknown
+  - after_observed_failure
+  - before_enabling_api_or_mcp
+  - after_material_provider_doc_change
+  - occasional_manual_sweep_only_if_drift_matters
+families:
+  air:
+    includes:
+    - flights
+    baseline: air.public_web
+    direct: air.carrier_or_seller
+    fallback: air.public_web_alternate
+    accelerators:
+    - air.aviasales_data_api
+    - air.duffel_offers
+    if_still_insufficient: UNKNOWN
+  ground:
+    includes:
+    - rail
+    - bus
+    - ferry
+    baseline: ground.public_web
+    direct: ground.operator_direct
+    fallback: ground.public_web_alternate
+    accelerators: []
+    if_still_insufficient: UNKNOWN
+  stays:
+    includes:
+    - lodging
+    baseline: stays.public_web
+    direct: stays.property_direct
+    fallback: stays.public_web_alternate
+    accelerators:
+    - stays.partner_api
+    if_still_insufficient: UNKNOWN
+  packages:
+    includes:
+    - package_baseline
+    baseline: packages.public_web
+    direct: packages.operator_direct
+    fallback: packages.public_web_alternate
+    accelerators: []
+    if_still_insufficient: UNKNOWN
+  activities:
+    includes:
+    - guides
+    - events
+    baseline: activities.public_web
+    direct: activities.operator_direct
+    fallback: activities.public_web_alternate
+    accelerators:
+    - activities.listing_page
+    if_still_insufficient: UNKNOWN
+  local_discovery:
+    includes:
+    - creators
+    - reviews
+    baseline: local_discovery.editorial
+    direct: local_discovery.operator_page
+    fallback: local_discovery.public_web_alternate
+    accelerators: []
+    if_still_insufficient: UNKNOWN
+  official_rules:
+    includes:
+    - entry
+    - safety
+    - payment_constraints
+    baseline: official_rules.primary_authority
+    direct: official_rules.primary_authority
+    fallback: official_rules.alternate_authority
+    accelerators: []
+    if_still_insufficient: UNKNOWN
+  maps:
+    includes:
+    - local_operations
+    - weather_for_visit_day
+    baseline: maps.public_links
+    direct: maps.official_local
+    fallback: maps.public_web_alternate
+    accelerators: []
+    if_still_insufficient: UNKNOWN
+runtime_sources:
+- id: air.public_web
+  families:
+  - air
+  roles:
+  - discovery
+  - offer
+  authority_for:
+  - public_page_in_scope
+  never_proves:
+  - booking
+  - current_inventory_without_exact_party
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: air.public_web_alternate
+  documentary_status: routing_prior
+  review_policy: on_use_if_unknown
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: air.public_web_alternate
+  families:
+  - air
+  roles:
+  - discovery
+  authority_for:
+  - second_public_page
+  never_proves:
+  - booking
+  - independent_corroboration_of_same_upstream
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: terminal_unknown
+  documentary_status: routing_prior
+  review_policy: after_observed_failure
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: air.carrier_or_seller
+  families:
+  - air
+  roles:
+  - verification
+  - official
+  authority_for:
+  - exact_itinerary_conditions
+  never_proves:
+  - booking
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: air.public_web
+  documentary_status: routing_prior
+  review_policy: on_use_if_unknown
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: air.aviasales_data_api
+  families:
+  - air
+  roles:
+  - discovery
+  authority_for:
+  - cached_search_direction
+  never_proves:
+  - current_inventory
+  - full_party_bookability
+  - booking
+  access_modes:
+  - partner_api
+  access_requirements: own_credentials_not_enabled
+  fallback: air.public_web
+  documentary_status: document_checked
+  review_policy: before_enabling_api_or_mcp
+  optional: true
+  offer_kind: cached
+  write_capable: false
+  external_actions_default: none
+  research_refs:
+  - S01
+  - S40
+- id: air.duffel_offers
+  families:
+  - air
+  roles:
+  - offer
+  authority_for:
+  - time_limited_offer_if_access_granted
+  never_proves:
+  - booking
+  - held_inventory
+  access_modes:
+  - partner_api
+  access_requirements: own_credentials_not_enabled
+  fallback: air.public_web
+  documentary_status: document_checked
+  review_policy: before_enabling_api_or_mcp
+  optional: true
+  offer_kind: observed_offer
+  write_capable: true
+  external_actions_default: none
+  research_refs:
+  - S04
+- id: ground.public_web
+  families:
+  - ground
+  roles:
+  - discovery
+  - offer
+  authority_for:
+  - public_timetable_or_search_page
+  never_proves:
+  - booking
+  - quota_from_unit_price
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: ground.public_web_alternate
+  documentary_status: routing_prior
+  review_policy: on_use_if_unknown
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: ground.public_web_alternate
+  families:
+  - ground
+  roles:
+  - discovery
+  authority_for:
+  - second_public_page
+  never_proves:
+  - booking
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: terminal_unknown
+  documentary_status: routing_prior
+  review_policy: after_observed_failure
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: ground.operator_direct
+  families:
+  - ground
+  roles:
+  - verification
+  - official
+  authority_for:
+  - operator_timetable_or_fare_rules
+  never_proves:
+  - booking
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: ground.public_web
+  documentary_status: routing_prior
+  review_policy: on_use_if_unknown
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: stays.public_web
+  families:
+  - stays
+  roles:
+  - discovery
+  - offer
+  authority_for:
+  - public_listing_page
+  never_proves:
+  - booking
+  - party_quota_from_smaller_search
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: stays.public_web_alternate
+  documentary_status: routing_prior
+  review_policy: on_use_if_unknown
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs:
+  - S43
+- id: stays.public_web_alternate
+  families:
+  - stays
+  roles:
+  - discovery
+  authority_for:
+  - second_public_page
+  never_proves:
+  - booking
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: terminal_unknown
+  documentary_status: routing_prior
+  review_policy: after_observed_failure
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: stays.property_direct
+  families:
+  - stays
+  roles:
+  - verification
+  - official
+  authority_for:
+  - property_or_authorized_seller_conditions
+  never_proves:
+  - booking
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: stays.public_web
+  documentary_status: routing_prior
+  review_policy: on_use_if_unknown
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: stays.partner_api
+  families:
+  - stays
+  roles:
+  - offer
+  authority_for:
+  - provider_offer_if_access_granted
+  never_proves:
+  - booking
+  - reservation_without_order
+  - access_for_everyone
+  access_modes:
+  - partner_api
+  access_requirements: partner_contract_not_enabled
+  fallback: stays.public_web
+  documentary_status: document_checked
+  review_policy: before_enabling_api_or_mcp
+  optional: true
+  offer_kind: observed_offer
+  write_capable: true
+  external_actions_default: none
+  research_refs:
+  - S02
+  - S03
+  - S05
+- id: packages.public_web
+  families:
+  - packages
+  roles:
+  - discovery
+  - offer
+  authority_for:
+  - public_package_page
+  never_proves:
+  - booking
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: packages.public_web_alternate
+  documentary_status: routing_prior
+  review_policy: on_use_if_unknown
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs:
+  - S44
+- id: packages.public_web_alternate
+  families:
+  - packages
+  roles:
+  - discovery
+  authority_for:
+  - second_public_page
+  never_proves:
+  - booking
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: terminal_unknown
+  documentary_status: routing_prior
+  review_policy: after_observed_failure
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: packages.operator_direct
+  families:
+  - packages
+  roles:
+  - verification
+  - official
+  authority_for:
+  - operator_package_conditions
+  never_proves:
+  - booking
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: packages.public_web
+  documentary_status: routing_prior
+  review_policy: on_use_if_unknown
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: activities.public_web
+  families:
+  - activities
+  roles:
+  - discovery
+  authority_for:
+  - public_event_or_guide_page
+  never_proves:
+  - booking
+  - live_hours_without_operator
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: activities.public_web_alternate
+  documentary_status: routing_prior
+  review_policy: on_use_if_unknown
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs:
+  - S41
+  - S42
+- id: activities.public_web_alternate
+  families:
+  - activities
+  roles:
+  - discovery
+  authority_for:
+  - second_public_page
+  never_proves:
+  - booking
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: terminal_unknown
+  documentary_status: routing_prior
+  review_policy: after_observed_failure
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: activities.operator_direct
+  families:
+  - activities
+  roles:
+  - verification
+  - official
+  authority_for:
+  - operator_hours_price_access
+  never_proves:
+  - booking
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: activities.public_web
+  documentary_status: routing_prior
+  review_policy: on_use_if_unknown
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: activities.listing_page
+  families:
+  - activities
+  roles:
+  - discovery
+  authority_for:
+  - operator_listing_not_capacity
+  never_proves:
+  - booking
+  - capacity_without_exact_search
+  - official_rule
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: activities.public_web
+  documentary_status: landing_checked
+  review_policy: on_use_if_unknown
+  optional: true
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs:
+  - S19
+- id: local_discovery.editorial
+  families:
+  - local_discovery
+  roles:
+  - discovery
+  - review
+  authority_for:
+  - editorial_or_community_idea
+  never_proves:
+  - official_rule
+  - live_hours
+  - current_inventory
+  - booking
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: local_discovery.public_web_alternate
+  documentary_status: landing_checked
+  review_policy: on_use_if_unknown
+  optional: false
+  offer_kind: anecdote
+  write_capable: false
+  external_actions_default: none
+  research_refs:
+  - S15
+  - S16
+  - S18
+  - S21
+- id: local_discovery.public_web_alternate
+  families:
+  - local_discovery
+  roles:
+  - discovery
+  - review
+  authority_for:
+  - second_editorial_page
+  never_proves:
+  - official_rule
+  - booking
+  - independent_corroboration_of_same_upstream
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: terminal_unknown
+  documentary_status: routing_prior
+  review_policy: after_observed_failure
+  optional: false
+  offer_kind: anecdote
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: local_discovery.operator_page
+  families:
+  - local_discovery
+  roles:
+  - verification
+  authority_for:
+  - primary_operator_or_venue
+  never_proves:
+  - booking
+  - official_rule_unless_the_page_is_the_authority
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: local_discovery.editorial
+  documentary_status: routing_prior
+  review_policy: on_use_if_unknown
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: official_rules.primary_authority
+  families:
+  - official_rules
+  roles:
+  - official
+  - verification
+  authority_for:
+  - official_rule_in_scope
+  never_proves:
+  - booking
+  - inferred_entitlement
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: official_rules.alternate_authority
+  documentary_status: routing_prior
+  review_policy: on_use_if_unknown
+  optional: false
+  offer_kind: primary_fact
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: official_rules.alternate_authority
+  families:
+  - official_rules
+  roles:
+  - official
+  - verification
+  authority_for:
+  - second_official_body
+  never_proves:
+  - booking
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: terminal_unknown
+  documentary_status: routing_prior
+  review_policy: after_observed_failure
+  optional: false
+  offer_kind: primary_fact
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: maps.public_links
+  families:
+  - maps
+  roles:
+  - discovery
+  authority_for:
+  - map_url_format
+  never_proves:
+  - journey_duration
+  - offline_map
+  - booking
+  - official_rule
+  access_modes:
+  - link_builder
+  access_requirements: none
+  fallback: maps.public_web_alternate
+  documentary_status: document_checked
+  review_policy: on_provider_doc_change
+  optional: false
+  offer_kind: link_only
+  write_capable: false
+  external_actions_default: none
+  research_refs:
+  - S23
+- id: maps.public_web_alternate
+  families:
+  - maps
+  roles:
+  - discovery
+  authority_for:
+  - text_address_or_second_map_page
+  never_proves:
+  - journey_duration
+  - booking
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: terminal_unknown
+  documentary_status: routing_prior
+  review_policy: after_observed_failure
+  optional: false
+  offer_kind: observed_page
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+- id: maps.official_local
+  families:
+  - maps
+  roles:
+  - verification
+  - official
+  authority_for:
+  - local_operator_timetable_or_visit_day_conditions
+  never_proves:
+  - booking
+  - climate_as_forecast
+  access_modes:
+  - public_web
+  access_requirements: none
+  fallback: maps.public_links
+  documentary_status: routing_prior
+  review_policy: on_use_if_unknown
+  optional: false
+  offer_kind: primary_fact
+  write_capable: false
+  external_actions_default: none
+  research_refs: []
+candidates_not_enabled:
+- id: donor.fast_flights
+  research_refs:
+  - S35
+  pattern: unofficial flight-page extraction
+  access_risk: unofficial scraper, stability and supplier permission unknown
+  enabled: false
+  why_not: not a baseline; do not install or fork in this atom
+- id: donor.trvl
+  research_refs:
+  - S36
+  pattern: one interface over several travel providers
+  access_risk: PolyForm Noncommercial limits later use
+  enabled: false
+  why_not: license and provider coupling; not enabled
+- id: donor.trek
+  research_refs:
+  - S07
+  pattern: days, map and expense organization
+  access_risk: AGPL application stack, not a source of live inventory
+  enabled: false
+  why_not: organizer pattern only; do not fork
+- id: donor.adventurelog
+  research_refs:
+  - S08
+  pattern: trip log and plan storage
+  access_risk: separate product and GPL stack
+  enabled: false
+  why_not: not a discovery authority; do not install
+- id: donor.amadeus_self_service
+  research_refs:
+  - S06
+  pattern: deprecated self-service flight API
+  access_risk: organization archived, SDK deprecated
+  enabled: false
+  why_not: do not enable
+- id: donor.skiplagged_mcp
+  research_refs:
+  - S34
+  pattern: described flight search endpoint
+  access_risk: coverage and hidden-city behavior untested
+  enabled: false
+  why_not: not a core route; no install
+- id: donor.letsfg
+  research_refs: []
+  pattern: not in the current research register
+  access_risk: unknown until a later read-only classification
+  enabled: false
+  why_not: not researched here and not installed
+research_register:
 - id: S01
   name: Aviasales Data API
   url: https://support.travelpayouts.com/hc/en-us/articles/203956163-Aviasales-Data-API
@@ -343,28 +1079,48 @@ sources:
   priority: low
   notes: Архивирована 17.07.2026, SDK deprecated. Страница официального пресс-релиза
     не открылась этим инструментом; live endpoints не тестировались.
-on_demand_routes:
-- id: airline_direct
-  when: chosen_flight
-  resolve: official airline or ticket seller page for exact itinerary
-  requires: verify host identity, scope, dates, baggage, terms
-- id: stay_direct
-  when: chosen_lodging
-  resolve: official property or authorized seller
-  requires: rooms/beds/party/check-in/taxes/cancel and actual offer
-- id: entry_and_transit
-  when: international_trip
-  resolve: destination/transit immigration authority and official consular sources
-  requires: passport/residence/visa facts supplied by traveler, travel date; no inferred
-    entitlement
-- id: health_and_emergency
-  when: selected_guide
-  resolve: official emergency/health authority and chosen insurer
-  requires: logistics and contact verification; not diagnosis or guarantee of coverage
-- id: local_transport_events_weather
-  when: selected_destination_dates
-  resolve: official local operators/venues/weather providers
-  requires: actual visit date, service area, timetable or supported forecast horizon
+- id: S07
+  name: TREK
+  url: https://github.com/liketrek/TREK
+  purposes:
+  - organizer_pattern
+  authority_for: plan_storage_patterns
+  never_proves:
+  - live_inventory
+  access_route: do_not_enable
+  review_level: readme_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  notes: Documentary research citation. Not a runtime route.
+- id: S08
+  name: AdventureLog
+  url: https://github.com/seanmorley15/AdventureLog
+  purposes:
+  - organizer_pattern
+  authority_for: plan_storage_patterns
+  never_proves:
+  - live_inventory
+  access_route: do_not_enable
+  review_level: readme_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  notes: Documentary research citation. Not a runtime route.
+- id: S36
+  name: trvl license
+  url: https://github.com/MikkoParkkola/trvl/blob/main/LICENSE
+  purposes:
+  - license_boundary
+  authority_for: license_text
+  never_proves:
+  - live_inventory
+  access_route: do_not_enable
+  review_level: readme_checked
+  reviewed_at: '2026-09-29'
+  live_runtime_tested: false
+  enabled_without_preflight: false
+  notes: Documentary research citation. Not a runtime route.
 capability_observations:
 - id: OBS-2026-09-30-CURSOR-DEV
   plane: development_executor
@@ -380,5 +1136,21 @@ capability_observations:
     files: available
     zip: not_created
     delegation: not_used
-  documentary_vs_live: Search snippets are not read conditions. No supplier page body was read. Local arithmetic and file export are separate from travel inventory.
-  notes: WebSearch on 2026-09-30 returned third-party pages about RZD and Kazan trains. Those snippets were not used as offers and do not apply to 2026-10-16. WebFetch of https://www.rzd.ru/ and https://kazan.dzvr.ru/ was blocked by session tool policy before a page body was returned. One alternate read was not completed. Gap remains — no primary transport or lodging terms for the brief. This observation does not transfer to a clean cloud chat.
+  documentary_vs_live: Search snippets are not read conditions. No supplier page body
+    was read. Local arithmetic and file export are separate from travel inventory.
+  notes: WebSearch on 2026-09-30 returned third-party pages about RZD and Kazan trains.
+    Those snippets were not used as offers and do not apply to 2026-10-16. WebFetch
+    of https://www.rzd.ru/ and https://kazan.dzvr.ru/ was blocked by session tool
+    policy before a page body was returned. One alternate read was not completed.
+    Gap remains — no primary transport or lodging terms for the brief. This observation
+    does not transfer to a clean cloud chat.
+- id: OBS-2026-09-30-SOURCE-PROBES
+  source_or_route: mixed public routes
+  host_plane: development_executor
+  access_mode: public_web
+  observed_at: '2026-09-30'
+  scope_tested: read-only pages; not a booked trip and not owner travel apps
+  outcome: partial
+  failure_mode: rzd_timeout_and_captcha_on_aggregator
+  limitations: No fares or inventory are stored here. Receipts are in docs/atoms/SOURCE_INTELLIGENCE/evidence/PROBES.md.
+    Owner host apps were not available and were not simulated.

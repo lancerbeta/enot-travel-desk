@@ -1,9 +1,9 @@
 {
   "project": "ENOT",
-  "bundle_version": "0.2.2",
-  "supersedes": "0.2.1",
+  "bundle_version": "0.3.0",
+  "supersedes": "0.2.2",
   "research_date": "2026-09-30",
-  "revision_scope": "a0_a1_intake_snapshot_mobile_repair_live_gate_open",
+  "revision_scope": "owner_first_source_intelligence",
   "type": "blueprint_and_starter_not_application",
   "entrypoints": {
     "traveler": "ENOT_CHAT_START.md",
@@ -14,8 +14,8 @@
   "files": [
     {
       "path": ".github/workflows/ci.yml",
-      "bytes": 359,
-      "sha256": "1ea2ae336d6629e8ae53d20e129f0b61c90758c4a2bdac49325bf792aa7b0c06"
+      "bytes": 510,
+      "sha256": "cdaee283b945907d568ea0632f72c845b58f9038ae0c1c7cb5caf640c6c5b336"
     },
     {
       "path": ".gitignore",
@@ -24,28 +24,28 @@
     },
     {
       "path": "AGENTS.md",
-      "bytes": 8509,
-      "sha256": "597a2823af6887f9a6e62fc6ee910b8e169d15f7c45b269c0faec84d6a816cd8"
+      "bytes": 8740,
+      "sha256": "e51158f36daa26d85bc710909f8e39f5f61257df3cd73532825d2db96f4f339c"
     },
     {
       "path": "BLUEPRINT.md",
-      "bytes": 60685,
-      "sha256": "5d43c6ee08519d00a35bc97262bbe0e0f31efc7b0c642bfaa6867bfca961aac3"
+      "bytes": 60823,
+      "sha256": "4a9fc4a838bea89d3253310bd4c3bd9cd8fe526108596e2ec0a1f3246d17a685"
     },
     {
       "path": "ENOT_CHAT_START.md",
-      "bytes": 36213,
-      "sha256": "f9f4ca3d962e4cca4761fb2db33958016b8e36d2b0ab18f47d8f8dbe5ffb04bd"
+      "bytes": 36664,
+      "sha256": "1c4b8caa58d1ee8b0a4d306c1efa00b386877014912ecc8d98376e6135a79424"
     },
     {
       "path": "README.md",
-      "bytes": 9140,
-      "sha256": "587eb10420f01f2a31d347b8bef7779ec120fba6dc4c6f90d98ee364070565e4"
+      "bytes": 9176,
+      "sha256": "e4631d276485c5ad4186b21ed93164c88884a3d392632c722889b9e08eb7aed7"
     },
     {
       "path": "STATE.md",
-      "bytes": 6168,
-      "sha256": "4b13697c4d25f6d833910dbfd50be371cbc8d762fa068cf8c38734d86fb3fe4b"
+      "bytes": 2440,
+      "sha256": "3fc38b00ec8aae418024b068dd076403fde6652505d52f77a4d7aebeaa6b66ab"
     },
     {
       "path": "VALIDATION.md",
@@ -54,13 +54,13 @@
     },
     {
       "path": "config/policy.yaml",
-      "bytes": 6454,
-      "sha256": "cf90f4b4a21f9fc0529b097c69dd17ccb26442cc08ff87dabe947b6be9248c13"
+      "bytes": 6669,
+      "sha256": "f77a3cb6b2fc6c09567eee192dedd54b50813ccb67c89f3a19733530d6458551"
     },
     {
       "path": "config/sources.yaml",
-      "bytes": 14351,
-      "sha256": "29efaba3ea670ff83534df57a4f479eac32399c10205ed81af16fce6800e3242"
+      "bytes": 33115,
+      "sha256": "cbed8aa88fada55ee1223b0fdc58e433114debf575be599af2a96176289c6020"
     },
     {
       "path": "design-preview.html",
@@ -79,13 +79,13 @@
     },
     {
       "path": "docs/DELIVERY_PLAN.md",
-      "bytes": 17432,
-      "sha256": "856bc27c2990062a5070e77a7c24d77643578065c7700a5f844de73cabe86248"
+      "bytes": 16528,
+      "sha256": "cfe3ac1bf93593b7e2f0b19beedb459580d886541e56e26a2a26f2f2efa83b85"
     },
     {
       "path": "docs/RESEARCH_AND_REUSE.md",
-      "bytes": 17147,
-      "sha256": "1e5b9ec68959484af82220fea74a66b7cd3cd61b424cc4b84d1ca6ed034b2469"
+      "bytes": 17207,
+      "sha256": "7652e58eddf76bd214ba4a9f2f5f3bb10de507bcd6e4ff7926471312e6b867c9"
     },
     {
       "path": "docs/SOURCES.md",
@@ -104,8 +104,8 @@
     },
     {
       "path": "docs/atoms/A0_A1/ACCEPTANCE.md",
-      "bytes": 12009,
-      "sha256": "56e55a93c581a6a332df0db113ebeea4caa904449b1b2681ddfb4e5450334f5b"
+      "bytes": 12346,
+      "sha256": "83f1d386d0e2f83391922b9bf476a6c4a535be1f93e524f70669d2581d0ae42f"
     },
     {
       "path": "docs/atoms/A0_A1/EXECUTOR_COMMAND.md",
@@ -138,6 +138,16 @@
       "sha256": "c927d6cef9698d52bfde98d9360f1ae5aafb0e14267d50e9c6dc893d33690d29"
     },
     {
+      "path": "docs/atoms/SOURCE_INTELLIGENCE/ACCEPTANCE.md",
+      "bytes": 1337,
+      "sha256": "5a822210868de2fb70faf0f5535b105825d69158e1feef78346fd87723f1fe54"
+    },
+    {
+      "path": "docs/atoms/SOURCE_INTELLIGENCE/evidence/PROBES.md",
+      "bytes": 4417,
+      "sha256": "abe8f4afd269449f66bf38bdb340d9e002da9c833950747ae10af7b2d59c904b"
+    },
+    {
       "path": "enotcheck/__init__.py",
       "bytes": 99,
       "sha256": "b70feab550107b013a1b1c3966dc0793a4eeff6d9efde127d5f364ca7479e6c8"
@@ -156,6 +166,11 @@
       "path": "enotcheck/intake.py",
       "bytes": 1176,
       "sha256": "934d4c32e5189961415926286159fb70641e3384bba36586b091bea97513a04a"
+    },
+    {
+      "path": "enotcheck/registry.py",
+      "bytes": 3907,
+      "sha256": "46f83f68605a40b5788a0c045d855e684435764b7a09e31a51e36f7ac3824c1c"
     },
     {
       "path": "enotcheck/render.py",
@@ -179,8 +194,8 @@
     },
     {
       "path": "enotcheck/snapshot.py",
-      "bytes": 2464,
-      "sha256": "75858bcfdd637032e1eeaead1769ac772bcf5032e40a92cec9bc15a0e3fd7506"
+      "bytes": 2484,
+      "sha256": "21f951dd595e70a5e25a905b2a86986924a2e5fa464e5563f6b16aa372572adc"
     },
     {
       "path": "evals/scenarios.yaml",
@@ -193,6 +208,11 @@
       "sha256": "904cb871fac03e59ad0f2cacd7a99da886495c5c685306e3d6d85e62ae083748"
     },
     {
+      "path": "requirements-dev.txt",
+      "bytes": 14,
+      "sha256": "4cff821259d88a21fd7381eb71a78f676a100efba5e44b50ece017024a878995"
+    },
+    {
       "path": "tests/test_a0_a1_mechanics.py",
       "bytes": 16354,
       "sha256": "35d55227e7b8ef9433c0526c5e47bb12dd8ac9975a72d4c366f14a2196164ffc"
@@ -201,6 +221,11 @@
       "path": "tests/test_a0_a1_seams.py",
       "bytes": 14005,
       "sha256": "aba85ef722d275a998b226a9be06c84c7db5a2c82952e94ac4bb4fa125888511"
+    },
+    {
+      "path": "tests/test_source_intelligence.py",
+      "bytes": 2228,
+      "sha256": "d42eaf78e30bdb6c48e8c7184023a75113a63eb3ce05207695da54773302fb01"
     }
   ]
 }

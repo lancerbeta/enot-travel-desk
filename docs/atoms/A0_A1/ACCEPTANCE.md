@@ -6,6 +6,12 @@ Repair base: `b81b2eeb695e6a73a9226cc21b1ae8b339fab1d8`
 Дата: **2026-09-30**  
 Исполнитель не переводит атом в accepted.
 
+## Вердикт владельца 2026-09-30
+
+`STOP_OWNER_SCOPE_CHANGE`
+
+Атом не PASS и не technical FAIL. Активный потребитель продукта — владелец; чистый пилот для друга перестал быть release gate. Evidence и история ниже сохранены.
+
 ## Вердикт repair
 
 `AMBIGUOUS / LIVE_GATE_NOT_EXECUTABLE_HERE`

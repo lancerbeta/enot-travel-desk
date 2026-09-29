@@ -192,9 +192,10 @@ presentation:
   fake_buttons_or_progress: false
   branding: same_voice_and_structure_native_chat_typography_not_controllable
 protocol_delta:
-  version: 0.2.2
+  version: 0.2.3
   date: '2026-09-30'
-  base: 0.2.1
+  base: 0.2.2
+  project_version: 0.3.0
   changes:
   - one-shot intake asks only material gaps and accepts a skip
   - user_skipped stays empty and is not asked again after snapshot
@@ -203,3 +204,6 @@ protocol_delta:
   - withdrawn card does not return its shortlist slot
   - stale or ambiguous id asks only which current option to select
   - date or party change keeps the chosen concept with requires_revalidation
+  - claim chooses a source route; registry is not a whitelist
+  - one fallback then UNKNOWN; missing evidence is not model confidence
+  - optional apps and APIs do not own product semantics
