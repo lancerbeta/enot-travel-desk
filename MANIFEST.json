@@ -24,8 +24,8 @@
     },
     {
       "path": "AGENTS.md",
-      "bytes": 8740,
-      "sha256": "e51158f36daa26d85bc710909f8e39f5f61257df3cd73532825d2db96f4f339c"
+      "bytes": 11783,
+      "sha256": "529d516087e1ca1ba383f31d023c2e08e8ca15db1d6b3589961c6450dd2e392f"
     },
     {
       "path": "BLUEPRINT.md",
@@ -39,8 +39,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 9176,
-      "sha256": "e4631d276485c5ad4186b21ed93164c88884a3d392632c722889b9e08eb7aed7"
+      "bytes": 15655,
+      "sha256": "56ee17e846ad98ad8f85276587028c15f6edfa881031c8f2ac008b8c0c427d90"
     },
     {
       "path": "STATE.md",
