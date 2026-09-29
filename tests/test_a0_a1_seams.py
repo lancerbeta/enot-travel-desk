@@ -5,6 +5,7 @@ from decimal import Decimal
 from pathlib import Path
 
 from enotcheck.budget import evaluate_budget
+from enotcheck.intake import apply_skip, resume_intake
 from enotcheck.render import render_bundle
 from enotcheck.selection import resolve_selection
 from enotcheck.slots import new_state, present
@@ -187,6 +188,134 @@ class RenderFiles(unittest.TestCase):
         self.assertIn("overflow-wrap", html)
         self.assertIn(":focus", html)
         self.assertIn("<details", html)
+
+
+class IntakeSnapshotRoundTrip(unittest.TestCase):
+    def _brief(self):
+        brief = {
+            "origins": "Казань",
+            "return_to": "Казань",
+            "dates": "2026-10-16/2026-10-18",
+            "duration": "2 nights",
+            "party": "2 adults",
+            "accommodation": "one double room",
+            "budget": "на двоих, RUB, желательно 70 000, потолок 90 000",
+            "veto": ["no-car", "no-self-transfer", "no-departure-before-08:00"],
+            "soft_preferences": "quiet water",
+            "effort_tolerance": None,
+            "assumptions": [],
+            "unresolved": [],
+        }
+        return apply_skip(
+            brief,
+            "effort_tolerance",
+            "ширина поиска по хлопотам; точная нагрузка не задана",
+        )
+
+    def _snapshot(self, brief):
+        return {
+            "run_id": "2026-09-30_kazan-voda_01",
+            "revision": "r01",
+            "method_version": "0.2.2",
+            "stage": "discovery",
+            "status": "running",
+            "brief": brief,
+            "weights": {
+                "fit": 30,
+                "value": 25,
+                "logistics": 15,
+                "comfort": 15,
+                "novelty": 10,
+                "flexibility": 5,
+            },
+            "selection_cycle": 1,
+            "presented_candidate_ids": ["c-01", "c-02"],
+            "withdrawn_candidate_ids": [],
+            "selected_id": None,
+            "next_action": "continue discover without another intake question",
+            "evidence": [
+                {
+                    "title": "fixture",
+                    "url": "https://example.com/enot-synthetic-fixture",
+                    "observed_at": "2026-09-30",
+                    "applies_to": "intake seam only",
+                    "status": "not_a_live_offer",
+                }
+            ],
+            "critic_results": [],
+            "invalidation": [],
+            "artifacts": [],
+        }
+
+    def test_skip_survives_continuation_and_blocks_repeat_intake(self):
+        brief = self._brief()
+        self.assertIsNone(brief["effort_tolerance"])
+        snapshot = self._snapshot(brief)
+        report = validate_snapshot(snapshot)
+        self.assertTrue(report["compatible"], report["gaps"])
+        self.assertEqual(report["do_not_reask"], ["effort_tolerance"])
+        bundle = render_bundle(
+            {
+                "run_id": snapshot["run_id"],
+                "revision": snapshot["revision"],
+                "method_version": snapshot["method_version"],
+                "title": "Учебный перенос, не поездка",
+                "synthetic": True,
+                "selected_id": None,
+                "user_basis": None,
+                "compromise": "Снимок для проверки пропуска.",
+                "risks": ["Хлопоты не заданы, поиск шире."],
+                "actions": ["Не спрашивать хлопоты снова."],
+                "practical": {"before": "", "days": "", "return_plan": ""},
+                "budget": {
+                    "travel_spend": None,
+                    "deposit": Decimal("0"),
+                    "cash_needed": None,
+                    "currency": "RUB",
+                    "gate": "UNKNOWN",
+                },
+                "sources": [],
+                "snapshot": snapshot,
+                "hostile_text": "",
+                "hostile_url": "",
+            }
+        )
+        text = bundle["continuation"]
+        self.assertIn("user_skipped", text)
+        self.assertIn("effort_tolerance", text)
+        self.assertIn("Казань", text)
+        self.assertIn("70 000", text.replace("\u00a0", " "))
+        self.assertIn("do_not_reask: effort_tolerance", text)
+        self.assertIn("repeat_general_intake: false", text)
+        self.assertIn("fit 30", text)
+        resumed = resume_intake(snapshot["brief"])
+        self.assertFalse(resumed["repeat_general_intake"])
+        self.assertEqual(resumed["do_not_reask"], ["effort_tolerance"])
+
+    def test_silent_default_and_old_method_compatibility(self):
+        brief = self._brief()
+        brief["effort_tolerance"] = "немного самостоятельности"
+        report = validate_snapshot(self._snapshot(brief))
+        self.assertFalse(report["compatible"])
+        self.assertIn("silent_default", report["gaps"])
+        older = self._snapshot(self._brief())
+        older["method_version"] = "0.2.1"
+        del older["brief"]["unresolved"]
+        del older["status"]
+        self.assertTrue(validate_snapshot(older)["compatible"])
+        future = self._snapshot(self._brief())
+        future["method_version"] = "0.3.0"
+        self.assertFalse(validate_snapshot(future)["compatible"])
+
+
+class MobilePreviewLayout(unittest.TestCase):
+    def test_phone_alternative_cards_are_one_column(self):
+        text = Path(__file__).resolve().parents[1].joinpath("design-preview.html").read_text(encoding="utf-8")
+        phone = text.split("@media(max-width:650px)", 1)[1].split("@media", 1)[0]
+        self.assertIn(".alternative-grid{grid-template-columns:1fr;", phone)
+        self.assertNotIn("alternative-grid{grid-template-columns:1fr 1fr", phone)
+        desktop = text.split("@media(max-width:1000px)", 1)[0]
+        self.assertIn(".alternative-grid{display:grid;grid-template-columns:repeat(4,1fr)", desktop)
 
 
 if __name__ == "__main__":

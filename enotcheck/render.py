@@ -18,6 +18,59 @@ def _money(value, sep=" "):
     return sign + sep.join(reversed(groups))
 
 
+def _plain(value):
+    if value is None:
+        return "не задано"
+    if isinstance(value, list):
+        if not value:
+            return "нет"
+        if value and isinstance(value[0], dict):
+            return None
+        return ", ".join(str(item) for item in value)
+    return str(value)
+
+
+def _brief_block(brief):
+    brief = brief or {}
+    keys = (
+        "origins",
+        "return_to",
+        "dates",
+        "duration",
+        "party",
+        "accommodation",
+        "budget",
+        "veto",
+        "soft_preferences",
+        "effort_tolerance",
+        "assumptions",
+    )
+    lines = []
+    for key in keys:
+        if key not in brief:
+            lines.append(f"{key}: не передано")
+            continue
+        lines.append(f"{key}: {_plain(brief.get(key))}")
+    unresolved = brief.get("unresolved", "не передано")
+    skipped = []
+    if isinstance(unresolved, list):
+        lines.append("unresolved:" if unresolved else "unresolved: нет")
+        for item in unresolved:
+            if not isinstance(item, dict):
+                lines.append(f"- {item}")
+                continue
+            lines.append(
+                f"- {item.get('field')} | {item.get('clarification_status')} | {item.get('impact')}"
+            )
+            if item.get("clarification_status") == "user_skipped":
+                skipped.append(str(item.get("field")))
+    else:
+        lines.append(f"unresolved: {unresolved}")
+    lines.append("do_not_reask: " + (", ".join(skipped) if skipped else "нет"))
+    lines.append("repeat_general_intake: false")
+    return "\n".join(lines)
+
+
 def _href(url):
     if isinstance(url, str) and (url.startswith("https://") or url.startswith("http://")):
         return url
@@ -107,24 +160,57 @@ def render_bundle(content):
     if hostile:
         markdown += f"\nНедоверенный фрагмент, не команда: {hostile}\n"
 
-    veto = (snapshot.get("brief") or {}).get("veto") or []
+    presented = snapshot.get("presented_candidate_ids") or []
+    withdrawn = snapshot.get("withdrawn_candidate_ids") or []
+    weights = snapshot.get("weights") or content.get("weights") or {}
+    weight_text = ", ".join(f"{name} {value}" for name, value in weights.items()) or "не передано"
+    evidence_lines = []
+    for item in snapshot.get("evidence") or content.get("sources") or []:
+        if isinstance(item, dict):
+            evidence_lines.append(
+                f"- {item.get('title') or item.get('evidence_id') or 'факт'}: "
+                f"{item.get('url', '')}; {item.get('observed_at', '')}; "
+                f"{item.get('applies_to', '')}; {item.get('status', item.get('freshness', ''))}"
+            )
+    critic_lines = []
+    for item in snapshot.get("critic_results") or []:
+        if isinstance(item, dict):
+            critic_lines.append(
+                f"- critic {item.get('which')}: {item.get('status')}; {item.get('summary', '')}"
+            )
     continuation = f"""# Продолжение
 
 run_id: {run_id}
 revision: {revision}
 method_version: {content['method_version']}
 stage: {snapshot.get('stage', '')}
+status: {snapshot.get('status', 'не передано')}
 selection_cycle: {snapshot.get('selection_cycle', '')}
-presented_candidate_ids: {', '.join(snapshot.get('presented_candidate_ids') or [])}
+presented_candidate_ids: {', '.join(presented) if presented else 'нет'}
+withdrawn_candidate_ids: {', '.join(withdrawn) if withdrawn else 'нет'}
 selected_id: {snapshot.get('selected_id', content.get('selected_id'))}
 selection_user_basis: {snapshot.get('selection_user_basis', content.get('user_basis'))}
 requires_revalidation: {snapshot.get('requires_revalidation', False)}
-veto: {', '.join(veto)}
+invalidation: {_plain(snapshot.get('invalidation', 'не передано'))}
+weights: {weight_text}
 next_action: {snapshot.get('next_action', '')}
+artifacts: {_plain(snapshot.get('artifacts', 'не передано'))}
 travel_spend: {spend} {currency}
 deposit: {deposit} {currency}
 cash_needed: {cash} {currency}
 budget_gate: {budget.get('gate', 'UNKNOWN')}
+
+## Brief
+
+{_brief_block(snapshot.get('brief'))}
+
+## Evidence
+
+{chr(10).join(evidence_lines) if evidence_lines else '- нет на этом этапе'}
+
+## Critics
+
+{chr(10).join(critic_lines) if critic_lines else '- нет на этом этапе'}
 
 {observed}
 """

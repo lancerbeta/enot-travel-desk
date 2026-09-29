@@ -3,7 +3,8 @@
 import copy
 
 
-_SUPPORTED = ("0.2.0", "0.2.1")
+_SUPPORTED = ("0.2.0", "0.2.1", "0.2.2")
+_BRIEF_022 = ("origins", "dates", "party", "budget", "veto", "assumptions", "unresolved")
 _REQUIRED = (
     "run_id",
     "revision",
@@ -31,12 +32,30 @@ def validate_snapshot(doc, supported=_SUPPORTED):
     version = doc.get("method_version")
     if version not in supported and "method_version" not in gaps:
         gaps.append("method_version")
+    if version == "0.2.2":
+        for key in _BRIEF_022:
+            if key not in brief:
+                gaps.append(f"brief.{key}")
+        if "status" not in doc:
+            gaps.append("status")
+        for item in brief.get("unresolved") or []:
+            if not isinstance(item, dict) or not {"field", "clarification_status", "impact"} <= set(item):
+                gaps.append("brief.unresolved.item")
+                break
+            if item.get("clarification_status") == "user_skipped" and brief.get(item.get("field")) is not None:
+                gaps.append("silent_default")
+    skipped = [
+        item["field"]
+        for item in brief.get("unresolved") or []
+        if isinstance(item, dict) and item.get("clarification_status") == "user_skipped"
+    ]
     return {
         "compatible": not gaps,
         "gaps": gaps,
         "slot_count": len(doc.get("presented_candidate_ids") or []),
         "veto": list(brief.get("veto") or []),
         "selected_id": doc.get("selected_id"),
+        "do_not_reask": skipped,
     }
 
 

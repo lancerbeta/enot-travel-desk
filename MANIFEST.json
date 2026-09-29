@@ -1,9 +1,9 @@
 {
   "project": "ENOT",
-  "bundle_version": "0.2.1",
-  "supersedes": "0.2.0",
+  "bundle_version": "0.2.2",
+  "supersedes": "0.2.1",
   "research_date": "2026-09-30",
-  "revision_scope": "a0_a1_method_delta_and_mechanical_checks_live_pilot_not_run",
+  "revision_scope": "a0_a1_intake_snapshot_mobile_repair_live_gate_open",
   "type": "blueprint_and_starter_not_application",
   "entrypoints": {
     "traveler": "ENOT_CHAT_START.md",
@@ -24,13 +24,13 @@
     },
     {
       "path": "BLUEPRINT.md",
-      "bytes": 58714,
-      "sha256": "515782fe01ccff4aa78e5fd33127c97ff2932877817f29c817b9dad7b2e9df25"
+      "bytes": 59539,
+      "sha256": "52a978c4d0a11637afe15c7a16a97963b63787e396671aee9f906b068df28ee4"
     },
     {
       "path": "ENOT_CHAT_START.md",
-      "bytes": 33193,
-      "sha256": "b7b5911414030f030a444727a25e6fa7b4e086ea4d9faa2070fa7ee4a6a6870c"
+      "bytes": 36021,
+      "sha256": "0bd63aa0fe17e64c72ff466e547002a649aab82476fe63dd97e35c513b5f0b76"
     },
     {
       "path": "README.md",
@@ -39,8 +39,8 @@
     },
     {
       "path": "STATE.md",
-      "bytes": 6104,
-      "sha256": "5cf377f8e997bd84d67612b15ebf847e5fc678cb72a7436c6b0abb26e84c802b"
+      "bytes": 6020,
+      "sha256": "02bab6950a42501445aacc392ed592c4368e44ee22fddd95ddca92add43c902b"
     },
     {
       "path": "VALIDATION.md",
@@ -49,8 +49,8 @@
     },
     {
       "path": "config/policy.yaml",
-      "bytes": 6270,
-      "sha256": "22eb389036862c6ce7191d23cadb2e2b687b9ca3c89ac433548693564867d8e6"
+      "bytes": 6454,
+      "sha256": "cf90f4b4a21f9fc0529b097c69dd17ccb26442cc08ff87dabe947b6be9248c13"
     },
     {
       "path": "config/sources.yaml",
@@ -59,13 +59,13 @@
     },
     {
       "path": "design-preview.html",
-      "bytes": 32527,
-      "sha256": "b385a383a9ba179aa7af71b8a4ae48c0ceb9739c33b203d2cc9420ae18ea57f8"
+      "bytes": 32523,
+      "sha256": "978348fa58c25573303400e85815e36496ee65bb75676c0487abdd15be4465f3"
     },
     {
       "path": "docs/CONTRACTS.md",
-      "bytes": 30354,
-      "sha256": "8268833699f5f8d9f68bd309328da379df5efd7f879765a4f1ba2e56092085e0"
+      "bytes": 31244,
+      "sha256": "de9d1038ed24dcefc675f724cfd2d49123069acff172059f1cb695d40a3e789a"
     },
     {
       "path": "docs/CRITIC_REVIEW.md",
@@ -74,8 +74,8 @@
     },
     {
       "path": "docs/DELIVERY_PLAN.md",
-      "bytes": 16134,
-      "sha256": "a3b6c42a7cc44e0f333d11c042b129fed9685bf64626f99c00ce662742fd7188"
+      "bytes": 16258,
+      "sha256": "311b3d9975f968e6f255afca80a71b6a2155bd8d329cef5a69b29bce989dffaa"
     },
     {
       "path": "docs/RESEARCH_AND_REUSE.md",
@@ -89,18 +89,18 @@
     },
     {
       "path": "docs/UX_BRANDBOOK.md",
-      "bytes": 13234,
-      "sha256": "7159e78e8bc998b8183674e76cf5fa3c297047a1a57ad93618e8b8a771ad738c"
+      "bytes": 13652,
+      "sha256": "27a0828dc734d46520a3816480d1bc2073b74ef0ca861f9c455faf933b6d2b71"
     },
     {
       "path": "docs/WORKFLOW.md",
-      "bytes": 19195,
-      "sha256": "fe702365750e489cce33b91f6a9b786bf7e1942408a51b6db5487b3d642e6828"
+      "bytes": 19503,
+      "sha256": "f0bd569500f1746303c4caa96b9829cb37bbff88f773b74ffd83b3521bc43e65"
     },
     {
       "path": "docs/atoms/A0_A1/ACCEPTANCE.md",
-      "bytes": 8875,
-      "sha256": "9b8febff93a049376155b013ed89512a90f782d77f220b8f9a32e3a50cfd69cc"
+      "bytes": 12009,
+      "sha256": "56e55a93c581a6a332df0db113ebeea4caa904449b1b2681ddfb4e5450334f5b"
     },
     {
       "path": "docs/atoms/A0_A1/EXECUTOR_COMMAND.md",
@@ -109,8 +109,8 @@
     },
     {
       "path": "docs/atoms/A0_A1/PILOT_PACKET.md",
-      "bytes": 5528,
-      "sha256": "17e043be07159a51a8f8bce60114b9daa605001a352e74360ed248863be683c7"
+      "bytes": 6211,
+      "sha256": "e56b80822fc0e324312f5ad4eff51668c61c842fb94c4c962c469f0cad49e3a6"
     },
     {
       "path": "docs/atoms/A0_A1/PRD_SSD.md",
@@ -124,8 +124,8 @@
     },
     {
       "path": "docs/atoms/A0_A1/evidence/synthetic-render/Продолжение.md",
-      "bytes": 555,
-      "sha256": "dc28c98925c53c44c0d370bf5dd5f36b23fcf63dafb6ae63314e90d70e2f6fd1"
+      "bytes": 1272,
+      "sha256": "afab1d07134ff6416c984d922072d8798dae1a0b35b8abcfe442db3e72ae467c"
     },
     {
       "path": "docs/atoms/A0_A1/evidence/synthetic-render/Путеводитель.html",
@@ -135,7 +135,7 @@
     {
       "path": "enotcheck/__init__.py",
       "bytes": 99,
-      "sha256": "b4e55b476bb555a2170bbb53c719f54ec795b4ab3adaa0d52f9509895fa9dd3c"
+      "sha256": "b70feab550107b013a1b1c3966dc0793a4eeff6d9efde127d5f364ca7479e6c8"
     },
     {
       "path": "enotcheck/budget.py",
@@ -148,9 +148,14 @@
       "sha256": "81b179a244cb21eab4362a9f5f4a9c4492db084c9287a37fad9aa0aa41ceddd0"
     },
     {
+      "path": "enotcheck/intake.py",
+      "bytes": 1176,
+      "sha256": "934d4c32e5189961415926286159fb70641e3384bba36586b091bea97513a04a"
+    },
+    {
       "path": "enotcheck/render.py",
-      "bytes": 7869,
-      "sha256": "01b84431f992c284988ab7851696b615594d7091ddb3950ddf739ca94fa986e1"
+      "bytes": 10963,
+      "sha256": "aea530d99c26a567504073cfc85ea6fac4086dd22d2a3c88776cffc525f08c63"
     },
     {
       "path": "enotcheck/score.py",
@@ -169,8 +174,8 @@
     },
     {
       "path": "enotcheck/snapshot.py",
-      "bytes": 1557,
-      "sha256": "d81aa38176c2a2fa2bee5b564109800d15ddc4b67322e0e024a9c9d15fdd7ad0"
+      "bytes": 2464,
+      "sha256": "75858bcfdd637032e1eeaead1769ac772bcf5032e40a92cec9bc15a0e3fd7506"
     },
     {
       "path": "evals/scenarios.yaml",
@@ -189,8 +194,8 @@
     },
     {
       "path": "tests/test_a0_a1_seams.py",
-      "bytes": 8457,
-      "sha256": "1b3f696c01feac6517d2d0a2e11a6589853a53b8be960bb818c06fcd1a54908c"
+      "bytes": 14005,
+      "sha256": "aba85ef722d275a998b226a9be06c84c7db5a2c82952e94ac4bb4fa125888511"
     }
   ]
 }

@@ -192,11 +192,14 @@ presentation:
   fake_buttons_or_progress: false
   branding: same_voice_and_structure_native_chat_typography_not_controllable
 protocol_delta:
-  version: 0.2.1
+  version: 0.2.2
   date: '2026-09-30'
-  base: 0.2.0
+  base: 0.2.1
   changes:
+  - one-shot intake asks only material gaps and accepts a skip
+  - user_skipped stays empty and is not asked again after snapshot
+  - continuation carries the compact brief, weights and unresolved fields
+  - phone layout keeps alternative cards in one column
   - withdrawn card does not return its shortlist slot
   - stale or ambiguous id asks only which current option to select
   - date or party change keeps the chosen concept with requires_revalidation
-  - blueprint reading-layer sentence aligned to the normative three layers
