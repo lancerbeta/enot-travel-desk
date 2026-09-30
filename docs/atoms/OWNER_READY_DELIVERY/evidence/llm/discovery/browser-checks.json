@@ -1,0 +1,64 @@
+{
+  "viewports": [
+    {
+      "width": 1280,
+      "overflow": [],
+      "document_width": 1280,
+      "photo_count": 4,
+      "details_open": 4,
+      "keyboard_focus": {
+        "tag": "A",
+        "outline": "solid"
+      }
+    },
+    {
+      "width": 390,
+      "overflow": [],
+      "document_width": 390,
+      "photo_count": 4,
+      "details_open": 4,
+      "keyboard_focus": {
+        "tag": "A",
+        "outline": "solid"
+      }
+    },
+    {
+      "width": 320,
+      "overflow": [],
+      "document_width": 320,
+      "photo_count": 4,
+      "details_open": 4,
+      "keyboard_focus": {
+        "tag": "A",
+        "outline": "solid"
+      }
+    }
+  ],
+  "network_requests": [],
+  "javascript_enabled": false,
+  "load_method": "exact HTML bytes via set_content; file navigation is blocked by the managed Chromium policy",
+  "print_details": [
+    {
+      "height": 1092.3125,
+      "display": "block"
+    },
+    {
+      "height": 605.625,
+      "display": "block"
+    },
+    {
+      "height": 1103.625,
+      "display": "block"
+    },
+    {
+      "height": 941.375,
+      "display": "block"
+    }
+  ],
+  "print_pdf_bytes": 517109,
+  "status": "PASS",
+  "offline": true,
+  "no_js": true,
+  "photos": "four_supplied_rasters_loaded",
+  "print": "checked"
+}

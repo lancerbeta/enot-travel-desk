@@ -1,0 +1,5 @@
+Serialized YAML safe_load equals accepted state; evidence, brief, budget, weights, scoring and critics preserved. ZIP exact members and bytes verified; CRC PASS. Stage publish/status ready/next_action null. Browser/print audit not performed.
+Путеводитель.html: 560625 bytes; sha256 3988a119b27ed6e67b648ed64398768c678fe9c63945a4a085b729d6759cfce1
+Поездка.md: 24666 bytes; sha256 73e34994aa6c5f8866f22f8b7ee655ee4964f5b6b564b4c65505fbac7c0f237f
+Продолжение.md: 34308 bytes; sha256 bac9329101e8b8d6f9fa2bf9c690d664026365b01bd28ab95378b58df6317c0b
+ENOT_2026-09-30_owner-ready-synthetic_01_r04.zip: 431380 bytes; sha256 59f7d813b145b8a0c78dc87dba11ed842d60c3cfc54f754b3c0e18cb7f46d80b

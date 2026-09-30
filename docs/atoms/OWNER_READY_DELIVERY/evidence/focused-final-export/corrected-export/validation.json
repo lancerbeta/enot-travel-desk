@@ -1,0 +1,162 @@
+{
+  "actor": "/root/corrected_final_export_actor",
+  "attempts": 1,
+  "production_validator_head": "4a3e739ebe92716b5aa9bc3b20ad4c69f07aa1ac",
+  "input_sha256": {
+    "inputs/ENOT_CHAT_START.md": "ccbb958ee41a595c307e804c66dc6ae4c9db1c166956c96a457311b6f30e7761",
+    "inputs/assets/CREDITS.md": "02a9a521279f4a3b286906c38eda98f887bfe6e069d8c8da6ed6c36e26e331e2",
+    "inputs/assets/DSCN0010.jpg": "d1c78f4ffeff076bc7be854170eb7278e5437af8a7e8c5002f444a8c8e20f24a",
+    "inputs/assets/DSCN0012.jpg": "6c288a17994c2260cd48b5e964abee5bb76d41f875859116d51a50330849b380",
+    "inputs/assets/DSCN0025.jpg": "1a2015822819bc91317dd90877a507071153de13ebd3e41819732ae7654f36d5",
+    "inputs/assets/DSCN0042.jpg": "90ea22c116d0a6cdbbdfb048347218e1885e4fd83d21d7d895313d9639dd8679",
+    "inputs/selected-trip-records.json": "602240dc2df3fa8bdf4bd300a6042196a2120785a7b5da17622bfc2db36c5df1",
+    "inputs/trip-facts.json": "a756c8a1ac6629c530747865bd3d493c2f9b9f531d99e35f3337bf1fbd703d42"
+  },
+  "checks": {
+    "file.Путеводитель.html": {
+      "ok": true
+    },
+    "file.Поездка.md": {
+      "ok": true
+    },
+    "file.Продолжение.md": {
+      "ok": true
+    },
+    "one_archive": {
+      "ok": true
+    },
+    "production_validator": {
+      "ok": true,
+      "detail": {
+        "compatible": true,
+        "readable": true,
+        "full_integrity": true,
+        "legacy": false,
+        "gaps": [],
+        "slot_count": 3,
+        "veto": [
+          "no-car",
+          "no-self-transfer"
+        ],
+        "selected_id": "c-02",
+        "do_not_reask": [
+          "baggage"
+        ]
+      }
+    },
+    "completed_state": {
+      "ok": true
+    },
+    "delivery_receipt": {
+      "ok": true
+    },
+    "no_pending_revalidation": {
+      "ok": true
+    },
+    "retained.run_id": {
+      "ok": true
+    },
+    "retained.method_version": {
+      "ok": true
+    },
+    "retained.brief": {
+      "ok": true
+    },
+    "retained.preset": {
+      "ok": true
+    },
+    "retained.weights": {
+      "ok": true
+    },
+    "retained.selection_cycle": {
+      "ok": true
+    },
+    "retained.presented_candidate_ids": {
+      "ok": true
+    },
+    "retained.withdrawn_candidate_ids": {
+      "ok": true
+    },
+    "retained.selected_id": {
+      "ok": true
+    },
+    "retained.selection_user_basis": {
+      "ok": true
+    },
+    "retained.candidates": {
+      "ok": true
+    },
+    "retained.evidence": {
+      "ok": true
+    },
+    "retained.budget": {
+      "ok": true
+    },
+    "retained.scoring": {
+      "ok": true
+    },
+    "retained.critic_results": {
+      "ok": true
+    },
+    "artifact_names": {
+      "ok": true
+    },
+    "zip_exact_three_views": {
+      "ok": true
+    },
+    "zip_crc": {
+      "ok": true
+    },
+    "zip_bytes.Путеводитель.html": {
+      "ok": true
+    },
+    "zip_bytes.Поездка.md": {
+      "ok": true
+    },
+    "zip_bytes.Продолжение.md": {
+      "ok": true
+    },
+    "practical_guide_retained": {
+      "ok": true
+    },
+    "same_identity.Путеводитель.html": {
+      "ok": false
+    },
+    "synthetic_label.Путеводитель.html": {
+      "ok": true
+    },
+    "same_identity.Поездка.md": {
+      "ok": true
+    },
+    "synthetic_label.Поездка.md": {
+      "ok": true
+    },
+    "production_guide_consumption": {
+      "ok": true
+    }
+  },
+  "failures": [
+    "same_identity.Путеводитель.html"
+  ],
+  "run_id": "2026-09-30_owner-ready-synthetic_01",
+  "revision": "r04",
+  "files": {
+    "Путеводитель.html": {
+      "bytes": 560625,
+      "sha256": "3988a119b27ed6e67b648ed64398768c678fe9c63945a4a085b729d6759cfce1"
+    },
+    "Поездка.md": {
+      "bytes": 24666,
+      "sha256": "73e34994aa6c5f8866f22f8b7ee655ee4964f5b6b564b4c65505fbac7c0f237f"
+    },
+    "Продолжение.md": {
+      "bytes": 34308,
+      "sha256": "bac9329101e8b8d6f9fa2bf9c690d664026365b01bd28ab95378b58df6317c0b"
+    },
+    "ENOT_2026-09-30_owner-ready-synthetic_01_r04.zip": {
+      "bytes": 431380,
+      "sha256": "59f7d813b145b8a0c78dc87dba11ed842d60c3cfc54f754b3c0e18cb7f46d80b"
+    }
+  },
+  "outcome": "FAILED"
+}

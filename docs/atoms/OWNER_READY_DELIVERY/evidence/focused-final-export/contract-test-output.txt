@@ -1,0 +1,7 @@
+$ python -m unittest tests.test_owner_ready_delivery.EditorialBundle.test_delivered_and_portable_guide_gate_example_matches_production
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.284s
+
+OK
+exit_code=0

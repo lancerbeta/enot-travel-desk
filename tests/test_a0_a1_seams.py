@@ -309,13 +309,21 @@ class IntakeSnapshotRoundTrip(unittest.TestCase):
 
 
 class MobilePreviewLayout(unittest.TestCase):
-    def test_phone_alternative_cards_are_one_column(self):
-        text = Path(__file__).resolve().parents[1].joinpath("design-preview.html").read_text(encoding="utf-8")
+    def test_preview_is_generated_by_the_actual_mobile_template(self):
+        import json
+        import tempfile
+        from enotcheck.render import content_from_snapshot, write_bundle
+        root = Path(__file__).resolve().parents[1]
+        fixture = root / "docs/atoms/OWNER_READY_DELIVERY/evidence"
+        state = json.loads((fixture / "accepted-state.json").read_text())
+        with tempfile.TemporaryDirectory() as target:
+            bundle = write_bundle(target, content_from_snapshot(state), asset_directory=fixture / "assets")
+        text = root.joinpath("design-preview.html").read_text(encoding="utf-8")
+        self.assertEqual(text, bundle["html"])
         phone = text.split("@media(max-width:650px)", 1)[1].split("@media", 1)[0]
-        self.assertIn(".alternative-grid{grid-template-columns:1fr;", phone)
-        self.assertNotIn("alternative-grid{grid-template-columns:1fr 1fr", phone)
-        desktop = text.split("@media(max-width:1000px)", 1)[0]
-        self.assertIn(".alternative-grid{display:grid;grid-template-columns:repeat(4,1fr)", desktop)
+        self.assertIn(".card-grid{grid-template-columns:1fr}", phone)
+        self.assertIn(".pair{grid-template-columns:1fr;", phone)
+        self.assertNotIn("overflow:hidden", text)
 
 
 if __name__ == "__main__":

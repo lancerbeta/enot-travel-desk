@@ -74,7 +74,7 @@ def evaluate_budget(
             upper_sum += _convert(upper, currency, base_currency, fx, fx_dates)
 
     cap = _decimal(hard_cap)
-    deposit_amount = _decimal(deposit or 0)
+    deposit_amount = _decimal(deposit)
     point = lower_sum == upper_sum and not upper_open
     if cap is not None and lower_sum > cap:
         gate = "FAIL"
@@ -86,7 +86,7 @@ def evaluate_budget(
     travel_spend = lower_sum if point and gate != "FAIL" else None
     if gate == "FAIL" and point:
         travel_spend = lower_sum
-    cash_needed = None if travel_spend is None else travel_spend + deposit_amount
+    cash_needed = None if travel_spend is None or deposit_amount is None else travel_spend + deposit_amount
 
     baseline = _decimal(baseline_total)
     savings = None

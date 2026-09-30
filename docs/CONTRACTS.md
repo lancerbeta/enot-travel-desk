@@ -10,7 +10,7 @@
 | Evidence | evidence_id, claim, value, unit, currency, source_url, authority, source_family, retrieved_via, observed_at, applies_to, evidence_kind, freshness, expires_at, supports, conflicts, limitation | Что именно известно и откуда |
 | Candidate | candidate_id, concept, proposed_dates, transport, lodging, anchors, cost_lines, gate_results, score_inputs, evidence_ids, tradeoffs, differentiation | Не отель, а способ провести отдых |
 | Decision | brief_revision, policy_version, candidate_ids, selected_id, scoring, comparable_baseline, saving_claims, critic_result, coverage, limitations, next_action | Проверяемое основание выбора |
-| Guide | decision_revision, date_range, booking_tasks, first_day, daily_plans, practical_cards, contingencies, return_plan, map_links, coverage, editorial_badge, evidence_ids | Единственный семантический пакет для MD/HTML |
+| Guide | decision_revision, date_range, booking_tasks, first_day, daily_plans, practical_cards, media, contingencies, return_plan, map_links, coverage, editorial_badge, evidence_ids | Единственный семантический пакет для MD/HTML |
 | RunState | run_id, stage, status, active_revision, selection_cycle, presented_candidate_ids, last_valid_checkpoint, artifact_refs, usage, execution, next_action | Где продолжать; что уже было показано; фактические возможности |
 
 Статус не должен быть зашит в имя файла. Stable ID кандидата сохраняется при изменении веса или текста; новая концепция получает новый ID.
@@ -25,7 +25,9 @@ Party: взрослые, возраст детей, необходимое чи�
 
 Hard constraint имеет `id, requirement, origin=user|policy, applicability, must_pass`. Смягчение пользовательского veto возможно только через явное изменение brief. Дефолт не превращается в согласие на самостоятельный транзит.
 
-`unresolved` — список материальных пробелов, не вторая анкета. У элемента: `field`, `clarification_status=needs_input|offered_once|user_skipped`, `impact`. Пропуск не получает выдуманное значение и не становится допущением. В том же scope и в новом чате со снимком вопрос с `user_skipped` не повторяется. Повторно спрашивается только одно поле, если новый scope или точный claim без него невозможен. Опрос в облаке остаётся обычным текстом.
+`intake_round=not_offered|offered|closed` и `intake_outcome=not_offered|offered|sufficient|answered|skipped` — состояние одного optional раунда. Закрытие не означает заполненность. При частичном ответе и просьбе продолжать предложенные неизвестные сохраняются null/user_skipped. Новый material scope может потребовать один адресный вопрос, не второй общий intake.
+
+`unresolved` — список материальных пробелов (выполнимость и попадание в желаемый отдых), не вторая анкета. У элемента: `field`, `clarification_status=needs_input|offered_once|user_skipped`, `impact`. Пропуск не получает выдуманное значение и не становится допущением. В том же scope и в новом чате со снимком вопрос с `user_skipped` не повторяется. Повторно спрашивается только одно поле, если новый scope или точный claim без него невозможен. Опрос в облаке остаётся обычным текстом.
 
 ## 3. Evidence: тип, свежесть и полномочие — разные поля
 
@@ -92,13 +94,19 @@ Status: `draft | running | needs_input | ready | partial | failed | cancelled`.
 
 Stage — что делаем; status — состояние работы. `ready` означает готовность этапа, не купленную поездку. Freshness принадлежит evidence. Пользователю эти поля передаются обычным языком.
 
-**Граница выбора:** после Critic 1 `stage=selection`, `status=needs_input`, `selected_id=null`; PLAN требует явного выбора. «Продолжай» при частичном DISCOVER не является выбором лидера. Неясный, устаревший или неоднозначный ID не открывает PLAN: задаётся только уточнение выбора. Не создавать guide до выбора только потому, что остался бюджет хода. После смены даты или состава прежний `selected_id` сохраняется с `requires_revalidation`; другая концепция не подставляется. Пока перепроверка не закончена, затронутые условия не публикуются как свежие.
+**Завершение:** publish/ready/next_action=null после согласованной реальной поставки; booking_tasks принадлежат владельцу. Покупка, будущий recheck и согласование позднего заезда при бронировании не держат чат needs_input. Known hard FAIL исключён; critical UNKNOWN и его последствия видны в первом слое, условный план не называется полностью пригодным. Нет обязательного возврата с ответом продавца и фонового мониторинга.
+
+**Граница выбора:** после Critic 1 `stage=selection`, `status=needs_input`, `selected_id=null`; PLAN требует явного выбора. Рекомендация, сравнение двух и отрицательное упоминание ID не являются выбором. «Продолжай» при частичном DISCOVER не является выбором лидера. Неясный, устаревший или неоднозначный ID не открывает PLAN: задаётся только уточнение выбора. Не создавать guide до выбора только потому, что остался бюджет хода. После смены даты или состава прежний `selected_id` сохраняется с `requires_revalidation`; другая концепция не подставляется. Пока перепроверка не закончена, затронутые условия не публикуются как свежие.
 
 **Пять суммарно:** в каждом `selection_cycle` множество `presented_candidate_ids` имеет не более 5 уникальных элементов, включая conditional и предложения в разных сообщениях. Повторное описание того же ID не новый кандидат. Удаление или скрытие карточки не удаляет ID из этого множества и не освобождает слот. Новая концепция имеет новый ID, в том числе в следующем цикле. REFINE по комментарию может создать новый цикл и новый набор, а не незаметно увеличить старый до десяти. Сохранять, какие прежние варианты исключены и почему.
 
 Имена этапов PRD `INTAKE / DISCOVER / CRITIC_1 / WAIT_SELECTION / RECHECK_SELECTED / PLAN / CRITIC_2 / PUBLISH` не образуют вторую машину состояний. Им соответствуют уже заданные `brief`, `discovery`+`verification`, `decision_review`, `selection` при `needs_input`, начало `planning` с pending recheck, `planning`, `operational_review`, `publish`. `REFINE` — новая ревизия brief. `PAUSE` и `RESUME` — snapshot и возврат в тот же stage после повторной оценки возможностей среды.
 
 Finding критика: `severity=BLOCKER|MATERIAL|POLISH`, проблема, evidence, последствие, объект, минимальное исправление, результат recheck. Один material repair на пользовательский checkpoint. Самопроверка той же моделью не называется независимым аудитом.
+
+Final 0.2.4 сохраняет достигнутые `guide`, рассчитанный `budget` со строками и `scoring` всех показанных вариантов с основаниями/результатами. Практика содержит применимые facts/actions/callouts, а не только заголовки. Нет универсального числа карточек или фактов. `booking_tasks` содержит действия, сроки и последствия; когда действий нет по смыслу поездки, это объясняет `booking_tasks_not_applicable`, видимый в guide. Утрата достигнутого содержания блокирует full_integrity и production export; ранние этапы и честное чтение legacy не требуют ещё не созданного финала.
+
+Critic `REPAIR` не допускает publish/ready. Исторический `BLOCKER` требует `resolution=resolved` и `recheck={status: PASS, summary: содержательный результат, evidence_ids: существующие IDs}`; после исправления verdict обновляется. `PARTIAL` с явными условиями и без нерешённого BLOCKER допустим. Условное намерение или отозванный выбор не является основанием PLAN. Локальный парсер распознаёт ограниченные прямые формы выбора и блокирует известные неоднозначности; смысл всей реплики проверяет основной LLM protocol, сомнение требует адресного уточнения.
 
 В каждом checkpoint: revision, stage/status, принятые результаты, timestamp если известен, пробелы и точное next_action. Cloud: сохранить в доступном артефакте/снимке или в видимом тексте. Local: один writer/lock, атомарный rename, task_id, контроль входной ревизии и неизменяемые принятые выходы. Эти filesystem-механизмы не требуются в обычном чате.
 
@@ -139,6 +147,10 @@ ENOT_<run_id>_rNN.zip
 - сведения о доступных артефактах и фактическом способе проверки без секретов.
 
 Снимок после shortlist не обязан содержать ещё несуществующий guide. Практический ориентир объёма — 500–1200 слов, **не hard cap**: ограничения не выбрасываются ради длины. После большой правки или длительной паузы snapshot обновляется; ручное вмешательство пользователя в файлы не требуется.
+
+Snapshot 0.2.4: fenced YAML + читаемый Markdown, сериализованный файл проверяется safe YAML reader. Проверяются типы/enum, run/revision/method, полный compact brief/constraints/intake, preset/веса (шесть измерений, сумма 100), уникальные ID ≤5 с краткими концепциями и withdrawn, выбор/реальные слова пользователя, evidence refs, достигнутые critics, invalidation и next_action. Evidence на writer→reader пути — список существующей формы Evidence; legacy mapping допустим при invalidation. Snapshot создаётся из accepted state, не HTML/памяти. Новый final включает проверенный delivery receipt.
+
+Legacy 0.2.0–0.2.3 читается без ретроактивного запрета. `compatible` старой формы не означает `full_integrity`: потерянные IDs/weights/critics явно missing, известный выбор сохраняется без выдуманной истории. При доступном старом state восстановить адресно; иначе practical continuation и одна новая текущая ревизия после восстановления. Общий intake не повторять.
 
 ### 8.4. Локальное расширение, не обязательный формат облака
 
@@ -187,3 +199,13 @@ Host ограничивает права: только необходимые ч
 Общие обязанности: ограничения, альтернативы, evidence, all-in, критерии/веса, две критические проверки, этап выбора, семантический guide, snapshot. Условные механизмы: subagent, Git, JSON, shell, ZIP, Jinja. Отсутствие условного механизма не отменяет обязанность; отсутствие самой проверяемой информации не может быть скрыто имитацией.
 
 Локальные лимиты tool calls и concurrency применяются, только когда host их действительно считает/контролирует. В обычном чате — ограничение scope/глубины и реальные лимиты среды; неизвестные длительность, tokens и стоимость записываются null/unknown, не нулями. Не обещать фоновый worker, переносимость внутренних citation IDs или доступ к соседним тредам.
+
+## 11. Owner-ready Guide / 0.2.4
+
+Один accepted Guide в state питает HTML, Поездку и snapshot. Local seam `content_from_snapshot` берёт Guide, identity, выбор и бюджет из этого state. Writer проверяет совпадение и арифметику, сериализует, открывает ZIP и только после readback возвращает ready. Новый snapshot сохраняет практику и owner tasks для адресного Q&A.
+
+Карточка: stable id/topic, summary, facts (label/value/status/evidence_ids), actions, callouts (important/tip/fallback, text/status/evidence_ids). Media привязаны к section_ref. Статусы known/estimate/UNKNOWN/owner_action/future_recheck отделены от оформления. Материальные детали: что/где/когда → действие → деньги/включённость → ограничение/fallback → evidence/scope. Это семантика, не обязательные пустые поля. Critical UNKNOWN выводится в summary; hard FAIL запрещает пригодную выдачу.
+
+Media: id/section_ref/subject/scope/caption/alt/source_url/rights_basis/credit/asset. Только разрешённые raster assets из явно одобренного caller directory: verify/re-encode JPEG/PNG/WebP, убрать EXIF. SVG/HTML/JS, arbitrary path, symlink escape и unsafe URL запрещены. Обычно 4–5 различных фото; отсутствие прав/байтов — явный media fallback, не полный photo PASS. Депозит null сохраняет cash_needed null; расход и резерв отделены от ликвидности.
+
+HTML offline с embedded photos/CSS, no-JS чтение, native details и focus. Основная мобильная информация — label/value, без внутреннего горизонтального scroll и скрытых колонок. ZIP текущей ревизии содержит ровно три непустых выхода, без старых файлов, секретов и самого архива. Readback сверяет bytes и actual YAML snapshot.

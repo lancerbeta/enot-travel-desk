@@ -1,0 +1,36 @@
+{
+  "outcome": "SCHEMA_AND_ZIP_PASS_WITH_HTML_IDENTITY_DISCREPANCY",
+  "overall_release_check": "NOT_DECLARED_PASS",
+  "validator_head": "4a3e739ebe92716b5aa9bc3b20ad4c69f07aa1ac",
+  "protocol_sha256": "ccbb958ee41a595c307e804c66dc6ae4c9db1c166956c96a457311b6f30e7761",
+  "attempts_with_corrected_protocol": 1,
+  "actor": "/root/corrected_final_export_actor",
+  "requested_model": "gpt-6.1-sol",
+  "production_validation": {
+    "compatible": true,
+    "readable": true,
+    "full_integrity": true,
+    "legacy": false,
+    "gaps": [],
+    "slot_count": 3,
+    "veto": [
+      "no-car",
+      "no-self-transfer"
+    ],
+    "selected_id": "c-02",
+    "do_not_reask": [
+      "baggage"
+    ]
+  },
+  "guide_consumable_by_production_renderer": true,
+  "preserved_original_records": true,
+  "critic_resolution": "Original PARTIAL critics unchanged; no unresolved BLOCKER or REPAIR introduced.",
+  "completed_state": "publish/ready/next_action=null, checked files, no revalidation",
+  "actual_zip": "Exactly three nonempty matching views, CRC passed.",
+  "remaining_check": "Supervisor literal identity check failed for HTML: r04 is visible, run_id is absent. Markdown and snapshot include both. No contradictory ID or different revision observed.",
+  "bounded_cause": "Actor omitted the run tag from HTML, despite the protocol single-run/revision release instruction. This is distinct from the original hard_gate_results schema failure, which is closed by this native output.",
+  "emitted_output_modified": false,
+  "extra_replay": false,
+  "commit_or_push": false,
+  "browser_audit": "Not performed, as scoped."
+}

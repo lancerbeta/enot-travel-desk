@@ -1,0 +1,21 @@
+{
+  "compatible": true,
+  "readable": true,
+  "full_integrity": true,
+  "legacy": false,
+  "gaps": [],
+  "slot_count": 3,
+  "veto": [
+    "no-car",
+    "no-self-transfer"
+  ],
+  "selected_id": "c-02",
+  "do_not_reask": [
+    "baggage"
+  ],
+  "input_sha256": "42a7a50758c66e541a009ad6134e7b794e8883cc160c6472177150c9e0a8b23c",
+  "actor": "/root/final_snapshot_actor",
+  "selected_preserved": true,
+  "weights_preserved": true,
+  "observed_at_preserved": true
+}

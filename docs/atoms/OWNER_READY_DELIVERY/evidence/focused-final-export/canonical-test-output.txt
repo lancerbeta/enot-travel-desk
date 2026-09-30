@@ -1,0 +1,7 @@
+$ python -m unittest tests.test_a0_a1_mechanics tests.test_a0_a1_seams tests.test_source_intelligence tests.test_owner_ready_delivery
+.................................................
+----------------------------------------------------------------------
+Ran 49 tests in 3.242s
+
+OK
+exit_code=0

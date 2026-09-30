@@ -1,0 +1,34 @@
+{
+  "outcome": "FAILED_PRODUCTION_SCHEMA_GATE",
+  "actor": "/root/focused_final_export_actor",
+  "attempts": 1,
+  "product_head": "4a3e739ebe92716b5aa9bc3b20ad4c69f07aa1ac",
+  "production_validation": {
+    "compatible": false,
+    "readable": true,
+    "full_integrity": false,
+    "legacy": false,
+    "gaps": [
+      "guide.hard_gate_results"
+    ],
+    "slot_count": 3,
+    "veto": [
+      "no-car",
+      "no-self-transfer"
+    ],
+    "selected_id": "c-02",
+    "do_not_reask": [
+      "baggage"
+    ]
+  },
+  "bounded_cause": "Delivered protocol names guide.hard_gate_results but does not declare its mapping type; actor emitted a list of ID/result/scope/evidence records. Production checker requires a mapping.",
+  "critic_resolution": "Both original PARTIAL critics retained exactly; no REPAIR verdict or unresolved BLOCKER introduced.",
+  "retention": "Original brief, evidence, budget, scoring, critics, selection/history retained exactly.",
+  "bundle": "Three nonempty files and one ZIP; archive has exactly those three byte-identical files.",
+  "artifact_check_correction": "Initial supervisor exact-three-name predicate was overstrict: artifacts lists the three files plus the actually emitted ZIP, which is allowed. This is not a second production defect; initial validation.json preserved unchanged.",
+  "retry_or_repair": false,
+  "output_modified_by_supervisor": false,
+  "commit_or_push": false,
+  "inputs_unchanged": true,
+  "remaining_decision": "Parent decides next bounded repair; merge withheld."
+}

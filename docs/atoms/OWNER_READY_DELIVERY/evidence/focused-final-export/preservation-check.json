@@ -1,0 +1,61 @@
+{
+  "actor_outputs_unchanged": {
+    "failed-r05": {
+      "Путеводитель.html": {
+        "bytes": 609999,
+        "sha256": "e834c49ae76eb12b1f608daeeb2c1efeb038977128d62a29ff8fdecb08c0bdd0"
+      },
+      "Поездка.md": {
+        "bytes": 61785,
+        "sha256": "d5e66a40a2a4a9585dbbfce1301b7539ebd566ebfd2e3016f4da95a6a7ebfc38"
+      },
+      "Продолжение.md": {
+        "bytes": 61352,
+        "sha256": "4517b1041132965e45783132cbd8f4afc67c0900e9369727eeb06c076a188bbe"
+      },
+      "ENOT_2026-09-30_owner-ready-synthetic_01_r05.zip": {
+        "bytes": 452407,
+        "sha256": "cd74ed329810569b39a4dddec3e3c5b1b2ab1eaac1ed84b82f5ebf12bdc6f738"
+      }
+    },
+    "corrected-export": {
+      "Путеводитель.html": {
+        "bytes": 560625,
+        "sha256": "3988a119b27ed6e67b648ed64398768c678fe9c63945a4a085b729d6759cfce1"
+      },
+      "Поездка.md": {
+        "bytes": 24666,
+        "sha256": "73e34994aa6c5f8866f22f8b7ee655ee4964f5b6b564b4c65505fbac7c0f237f"
+      },
+      "Продолжение.md": {
+        "bytes": 34308,
+        "sha256": "bac9329101e8b8d6f9fa2bf9c690d664026365b01bd28ab95378b58df6317c0b"
+      },
+      "ENOT_2026-09-30_owner-ready-synthetic_01_r04.zip": {
+        "bytes": 431380,
+        "sha256": "59f7d813b145b8a0c78dc87dba11ed842d60c3cfc54f754b3c0e18cb7f46d80b"
+      }
+    }
+  },
+  "failed_receipts_unchanged": true,
+  "runtime_validator_unchanged": true,
+  "native_production_validation": {
+    "compatible": true,
+    "readable": true,
+    "full_integrity": true,
+    "legacy": false,
+    "gaps": [],
+    "slot_count": 3,
+    "veto": [
+      "no-car",
+      "no-self-transfer"
+    ],
+    "selected_id": "c-02",
+    "do_not_reask": [
+      "baggage"
+    ]
+  },
+  "identity_classification": "Pending independent reviewer; unsuccessful literal visible-run_id check preserved separately from production validation.",
+  "canonical_snapshot_sha256": "1d4b8cb189bd4d1164f315c27ec05494ce9c1af399e7b971589ce7f0fc735c4e",
+  "canonical_html_sha256": "24945dca97388a0f3033eaac6730a1f9ea5a32b4d5bb1b3f323dd692fe1b0495"
+}

@@ -1,0 +1,22 @@
+{
+  "compatible": false,
+  "readable": true,
+  "full_integrity": false,
+  "legacy": false,
+  "gaps": [
+    "stage",
+    "status",
+    "brief.unresolved.item",
+    "evidence.freshness",
+    "invalidation"
+  ],
+  "slot_count": 3,
+  "veto": [
+    "no-car",
+    "no-self-transfer"
+  ],
+  "selected_id": "c-02",
+  "do_not_reask": [
+    "baggage"
+  ]
+}
