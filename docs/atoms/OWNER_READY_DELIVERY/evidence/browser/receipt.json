@@ -1,0 +1,136 @@
+{
+  "mode": "real Chromium; exact output HTML bytes via set_content; offline; javascript disabled; file URL blocked by administrator",
+  "input_sha256": "24945dca97388a0f3033eaac6730a1f9ea5a32b4d5bb1b3f323dd692fe1b0495",
+  "viewports": {
+    "1280": {
+      "overflow": [],
+      "images": [
+        {
+          "src": "data:image/jpeg;base64,",
+          "complete": true,
+          "width": 640,
+          "height": 480,
+          "alt": "Зелёные дворы — контекст, не фото учебного отеля"
+        },
+        {
+          "src": "data:image/jpeg;base64,",
+          "complete": true,
+          "width": 640,
+          "height": 480,
+          "alt": "Улица и башня — контекст, не фото учебного отеля"
+        },
+        {
+          "src": "data:image/jpeg;base64,",
+          "complete": true,
+          "width": 640,
+          "height": 480,
+          "alt": "Городская улица — контекст, не фото учебного отеля"
+        },
+        {
+          "src": "data:image/jpeg;base64,",
+          "complete": true,
+          "width": 640,
+          "height": 480,
+          "alt": "Парковая аллея — контекст, не фото учебного отеля"
+        }
+      ],
+      "keyboard_focus": {
+        "tag": "SUMMARY",
+        "outline": "solid"
+      },
+      "all_depth_open": true
+    },
+    "390": {
+      "overflow": [],
+      "images": [
+        {
+          "src": "data:image/jpeg;base64,",
+          "complete": true,
+          "width": 640,
+          "height": 480,
+          "alt": "Зелёные дворы — контекст, не фото учебного отеля"
+        },
+        {
+          "src": "data:image/jpeg;base64,",
+          "complete": true,
+          "width": 640,
+          "height": 480,
+          "alt": "Улица и башня — контекст, не фото учебного отеля"
+        },
+        {
+          "src": "data:image/jpeg;base64,",
+          "complete": true,
+          "width": 640,
+          "height": 480,
+          "alt": "Городская улица — контекст, не фото учебного отеля"
+        },
+        {
+          "src": "data:image/jpeg;base64,",
+          "complete": true,
+          "width": 640,
+          "height": 480,
+          "alt": "Парковая аллея — контекст, не фото учебного отеля"
+        }
+      ],
+      "keyboard_focus": {
+        "tag": "SUMMARY",
+        "outline": "solid"
+      },
+      "all_depth_open": true
+    },
+    "320": {
+      "overflow": [],
+      "images": [
+        {
+          "src": "data:image/jpeg;base64,",
+          "complete": true,
+          "width": 640,
+          "height": 480,
+          "alt": "Зелёные дворы — контекст, не фото учебного отеля"
+        },
+        {
+          "src": "data:image/jpeg;base64,",
+          "complete": true,
+          "width": 640,
+          "height": 480,
+          "alt": "Улица и башня — контекст, не фото учебного отеля"
+        },
+        {
+          "src": "data:image/jpeg;base64,",
+          "complete": true,
+          "width": 640,
+          "height": 480,
+          "alt": "Городская улица — контекст, не фото учебного отеля"
+        },
+        {
+          "src": "data:image/jpeg;base64,",
+          "complete": true,
+          "width": 640,
+          "height": 480,
+          "alt": "Парковая аллея — контекст, не фото учебного отеля"
+        }
+      ],
+      "keyboard_focus": {
+        "tag": "SUMMARY",
+        "outline": "solid"
+      },
+      "all_depth_open": true
+    }
+  },
+  "network": [],
+  "browser_version": "151.0.7922.173",
+  "print": "all depth open; print screenshot/PDF generated; inspect sample separately",
+  "print_readback": {
+    "pages": 11,
+    "text_checks": {
+      "Полный расход UNKNOWN": true,
+      "Бюджет по строкам": true,
+      "Источники, дата и область": true,
+      "Critic 1": true,
+      "Короткие запросы": true,
+      "04:45": true
+    },
+    "sample": "print-first.png",
+    "inspection": "first-page image inspected separately; not a full pagination audit"
+  }
+}

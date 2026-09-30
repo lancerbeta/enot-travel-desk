@@ -1,0 +1,22 @@
+{
+  "compatible": true,
+  "readable": true,
+  "full_integrity": true,
+  "legacy": false,
+  "gaps": [],
+  "slot_count": 3,
+  "veto": [
+    "no-car",
+    "no-self-transfer"
+  ],
+  "selected_id": "c-02",
+  "do_not_reask": [
+    "baggage"
+  ],
+  "input_sha256": "7e32dceedfcb7fb82c0fd59e03d41a746d8e71ae4e8e28d41b84d5922eab4612",
+  "selection_preserved": true,
+  "weights_preserved": true,
+  "observed_at_preserved": true,
+  "requires_revalidation": true,
+  "actual_actor": "/root/resume_repair_actor"
+}

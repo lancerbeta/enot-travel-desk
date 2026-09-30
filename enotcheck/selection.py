@@ -24,7 +24,6 @@ def resolve_selection(utterance, presented_ids, *, brief_revision, gates=None):
     if _CONTINUE.match(text):
         return _blocked("continue_current_stage", brief_revision)
     folded = text.lower()
-    tokens = {token.lower() for token in _ID.findall(text)}
     mentioned = [cid for cid in presented_ids
                  if re.search(r"(?<![\w-])" + re.escape(cid) + r"(?![\w-])", text, re.IGNORECASE)]
     known = {cid.lower() for cid in presented_ids}
@@ -36,7 +35,13 @@ def resolve_selection(utterance, presented_ids, *, brief_revision, gates=None):
     # Bare current ID is an explicit answer to the shortlist CTA. A reference,
     # recommendation, question or negation is not a choice.
     explicit = bool(_CHOICE.match(text)) or text.lower() in known
-    negative = bool(re.search(r"\b(?:не|not|нет)\b|[?]", folded))
+    choice_clause = re.split(r"[.!;\n]", folded, maxsplit=1)[0]
+    first_id = _ID.search(choice_clause)
+    choice_prefix = choice_clause[:first_id.start()] if first_id else choice_clause
+    # A separate 'do not buy/contact' instruction does not negate the choice.
+    negative = bool(re.search(r"\b(?:не|not|нет)\b", choice_prefix) or
+                    '?' in choice_clause or
+                    re.search(r"\b(?:не\s+(?:беру|выбираю)|not\s+(?:choose|select)|нет\s*$)", choice_clause))
     if len(mentioned) == 1 and explicit and not negative:
         chosen = mentioned[0]
         if gates.get(chosen) == "FAIL":

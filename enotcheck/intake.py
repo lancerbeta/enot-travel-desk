@@ -52,6 +52,8 @@ def offer_intake(brief, useful_gaps, *, no_questions=False):
     if updated.get("intake_round") == "closed":
         return updated, []
     if updated.get("intake_round") == "offered":
+        if no_questions:
+            return close_intake(updated, {}, continue_as_is=True), []
         return updated, []
     skipped = set(resume_intake(updated)["do_not_reask"])
     questions = []

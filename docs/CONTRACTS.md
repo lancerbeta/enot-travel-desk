@@ -10,7 +10,7 @@
 | Evidence | evidence_id, claim, value, unit, currency, source_url, authority, source_family, retrieved_via, observed_at, applies_to, evidence_kind, freshness, expires_at, supports, conflicts, limitation | Что именно известно и откуда |
 | Candidate | candidate_id, concept, proposed_dates, transport, lodging, anchors, cost_lines, gate_results, score_inputs, evidence_ids, tradeoffs, differentiation | Не отель, а способ провести отдых |
 | Decision | brief_revision, policy_version, candidate_ids, selected_id, scoring, comparable_baseline, saving_claims, critic_result, coverage, limitations, next_action | Проверяемое основание выбора |
-| Guide | decision_revision, date_range, booking_tasks, first_day, daily_plans, practical_cards, contingencies, return_plan, map_links, coverage, editorial_badge, evidence_ids | Единственный семантический пакет для MD/HTML |
+| Guide | decision_revision, date_range, booking_tasks, first_day, daily_plans, practical_cards, media, contingencies, return_plan, map_links, coverage, editorial_badge, evidence_ids | Единственный семантический пакет для MD/HTML |
 | RunState | run_id, stage, status, active_revision, selection_cycle, presented_candidate_ids, last_valid_checkpoint, artifact_refs, usage, execution, next_action | Где продолжать; что уже было показано; фактические возможности |
 
 Статус не должен быть зашит в имя файла. Stable ID кандидата сохраняется при изменении веса или текста; новая концепция получает новый ID.
@@ -195,3 +195,13 @@ Host ограничивает права: только необходимые ч
 Общие обязанности: ограничения, альтернативы, evidence, all-in, критерии/веса, две критические проверки, этап выбора, семантический guide, snapshot. Условные механизмы: subagent, Git, JSON, shell, ZIP, Jinja. Отсутствие условного механизма не отменяет обязанность; отсутствие самой проверяемой информации не может быть скрыто имитацией.
 
 Локальные лимиты tool calls и concurrency применяются, только когда host их действительно считает/контролирует. В обычном чате — ограничение scope/глубины и реальные лимиты среды; неизвестные длительность, tokens и стоимость записываются null/unknown, не нулями. Не обещать фоновый worker, переносимость внутренних citation IDs или доступ к соседним тредам.
+
+## 11. Owner-ready Guide / 0.2.4
+
+Один accepted Guide в state питает HTML, Поездку и snapshot. Local seam `content_from_snapshot` берёт Guide, identity, выбор и бюджет из этого state. Writer проверяет совпадение и арифметику, сериализует, открывает ZIP и только после readback возвращает ready. Новый snapshot сохраняет практику и owner tasks для адресного Q&A.
+
+Карточка: stable id/topic, summary, facts (label/value/status/evidence_ids), actions, callouts (important/tip/fallback, text/status/evidence_ids). Media привязаны к section_ref. Статусы known/estimate/UNKNOWN/owner_action/future_recheck отделены от оформления. Материальные детали: что/где/когда → действие → деньги/включённость → ограничение/fallback → evidence/scope. Это семантика, не обязательные пустые поля. Critical UNKNOWN выводится в summary; hard FAIL запрещает пригодную выдачу.
+
+Media: id/section_ref/subject/scope/caption/alt/source_url/rights_basis/credit/asset. Только разрешённые raster assets из явно одобренного caller directory: verify/re-encode JPEG/PNG/WebP, убрать EXIF. SVG/HTML/JS, arbitrary path, symlink escape и unsafe URL запрещены. Обычно 4–5 различных фото; отсутствие прав/байтов — явный media fallback, не полный photo PASS. Депозит null сохраняет cash_needed null; расход и резерв отделены от ликвидности.
+
+HTML offline с embedded photos/CSS, no-JS чтение, native details и focus. Основная мобильная информация — label/value, без внутреннего горизонтального scroll и скрытых колонок. ZIP текущей ревизии содержит ровно три непустых выхода, без старых файлов, секретов и самого архива. Readback сверяет bytes и actual YAML snapshot.

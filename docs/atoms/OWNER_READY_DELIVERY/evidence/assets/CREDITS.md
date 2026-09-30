@@ -1,0 +1,5 @@
+# Photo credit / reuse basis
+
+Four real JPEGs: https://github.com/ianare/exif-samples/tree/master/jpg/gps . Repository declaration https://github.com/ianare/exif-samples/blob/master/README.rst : user-contributed images released under Attribution-ShareAlike4.0 International. https://github.com/ianare/exif-samples/blob/master/jpg/gps/README identifies Gaia GIS source collection. Individual photographer not named. Credit exif-samples contributors / Gaia GIS source collection. Derived photos retain CC BY-SA4.0 https://creativecommons.org/licenses/by-sa/4.0/ . Recompressed, EXIF removed, pixels otherwise unaltered. Licence applies to photos, not project code/spec.
+
+DSCN0010 city greenery/houses, hero context; DSCN0012 park path; DSCN0025 street; DSCN0042 street/tower. All captions distinguish city context from fictional hotel/category. No fact of season/availability/accessibility is inferred. GitHub source blob SHAs:4a2c1552b991add9a356a460415626ad700f401b, cbc95948cb75e12be56ffd06118dddf9b55967e2, 06171f8c17ac046de5ae95a075ac5d31412f788f, 3bec2f7b9725faae7be63fa291966704d16830ef.

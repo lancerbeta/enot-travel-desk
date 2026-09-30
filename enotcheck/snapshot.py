@@ -2,6 +2,7 @@
 
 import copy
 import re
+from datetime import date, datetime
 from decimal import Decimal, InvalidOperation
 
 import yaml
@@ -28,6 +29,25 @@ _AFFECTED = {
 }
 
 
+def _items(value):
+    return value if isinstance(value, list) else []
+
+
+def _observation_date(value):
+    if value is None:
+        return True
+    if not isinstance(value, str):
+        return False
+    try:
+        if len(value) == 10:
+            date.fromisoformat(value)
+        else:
+            datetime.fromisoformat(value.replace("Z", "+00:00"))
+        return True
+    except ValueError:
+        return False
+
+
 def _legacy_report(doc, supported):
     gaps = [key for key in _REQUIRED if key not in doc]
     brief = doc.get("brief") if isinstance(doc.get("brief"), dict) else {}
@@ -42,7 +62,7 @@ def _legacy_report(doc, supported):
                 gaps.append(f"brief.{key}")
         if "status" not in doc:
             gaps.append("status")
-        for item in brief.get("unresolved") or []:
+        for item in _items(brief.get("unresolved")):
             if not isinstance(item, dict) or not {"field", "clarification_status", "impact"} <= set(item):
                 gaps.append("brief.unresolved.item")
                 break
@@ -51,7 +71,7 @@ def _legacy_report(doc, supported):
                 gaps.append("silent_default")
     skipped = [
         item["field"]
-        for item in brief.get("unresolved") or []
+        for item in _items(brief.get("unresolved"))
         if isinstance(item, dict) and item.get("clarification_status") == "user_skipped"
         and isinstance(item.get("field"), str)
     ]
@@ -141,7 +161,7 @@ def _strict_gaps(doc):
               ("id", "requirement", "origin", "applicability", "must_pass")) and
               item.get("origin") in ("user", "policy") and type(item.get("must_pass")) is bool,
               "brief.hard_constraints.item")
-    check(isinstance(doc.get("preset"), str) and bool(doc.get("preset")), "preset")
+    check(doc.get("preset") in ("balanced", "relax", "explore", "smart_value", "group", "custom"), "preset")
     weights = doc.get("weights")
     valid_weights = isinstance(weights, dict) and set(weights) == set(DIMENSIONS)
     if valid_weights:
@@ -180,14 +200,16 @@ def _strict_gaps(doc):
             continue
         for key in ("title", "claim", "authority", "limitation"):
             check(isinstance(item[key], str), "evidence." + key)
+        for key in ("title", "claim", "authority"):
+            check(isinstance(item[key], str) and bool(item[key].strip()), "evidence." + key)
         check(item["source_url"] is None or isinstance(item["source_url"], str), "evidence.source_url")
         check(isinstance(item["evidence_id"], str) and bool(item["evidence_id"]), "evidence.id")
         eids.append(item["evidence_id"])
         check(item["evidence_kind"] in ("primary_fact", "observed_offer", "cached_price",
                                       "estimate", "anecdote", "user_report"), "evidence.kind")
         check(item["freshness"] in ("current_for_scope", "stale", "unknown"), "evidence.freshness")
-        check(item["observed_at"] is None or
-              (isinstance(item["observed_at"], str) and bool(item["observed_at"])), "evidence.observed_at")
+        check(_observation_date(item["observed_at"]), "evidence.observed_at")
+        check(item["freshness"] != "current_for_scope" or item["observed_at"] is not None, "evidence.current_observation")
         check(isinstance(item["applies_to"], (dict, str)) and bool(item["applies_to"]), "evidence.scope")
     check(all(isinstance(i, str) for i in eids) and len(set(str(i) for i in eids)) == len(eids),
           "evidence.ids")
@@ -217,13 +239,18 @@ def _strict_gaps(doc):
     critics = critics if isinstance(critics, list) else []
     which = []
     for critic in critics:
-        valid = isinstance(critic, dict) and critic.get("which") in (1, 2)
+        valid = isinstance(critic, dict) and type(critic.get("which")) is int and critic.get("which") in (1, 2)
         check(valid and critic.get("status") in ("PASS", "REPAIR", "PARTIAL") and
               isinstance(critic.get("summary"), str) and isinstance(critic.get("findings"), list),
               "critic_results.item")
         if valid:
             which.append(critic["which"])
             refs(critic.get("evidence_ids"), "critic.evidence_ids")
+            for finding in critic.get("findings") if isinstance(critic.get("findings"), list) else []:
+                if not isinstance(finding, dict):
+                    check(False, "critic.finding")
+                    continue
+                refs(finding.get("evidence_ids"), "critic.finding.evidence_ids")
     check(len(set(which)) == len(which), "critic_results.duplicate")
     if doc.get("stage") in ("selection", "planning", "operational_review", "publish"):
         check(1 in which, "critic_1_required")
@@ -265,7 +292,7 @@ def validate_snapshot(doc, supported=_SUPPORTED):
             "slot_count": len(doc["presented_candidate_ids"]) if isinstance(doc.get("presented_candidate_ids"), list) else 0,
             "veto": brief.get("veto") if isinstance(brief.get("veto"), list) else [],
             "selected_id": doc.get("selected_id"),
-            "do_not_reask": [item["field"] for item in (brief.get("unresolved") or [])
+            "do_not_reask": [item["field"] for item in _items(brief.get("unresolved"))
                             if isinstance(item, dict) and item.get("clarification_status") == "user_skipped"
                             and isinstance(item.get("field"), str)]}
 
@@ -275,20 +302,69 @@ def serialize_snapshot(doc):
     report = validate_snapshot(doc)
     if not report["compatible"]:
         raise ValueError("snapshot: " + ", ".join(report["gaps"]))
-    text = "# Продолжение\n\n```yaml\n" + yaml.safe_dump(doc, allow_unicode=True, sort_keys=False) + "```\n"
+    text = ("# Продолжение\n\n" + _CONTINUATION_RULES + "\n\n```yaml\n" +
+            yaml.safe_dump(doc, allow_unicode=True, sort_keys=False) + "```\n")
     reread = read_snapshot(text)
     if not validate_snapshot(reread)["compatible"] or reread != doc:
         raise ValueError("serialized snapshot changed accepted state")
     return text
 
 
+_CONTINUATION_RULES = """Прочитайте сохранённый план ниже. Адресный вопрос не запускает новый подбор или общую анкету. Пропущенное `user_skipped` не спрашивать снова. При изменении дат сохраняйте выбранный вариант и прежние пожелания; зависимые цены, наличие, рейсы, правила и бюджет требуют повторной проверки. Старые `observed_at` не менять без нового чтения источника.
+
+При записи следующего снимка сохраняйте машинные имена полей и типы. `stage`: brief, discovery, verification, decision_review, selection, planning, operational_review, publish. `status`: draft, running, needs_input, ready, partial, failed, cancelled. Перепроверка выбранной поездки: planning/running и конкретный `next_action`; delivery.checked=false, requires_revalidation=true. Завершённая согласованная доставка: publish/ready, next_action=null; это не бронь.
+
+`invalidation` — список строк, подробные пояснения можно дать рядом в Markdown. `freshness` у Evidence: current_for_scope, stale, unknown. Ссылка на свидетельство — существующий evidence_id; поле типа — evidence_kind. `brief.unresolved` — список объектов с field, clarification_status (needs_input, offered_once, user_skipped) и impact. Пропущенное поле присутствует в brief со значением null. Не заменять эти машинные значения русскими или новыми enum; пояснения пишите отдельно. Не сочинять IDs, веса, результаты критиков или историю. Все три файла и ZIP прежней ревизии становятся историческими после изменения дат; их готовность не переносится автоматически."""
+
+
 def read_snapshot(text):
     match = re.search(r"(?ms)^```yaml\s*\n(.*?)^```\s*$", text)
     if not match:
-        raise ValueError("snapshot requires a fenced YAML mapping")
+        return _read_legacy_export(text)
     doc = yaml.safe_load(match.group(1))
     if not isinstance(doc, dict):
         raise ValueError("snapshot requires a mapping")
+    return doc
+
+
+def _read_legacy_export(text):
+    """Read only the historical renderer's known Markdown shape, no invented IDs."""
+    if not text.startswith("# Продолжение") or "\nrun_id:" not in text:
+        raise ValueError("unrecognized snapshot format; retain text for assisted recovery")
+    doc, brief = {}, {}
+    section = "header"
+    for line in text.splitlines():
+        if line.startswith("## "):
+            section = line[3:]
+            continue
+        if section in ("Evidence", "Critics"):
+            doc.setdefault("legacy_" + section.lower() + "_text", "")
+            doc["legacy_" + section.lower() + "_text"] += line + "\n"
+            continue
+        if section == "Brief" and line.startswith("- ") and " | " in line:
+            parts = line[2:].split(" | ", 2)
+            if len(parts) == 3:
+                brief.setdefault("unresolved", []).append(dict(zip(
+                    ("field", "clarification_status", "impact"), parts)))
+            continue
+        match = re.match(r"^([a-z_]+):\s*(.*)$", line)
+        if not match:
+            continue
+        key, raw = match.groups()
+        target = brief if section == "Brief" else doc
+        if raw == "не передано":
+            continue
+        value = None if raw in ("None", "null", "не задано") else raw
+        if key in ("veto", "assumptions", "presented_candidate_ids", "withdrawn_candidate_ids", "invalidation", "artifacts"):
+            value = [] if raw in ("нет", "") else raw.split(", ")
+        elif key in ("selection_cycle",) and raw.isdigit():
+            value = int(raw)
+        elif key == "requires_revalidation" and raw in ("True", "False"):
+            value = raw == "True"
+        elif key == "unresolved":
+            value = []
+        target[key] = value
+    doc["brief"] = brief
     return doc
 
 
@@ -301,9 +377,9 @@ def apply_delta(state, kind):
     if material:
         for item in evidence_records(updated.get("evidence")):
             item["freshness"] = "stale"
-        if updated.get("method_version") == "0.2.4":
-            updated["stage"] = "planning"
-            updated["status"] = "running"
-            updated["next_action"] = "recheck " + ", ".join(_AFFECTED[kind])
-            updated["delivery"] = None
+    if updated.get("method_version") == "0.2.4":
+        updated["stage"] = "planning" if updated.get("selected_id") else "discovery"
+        updated["status"] = "running"
+        updated["next_action"] = ("recheck " if material else "update ") + ", ".join(_AFFECTED[kind])
+        updated["delivery"] = None
     return updated

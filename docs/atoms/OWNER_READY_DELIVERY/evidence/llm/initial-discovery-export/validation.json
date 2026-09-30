@@ -1,0 +1,36 @@
+{
+  "compatible": false,
+  "readable": true,
+  "full_integrity": false,
+  "legacy": false,
+  "gaps": [
+    "presented_candidate_ids",
+    "candidates",
+    "withdrawn_candidate_ids",
+    "selection_user_basis",
+    "brief.duration",
+    "brief.accommodation",
+    "brief.unresolved.item",
+    "brief.budget",
+    "brief.hard_constraints.item",
+    "preset",
+    "weights",
+    "evidence.item",
+    "selected_id",
+    "selection_user_basis.explicit",
+    "selection_required",
+    "critic_results",
+    "critic_1_required",
+    "requires_revalidation",
+    "critic_2_required",
+    "completion.revalidation",
+    "completion.delivery"
+  ],
+  "slot_count": 0,
+  "veto": [
+    "no-car",
+    "no-self-transfer"
+  ],
+  "selected_id": "c-02",
+  "do_not_reask": []
+}

@@ -55,6 +55,9 @@ class DialogAndHandoff(unittest.TestCase):
         offered, questions = offer_intake(brief, gaps)
         self.assertEqual([q["field"] for q in questions], ["beach_access", "baggage"])
         self.assertEqual(offered["intake_round"], "offered")
+        forced, questions = offer_intake(offered, gaps, no_questions=True)
+        self.assertEqual(forced["intake_round"], "closed")
+        self.assertFalse(questions)
         closed = close_intake(offered, {"beach_access": "walkable"}, continue_as_is=True)
         self.assertIsNone(closed["baggage"])
         self.assertEqual(closed["intake_round"], "closed")
@@ -75,7 +78,9 @@ class DialogAndHandoff(unittest.TestCase):
                           "выбираю не c-02"):
             with self.subTest(utterance=utterance):
                 self.assertFalse(resolve_selection(utterance, ids, brief_revision="r01")["plan_allowed"])
-        for utterance in ("беру c-02", "c-02", "проработай c-02"):
+        for utterance in ("беру c-02", "c-02", "проработай c-02",
+                          "Беру c-02. Собери учебный комплект из данных packet. Ничего не покупай и не пиши продавцам.",
+                          "Выбираю c-02, не бронируй", "Беру c-02. Сколько стоит депозит?"):
             self.assertTrue(resolve_selection(utterance, ids, brief_revision="r01")["plan_allowed"])
 
     def test_serialized_roundtrip_preserves_closed_intake_history_and_refs(self):
@@ -106,6 +111,9 @@ class DialogAndHandoff(unittest.TestCase):
             lambda s: s.update(stage="planning"),
             lambda s: s["candidates"][0].update(evidence_ids=["missing"]),
             lambda s: s["evidence"][0].update(freshness="verified"),
+            lambda s: s["evidence"][0].update(observed_at="yesterday"),
+            lambda s: s["critic_results"][0].update(findings=[{"problem": "missing source", "evidence_ids": ["missing"]}]),
+            lambda s: s.update(preset="mystery"),
             lambda s: s.update(next_action=None),
         ]
         for mutate in mutations:
@@ -115,6 +123,17 @@ class DialogAndHandoff(unittest.TestCase):
                 self.assertFalse(validate_snapshot(doc)["compatible"])
                 with self.assertRaises(ValueError):
                     serialize_snapshot(doc)
+
+    def test_malformed_field_types_return_gaps_instead_of_crashing(self):
+        for section in (None, "brief"):
+            original = state_fixture()
+            keys = original if section is None else original[section]
+            for key in keys:
+                for value in (None, True, 1, "broken", [], {}):
+                    doc = state_fixture()
+                    (doc if section is None else doc[section])[key] = value
+                    report = validate_snapshot(doc)
+                    self.assertIsInstance(report["gaps"], list)
 
     def test_final_delivery_and_targeted_delta_keep_choice(self):
         doc = state_fixture()
@@ -143,6 +162,147 @@ class DialogAndHandoff(unittest.TestCase):
         self.assertFalse(report["full_integrity"])
         self.assertEqual(report["selected_id"], "old-known-choice")
         self.assertNotIn("presented_candidate_ids", old)
+
+
+class EditorialBundle(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        import json
+        from pathlib import Path
+        cls.root = Path(__file__).resolve().parents[1] / 'docs/atoms/OWNER_READY_DELIVERY/evidence'
+        cls.state = json.loads((cls.root / 'accepted-state.json').read_text())
+
+    def content(self):
+        from enotcheck.render import content_from_snapshot
+        return content_from_snapshot(copy.deepcopy(self.state))
+
+    def test_unknown_deposit_and_included_lines_keep_cash_unknown(self):
+        from enotcheck.budget import evaluate_budget
+        b = self.state['budget']
+        result = evaluate_budget(b['lines'], deposit=None, hard_cap='90000', base_currency='RUB')
+        self.assertEqual(str(result['known_spend']), '56000')
+        self.assertIsNone(result['travel_spend'])
+        self.assertIsNone(result['deposit'])
+        self.assertIsNone(result['cash_needed'])
+        self.assertEqual(result['gate'], 'UNKNOWN')
+
+    def test_writer_archive_and_actual_snapshot_same_accepted_state(self):
+        import tempfile,zipfile
+        from pathlib import Path
+        from enotcheck.render import write_bundle
+        content = self.content()
+        with tempfile.TemporaryDirectory() as target:
+            bundle = write_bundle(target, content, asset_directory=self.root / 'assets')
+            self.assertTrue(bundle['zip_created'])
+            self.assertEqual(bundle['media_count'], 4)
+            self.assertEqual(bundle['media_lane'], 'complete')
+            with zipfile.ZipFile(bundle['archive_path']) as archive:
+                self.assertEqual(archive.namelist(), ['Путеводитель.html', 'Поездка.md', 'Продолжение.md'])
+                for name in archive.namelist():
+                    self.assertEqual(archive.read(name), (Path(target) / name).read_bytes())
+                restored = read_snapshot(archive.read('Продолжение.md').decode())
+            self.assertTrue(validate_snapshot(restored)['full_integrity'])
+            self.assertEqual(restored['brief'], self.state['brief'])
+            self.assertEqual(restored['weights'], self.state['weights'])
+            self.assertEqual(restored['evidence'], self.state['evidence'])
+            self.assertEqual(restored['scoring'], self.state['scoring'])
+            self.assertEqual(restored['guide'], self.state['guide'])
+            self.assertEqual((restored['stage'], restored['status'], restored['next_action']), ('publish', 'ready', None))
+            self.assertEqual(bundle['html'].count('<img '), 4)
+            self.assertIn('56 000', bundle['markdown'])
+            self.assertIn('неизвестно', bundle['html'])
+            self.assertLess(bundle['html'].index('Поздний доступ UNKNOWN'), bundle['html'].index('<details'))
+            self.assertIn('Площадь Примеров1', bundle['html'])
+            self.assertIn('ранний выезд', restored['critic_results'][1]['summary'])
+            self.assertLess(len(bundle['html'].encode()), 5_000_000)
+
+    def test_guide_conflicts_and_known_failure_stop_before_ready(self):
+        from enotcheck.render import render_bundle,write_bundle
+        import tempfile
+        for field,value in [('title','other title'),('date_range','other dates'),('selected_id','c-01'),('budget',{}),('critical_unknowns',[])]:
+            content=self.content();content[field]=value
+            with self.subTest(field=field),self.assertRaises(ValueError):
+                render_bundle(content,asset_directory=self.root/'assets')
+        content=self.content()
+        content['hard_gate_results']['no-car']='FAIL'
+        content['snapshot']['guide']['hard_gate_results']['no-car']='FAIL'
+        with tempfile.TemporaryDirectory() as target,self.assertRaises(ValueError):
+            write_bundle(target,content,asset_directory=self.root/'assets')
+        self.assertEqual(content['snapshot']['stage'],'operational_review')
+        content=self.content()
+        content['budget']['travel_spend']='52000'
+        content['snapshot']['budget']['travel_spend']='52000'
+        with self.assertRaises(ValueError):
+            render_bundle(content,asset_directory=self.root/'assets')
+        content=self.content()
+        content.pop('practical_cards')
+        content['snapshot']['guide'].pop('practical_cards')
+        with self.assertRaises(ValueError):
+            render_bundle(content,asset_directory=self.root/'assets')
+        content=self.content()
+        content['budget']['known_spend']='53000'
+        content['snapshot']['budget']['known_spend']='53000'
+        with self.assertRaises(ValueError):
+            render_bundle(content,asset_directory=self.root/'assets')
+
+    def test_external_text_links_and_media_cannot_execute_or_read_paths(self):
+        from enotcheck.render import render_bundle
+        import tempfile
+        from pathlib import Path
+        content=self.content()
+        hostile='<script>alert(1)</script>'
+        for guide in (content,content['snapshot']['guide']):
+            guide['practical_cards'][0]['summary']=hostile
+        content['snapshot']['evidence'][0]['source_url']='javascript:alert(1)'
+        rendered=render_bundle(content,asset_directory=self.root/'assets')
+        self.assertNotIn('<script>',rendered['html'])
+        self.assertIn('&lt;script&gt;',rendered['html'])
+        self.assertNotIn('href="javascript:',rendered['html'])
+        for filename in ('../secret.jpg','/tmp/photo.jpg'):
+            content=self.content()
+            for guide in (content,content['snapshot']['guide']):guide['media'][0]['asset']=filename
+            with self.assertRaises(ValueError):render_bundle(content,asset_directory=self.root/'assets')
+        with tempfile.TemporaryDirectory() as target:
+            target=Path(target)
+            (target/'unsafe.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" onload="alert(1)"></svg>')
+            (target/'link.jpg').symlink_to(self.root/'assets/DSCN0010.jpg')
+            for filename in ('unsafe.svg','link.jpg'):
+                content=self.content()
+                for guide in (content,content['snapshot']['guide']):guide['media'][0]['asset']=filename
+                with self.assertRaises(ValueError):render_bundle(content,asset_directory=target)
+
+    def test_snapshot_only_consumer_keeps_practical_answer_and_delta(self):
+        import tempfile
+        from enotcheck.render import write_bundle
+        with tempfile.TemporaryDirectory() as target:
+            result=write_bundle(target,self.content(),asset_directory=self.root/'assets')
+            restored=read_snapshot(result['continuation'])
+        hotel=next(c for c in restored['guide']['practical_cards'] if c['id']=='hotel')
+        self.assertIn('05:00',hotel['callouts'][0]['text'])
+        changed=apply_delta(restored,'dates')
+        self.assertEqual(changed['selected_id'],'c-02')
+        self.assertEqual(changed['evidence'][0]['observed_at'],'2026-09-30')
+        self.assertTrue(changed['requires_revalidation'])
+        self.assertFalse(resume_intake(changed['brief'])['repeat_general_intake'])
+        self.assertEqual(validate_snapshot(read_snapshot(serialize_snapshot(changed)))['selected_id'],'c-02')
+        for kind in ('weights','presentation'):
+            updated=apply_delta(restored,kind)
+            self.assertEqual(updated['selected_id'],'c-02')
+            self.assertEqual(updated['evidence'],restored['evidence'])
+            self.assertFalse(updated['requires_revalidation'])
+            self.assertTrue(validate_snapshot(updated)['compatible'])
+
+    def test_legacy_actual_writer_text_is_readable_without_full_integrity(self):
+        from enotcheck.render import render_bundle
+        doc=state_fixture();doc['method_version']='0.2.3'
+        content={'run_id':doc['run_id'],'revision':doc['revision'],'method_version':'0.2.3',
+                 'title':'Legacy','budget':{'travel_spend':'56000','deposit':None,'cash_needed':None},
+                 'snapshot':doc,'sources':[]}
+        restored=read_snapshot(render_bundle(content)['continuation'])
+        report=validate_snapshot(restored)
+        self.assertTrue(report['readable'])
+        self.assertFalse(report['full_integrity'])
+        self.assertEqual(restored['presented_candidate_ids'],['c-01','c-02','c-03'])
 
 
 if __name__ == "__main__":

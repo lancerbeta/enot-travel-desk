@@ -5,7 +5,7 @@
 | Податом | Outcome | Gate / состояние |
 |---|---|---|
 | D1 DIALOG_AND_HANDOFF | Один optional intake, явный выбор, snapshot 0.2.4, delivery completion | LOCAL GREEN: 38 tests, serialized round-trip; not independent PASS |
-| D2 PRACTICAL_EDITORIAL_BUNDLE | Практический трёхслойный guide, 4–5 фото, offline mobile и реальный комплект | ACTIVE after D1 gate/commit: bundle/browser/replay |
+| D2 PRACTICAL_EDITORIAL_BUNDLE | Практический трёхслойный guide, 4–5 фото, offline mobile и реальный комплект | LOCAL PROOF: 45 tests, actual bundle/browser/native replay; awaiting independent validation |
 
 D1 → D2 разрешён этой постановкой без нового OK. Провал gate, material authority conflict или нарушение прав останавливают продвижение. Один независимый verdict всего move после handback; локальный green не independent PASS. [Acceptance](atoms/OWNER_READY_DELIVERY/ACCEPTANCE.md).
 

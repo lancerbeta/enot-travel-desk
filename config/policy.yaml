@@ -193,6 +193,12 @@ presentation:
   fake_buttons_or_progress: false
   branding: same_voice_and_structure_native_chat_typography_not_controllable
   completion: bundle_prepared_not_booked_no_required_return
+  practical_cards: facts_actions_callouts_with_evidence_refs
+  media_target: 4_to_5_authorized_relevant_raster_photos_per_selected_guide
+  media_unavailable: honest_fallback_not_complete_photo_lane
+  offline: embedded_css_and_rasters_no_external_scripts_fonts_or_trackers
+  mobile: label_value_cards_no_internal_horizontal_overflow
+  delivery_readback: three_current_views_and_actual_zip_same_accepted_revision
 protocol_delta:
   version: 0.2.4
   date: '2026-09-30'
@@ -204,3 +210,5 @@ protocol_delta:
   - 0.2.4 semantic snapshot validation and actual serialized round-trip
   - legacy readable with honest historical integrity gaps
   - publish/ready/null completes delivery; owner booking checklist separate
+  - practical Guide and shared template; approved raster media and offline mobile
+  - actual ZIP and serialized snapshot readback; portable canonical continuation values

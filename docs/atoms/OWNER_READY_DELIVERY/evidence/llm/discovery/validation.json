@@ -1,0 +1,17 @@
+{
+  "compatible": true,
+  "readable": true,
+  "full_integrity": true,
+  "legacy": false,
+  "gaps": [],
+  "slot_count": 3,
+  "veto": [
+    "no-car",
+    "no-self-transfer"
+  ],
+  "selected_id": "c-02",
+  "do_not_reask": [
+    "baggage",
+    "walking_constraints"
+  ]
+}
