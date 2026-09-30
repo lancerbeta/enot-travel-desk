@@ -29,8 +29,8 @@
     },
     {
       "path": "BLUEPRINT.md",
-      "bytes": 60823,
-      "sha256": "4a9fc4a838bea89d3253310bd4c3bd9cd8fe526108596e2ec0a1f3246d17a685"
+      "bytes": 59740,
+      "sha256": "030ebd1d41fdff5e4d6b484dc266d85fb1cc766d715fc2ec60bce470090f7aee"
     },
     {
       "path": "ENOT_CHAT_START.md",
@@ -79,8 +79,8 @@
     },
     {
       "path": "docs/DELIVERY_PLAN.md",
-      "bytes": 16528,
-      "sha256": "cfe3ac1bf93593b7e2f0b19beedb459580d886541e56e26a2a26f2f2efa83b85"
+      "bytes": 4393,
+      "sha256": "061b8854b1e7625b4b383db44e24eec6436ad0048f822a11e548622d14854b5b"
     },
     {
       "path": "docs/RESEARCH_AND_REUSE.md",
