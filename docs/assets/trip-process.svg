@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="392" viewBox="0 0 640 392" role="img" aria-labelledby="title desc">
+  <title id="title">От пожеланий к плану поездки</title>
+  <desc id="desc">Пожелания → до пяти вариантов за цикл → явный выбор одного варианта человеком → практический план поездки.</desc>
+  <g stroke="#183229" stroke-width="2">
+    <rect x="2" y="2" width="636" height="80" rx="20" fill="#EBCB63"/>
+    <rect x="2" y="104" width="636" height="80" rx="20" fill="#AFE2CB"/>
+    <rect x="2" y="206" width="636" height="80" rx="20" fill="#F6AB91"/>
+    <rect x="2" y="308" width="636" height="80" rx="20" fill="#183229"/>
+    <path d="M42 86v14m-5-5 5 5 5-5M42 188v14m-5-5 5 5 5-5M42 290v14m-5-5 5 5 5-5" fill="none" stroke="#536257" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g font-family="Segoe UI,Arial,sans-serif" fill="#183229">
+    <g font-size="32" font-weight="600">
+      <text x="20" y="54">01</text>
+      <text x="20" y="156">02</text>
+      <text x="20" y="258">03</text>
+      <text x="20" y="360" fill="#EBCB63">04</text>
+    </g>
+    <g font-size="42" font-weight="700">
+      <text x="94" y="57">Ваши пожелания</text>
+      <text x="94" y="159">До 5 вариантов</text>
+      <text x="94" y="261">Вы выбираете 1</text>
+      <text x="94" y="363" fill="#F7F3EA">План поездки</text>
+    </g>
+  </g>
+  <path d="m584 323 5 15 16-1-12 10 6 15-15-8-13 10 3-16-14-8 16-2z" fill="#EBCB63"/>
+</svg>

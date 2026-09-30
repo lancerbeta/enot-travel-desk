@@ -7,7 +7,7 @@
   "type": "blueprint_and_starter_not_application",
   "entrypoints": {
     "traveler": "ENOT_CHAT_START.md",
-    "developer": "README.md",
+    "developer": "AGENTS.md",
     "visual_reference": "design-preview.html",
     "atom_status": "docs/atoms/OWNER_READY_DELIVERY/ACCEPTANCE.md"
   },
@@ -24,8 +24,8 @@
     },
     {
       "path": "AGENTS.md",
-      "bytes": 12030,
-      "sha256": "e2b63aa4991c2126f4d87f02a768024082a3160651d8bd321a126634e76965d2"
+      "bytes": 13021,
+      "sha256": "ec50d71bbe6dd7c252d67cc4e4887ca42e3ca9820624b17426920fbfbcf0e386"
     },
     {
       "path": "BLUEPRINT.md",
@@ -39,13 +39,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 9540,
-      "sha256": "ca7ca38e791713aabfb6a9380b641f1bd32810b6d7a4d8c5b49c570fe6d00200"
+      "bytes": 6622,
+      "sha256": "c6409b265c98331d199de4ad8a848fb0a8225e8efaa9ce0cb6bff6bc9a3d7600"
     },
     {
       "path": "STATE.md",
       "bytes": 4200,
-      "sha256": "7036b983416cc0f0850da428719cb41d32b243bf051b9a16e6f2b21d2467a714"
+      "sha256": "5993a8ed8d179653a1f04cbb12467a020c1c3a14137e2e7481022eb01d573f13"
     },
     {
       "path": "VALIDATION.md",
@@ -79,8 +79,8 @@
     },
     {
       "path": "docs/DELIVERY_PLAN.md",
-      "bytes": 3000,
-      "sha256": "73a9ba18ec117c716497ac8e42ea639f8b87f5e5986b5f8fa347d1ce24d8087d"
+      "bytes": 2891,
+      "sha256": "ed649e79cc9b5e76a86ce72aeed06b8ae5a642976e675bfe1c699651305a94d3"
     },
     {
       "path": "docs/RESEARCH_AND_REUSE.md",
@@ -101,6 +101,11 @@
       "path": "docs/WORKFLOW.md",
       "bytes": 22467,
       "sha256": "e61fd12882d706ecab7ec9a36dc6f17de11f2704939131b3e07d27e0e528a7c1"
+    },
+    {
+      "path": "docs/assets/trip-process.svg",
+      "bytes": 1608,
+      "sha256": "bad0fd69e604b02adc23e15ea639d76002c977fc0bf4547a668f7efa8a6c7903"
     },
     {
       "path": "docs/atoms/A0_A1/ACCEPTANCE.md",
