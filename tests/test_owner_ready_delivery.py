@@ -136,13 +136,15 @@ class DialogAndHandoff(unittest.TestCase):
                     self.assertIsInstance(report["gaps"], list)
 
     def test_final_delivery_and_targeted_delta_keep_choice(self):
-        doc = state_fixture()
+        import json
+        from pathlib import Path
+        # A final-state positive control needs the reached delivery content.
+        doc = json.loads((Path(__file__).resolve().parents[1] /
+                          'docs/atoms/OWNER_READY_DELIVERY/evidence/accepted-state.json').read_text())
         choice = resolve_selection("беру c-02", doc["presented_candidate_ids"], brief_revision="r01")
         doc.update(selected_id=choice["selected_id"], selection_user_basis=choice["user_basis"],
                    stage="publish", status="ready", next_action=None,
                    delivery={"mode": "files", "checked": True})
-        doc["critic_results"].append({"which": 2, "status": "PARTIAL", "summary": "Owner checklist",
-                                     "findings": [], "evidence_ids": ["e-01"]})
         self.assertTrue(validate_snapshot(read_snapshot(serialize_snapshot(doc)))["compatible"])
         changed = apply_delta(doc, "dates")
         self.assertEqual(changed["selected_id"], "c-02")
@@ -175,6 +177,137 @@ class EditorialBundle(unittest.TestCase):
     def content(self):
         from enotcheck.render import content_from_snapshot
         return content_from_snapshot(copy.deepcopy(self.state))
+
+    def test_final_content_loss_is_not_full_integrity_or_ready_delivery(self):
+        import tempfile
+        from pathlib import Path
+        from enotcheck.render import content_from_snapshot, write_bundle
+        final = read_snapshot((self.root / 'bundle/Продолжение.md').read_text())
+        mutations = [lambda s, key=key: s.pop(key) for key in ('guide', 'budget', 'scoring')]
+        mutations += [lambda s, key=key: s.update({key: {}}) for key in ('guide', 'budget', 'scoring')]
+        mutations += [
+            lambda s: s['scoring'].pop(s['selected_id']),
+            lambda s: s['scoring'][s['selected_id']].pop('result'),
+            lambda s: s['budget'].pop('known_spend'),
+            lambda s: s['budget'].update(known_spend='0'),
+            lambda s: s['guide'].update(booking_tasks=[]),
+        ]
+        def erase_practice(s):
+            for card in s['guide']['practical_cards']:
+                card.update(facts=[], actions=[], callouts=[])
+            s['guide']['booking_tasks'] = []
+        mutations.append(erase_practice)
+        def erase_cards(s):
+            for card in s['guide']['practical_cards']:
+                card.update(facts=[], actions=[], callouts=[])
+        mutations.append(erase_cards)
+        for mutate in mutations:
+            broken = copy.deepcopy(final)
+            mutate(broken)
+            with self.subTest(mutation=mutate):
+                self.assertFalse(validate_snapshot(broken)['full_integrity'])
+                with self.assertRaises(ValueError):
+                    serialize_snapshot(broken)
+                with tempfile.TemporaryDirectory() as target:
+                    with self.assertRaises(ValueError):
+                        write_bundle(target, content_from_snapshot(broken), asset_directory=self.root / 'assets')
+                    self.assertFalse(list(Path(target).iterdir()))
+                direct = self.content()
+                direct['snapshot'] = broken
+                before = copy.deepcopy(broken)
+                with tempfile.TemporaryDirectory() as target:
+                    with self.assertRaises(ValueError):
+                        write_bundle(target, direct, asset_directory=self.root / 'assets')
+                    self.assertFalse(list(Path(target).iterdir()))
+                self.assertEqual(direct['snapshot'], before)
+        # Earlier stages have not reached delivery content; no final quota applies.
+        self.assertTrue(validate_snapshot(state_fixture())['full_integrity'])
+        incomplete = state_fixture()
+        incomplete.update(stage='planning', status='running', selected_id='c-02',
+                          selection_user_basis='Беру c-02', next_action='Prepare the selected guide')
+        self.assertTrue(validate_snapshot(incomplete)['full_integrity'])
+        # A smaller useful guide and an explained inapplicable owner checklist
+        # are legitimate; no fixed card/fact/task quota is imposed.
+        small = copy.deepcopy(final)
+        small['guide']['practical_cards'] = small['guide']['practical_cards'][:1]
+        retained_sections = {'hero', small['guide']['practical_cards'][0]['id']}
+        small['guide']['media'] = [m for m in small['guide']['media'] if m['section_ref'] in retained_sections]
+        small['guide']['media_fallback'] = 'Reduced synthetic guide; only retained sections have photographs.'
+        small['guide'].update(booking_tasks=[], booking_tasks_not_applicable=
+                             'Synthetic reading-only comparison: no owner transaction is requested.')
+        with tempfile.TemporaryDirectory() as target:
+            bundle = write_bundle(target, content_from_snapshot(small), asset_directory=self.root / 'assets')
+            self.assertIn(small['guide']['booking_tasks_not_applicable'], bundle['markdown'])
+            self.assertTrue(validate_snapshot(read_snapshot(bundle['continuation']))['full_integrity'])
+
+    def test_unresolved_critic_blocker_cannot_be_completed_or_archived(self):
+        import tempfile
+        from pathlib import Path
+        from enotcheck.render import write_bundle
+        for index in (0, 1):
+            for verdict in ('REPAIR', 'PARTIAL', 'PASS'):
+                content = self.content()
+                critic = content['snapshot']['critic_results'][index]
+                critic.update(status=verdict, findings=[{
+                    'severity': 'BLOCKER', 'problem': 'Unresolved synthetic delivery defect',
+                    'evidence_ids': ['e-01'], 'repair': 'Not yet performed', 'recheck': 'UNKNOWN'}])
+                final = copy.deepcopy(content['snapshot'])
+                final.update(stage='publish', status='ready', next_action=None,
+                             delivery={'mode': 'files', 'checked': True})
+                with self.subTest(index=index, verdict=verdict):
+                    with self.assertRaises(ValueError):
+                        serialize_snapshot(final)
+                    before = copy.deepcopy(content['snapshot'])
+                    with tempfile.TemporaryDirectory() as target:
+                        with self.assertRaises(ValueError):
+                            write_bundle(target, content, asset_directory=self.root / 'assets')
+                        self.assertFalse(list(Path(target).iterdir()))
+                    self.assertEqual(content['snapshot'], before)
+        # Preserve a resolved historical finding and justified conditional PARTIAL.
+        content = self.content()
+        content['snapshot']['critic_results'][1]['findings'].append({
+            'severity': 'BLOCKER', 'problem': 'Synthetic repair completed', 'evidence_ids': ['e-01'],
+            'resolution': 'resolved',
+            'recheck': {'status': 'PASS', 'summary': 'Affected synthetic seam checked', 'evidence_ids': ['e-01']}})
+        with tempfile.TemporaryDirectory() as target:
+            result = write_bundle(target, content, asset_directory=self.root / 'assets')
+            self.assertTrue(result['zip_created'])
+            restored = read_snapshot(result['continuation'])
+        self.assertTrue(validate_snapshot(restored)['full_integrity'])
+        self.assertIsNone(restored['budget']['deposit'])
+        self.assertEqual(restored['critic_results'][1]['status'], 'PARTIAL')
+        content = self.content()
+        content['snapshot']['critic_results'][1].update(status='REPAIR', findings=[])
+        # Pending repair is a valid checkpoint, but not a completed bundle.
+        self.assertTrue(validate_snapshot(content['snapshot'])['full_integrity'])
+        with tempfile.TemporaryDirectory() as target, self.assertRaises(ValueError):
+            write_bundle(target, content, asset_directory=self.root / 'assets')
+
+    def test_conditional_or_withdrawn_choice_cannot_authorize_final_delivery(self):
+        import tempfile
+        from enotcheck.render import write_bundle
+        messages = (
+            'Планируй только если я выберу c-02',
+            'Выбираю c-02. Нет, передумал, пока не планируй.',
+            'Беру c-02, если решусь',
+            'Выбираю c-02. Отменяю выбор.',
+        )
+        for message in messages:
+            content = self.content()
+            content['user_basis'] = content['snapshot']['selection_user_basis'] = message
+            with self.subTest(message=message):
+                self.assertFalse(resolve_selection(message, ['c-01', 'c-02', 'c-03'], brief_revision='r04')['plan_allowed'])
+                final = copy.deepcopy(content['snapshot'])
+                final.update(stage='publish', status='ready', next_action=None, delivery={'mode': 'files', 'checked': True})
+                with self.assertRaises(ValueError):
+                    serialize_snapshot(final)
+                with tempfile.TemporaryDirectory() as target, self.assertRaises(ValueError):
+                    write_bundle(target, content, asset_directory=self.root / 'assets')
+        content = self.content()
+        content['user_basis'] = content['snapshot']['selection_user_basis'] = 'Выбираю c-02, не бронируй'
+        with tempfile.TemporaryDirectory() as target:
+            result = write_bundle(target, content, asset_directory=self.root / 'assets')
+            self.assertTrue(result['zip_created'])
 
     def test_unknown_deposit_and_included_lines_keep_cash_unknown(self):
         from enotcheck.budget import evaluate_budget

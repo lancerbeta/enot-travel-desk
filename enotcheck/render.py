@@ -310,6 +310,13 @@ _FILE_NAMES = ('Путеводитель.html', 'Поездка.md', 'Продо
 
 def content_from_snapshot(snapshot):
     """Use the accepted Guide in RunState, never reconstruct it from HTML."""
+    from enotcheck.snapshot import delivery_content_gaps
+    report = validate_snapshot(snapshot)
+    if not report['compatible']:
+        raise ValueError('snapshot: ' + ', '.join(report['gaps']))
+    gaps = delivery_content_gaps(snapshot)
+    if gaps:
+        raise ValueError('delivery content: ' + ', '.join(gaps))
     return {**copy.deepcopy(snapshot['guide']), 'snapshot': copy.deepcopy(snapshot),
             **{key: snapshot[key] for key in ('run_id', 'revision', 'method_version', 'selected_id')},
             'budget': copy.deepcopy(snapshot['budget']),
@@ -368,10 +375,14 @@ def _raster(media, asset_directory):
 
 
 def _validate_guide(content):
+    from enotcheck.snapshot import delivery_content_gaps
     snapshot = content['snapshot']
     report = validate_snapshot(snapshot)
     if not report['compatible']:
         raise ValueError('snapshot: ' + ', '.join(report['gaps']))
+    gaps = delivery_content_gaps(snapshot)
+    if gaps:
+        raise ValueError('delivery content: ' + ', '.join(gaps))
     if not isinstance(snapshot.get('guide'), dict):
         raise ValueError('accepted practical Guide missing')
     if not isinstance(content.get('practical_cards'), list) or not content['practical_cards']:
@@ -392,7 +403,7 @@ def _validate_guide(content):
     if content.get('hard_gate_results', {}) != snapshot.get('guide', {}).get('hard_gate_results', {}):
         raise ValueError('guide/snapshot mismatch: gates')
     for key in ('title', 'date_range', 'compromise', 'risks', 'critical_unknowns',
-                'media', 'media_fallback', 'seller_drafts', 'synthetic'):
+                'media', 'media_fallback', 'seller_drafts', 'synthetic', 'booking_tasks_not_applicable'):
         if content.get(key) != snapshot.get('guide', {}).get(key):
             raise ValueError('guide/snapshot mismatch: ' + key)
     if 'FAIL' in content.get('hard_gate_results', {}).values() or content['budget'].get('gate') == 'FAIL':
@@ -490,6 +501,10 @@ def _render_editorial(content, *, asset_directory=None):
         card_md.append(f'## {c["topic"]}\n\n{c["summary"]}\n\n' + '\n'.join(facts_md) + '\n\n' + '\n'.join('- ' + a for a in c.get('actions', [])) + '\n\n' + '\n\n'.join(callouts_md))
     tasks_html = ''.join(f'<li><strong>{_escape(t["action"])}</strong><br>{_escape(t["deadline"])} · {_escape(t["consequence"])}</li>' for t in content['booking_tasks'])
     tasks_md = '\n'.join(f'{i}. {t["action"]} — {t["deadline"]}; {t["consequence"]}' for i,t in enumerate(content['booking_tasks'],1))
+    if not content['booking_tasks']:
+        reason = content['booking_tasks_not_applicable']
+        tasks_html = '<li>' + _escape(reason) + '</li>'
+        tasks_md = reason
     risks = list(content.get('risks') or []) + [f'{c["condition"]}: {c["consequence"]}' for c in critical]
     risk_html = ''.join(f'<p class="risk"><strong>Условие:</strong> {_escape(r)}</p>' for r in risks)
     risk_md = '\n'.join('- ' + r for r in risks)
@@ -514,7 +529,7 @@ def _render_editorial(content, *, asset_directory=None):
                           f'{_escape(e["observed_at"])} · {_escape(_text(e["applies_to"]))}<br>'
                           f'{_escape(e["authority"])} / {_escape(e["evidence_kind"])} / {_escape(e["freshness"])}. {_escape(e["limitation"])}</li>' for e in sources)
     source_md = '\n'.join(f'- {e["evidence_id"]}: {e["title"]}; {e["source_url"]}; {e["claim"]}; {_text(e["value"])}; observed_at={e["observed_at"]}; scope={_text(e["applies_to"])}; {e["authority"]}/{e["evidence_kind"]}/{e["freshness"]}; {e["limitation"]}' for e in sources)
-    score_text = f'Preset: {snapshot["preset"]}. Веса: {_text(snapshot["weights"])}. Формула: Σ(вес × балл / 5).\n' + _text(snapshot.get('scoring', {'missing': 'Исторические баллы не переданы; не пересчитаны по памяти.'}))
+    score_text = f'Preset: {snapshot["preset"]}. Веса: {_text(snapshot["weights"])}. Формула: Σ(вес × балл / 5).\n' + _text(snapshot['scoring'])
     critics_text = _text(snapshot['critic_results'])
     drafts = content.get('seller_drafts') or []
     nav = ''.join(f'<a href="#{c["id"]}">{_escape(c["topic"])}</a>' for c in cards)

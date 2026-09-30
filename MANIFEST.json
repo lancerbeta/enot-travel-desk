@@ -34,8 +34,8 @@
     },
     {
       "path": "ENOT_CHAT_START.md",
-      "bytes": 52876,
-      "sha256": "7e2b773760832f187156354121a032ff92218ac3291d1ecd410aa9d050e98b3b"
+      "bytes": 56495,
+      "sha256": "478568c30265146536836b9c6f9d34dc22ed8c459a3d2590d4e3a85ba874efd5"
     },
     {
       "path": "README.md",
@@ -44,8 +44,8 @@
     },
     {
       "path": "STATE.md",
-      "bytes": 3265,
-      "sha256": "06e1dd7975cf057f7ec065476e78e34e2972a981f2f973d309d24b68df5ea12e"
+      "bytes": 3494,
+      "sha256": "33a053ed57c13e848a3894d8ef622a5256834741161028993e85acbea16ef5de"
     },
     {
       "path": "VALIDATION.md",
@@ -69,8 +69,8 @@
     },
     {
       "path": "docs/CONTRACTS.md",
-      "bytes": 36430,
-      "sha256": "efb8773000aac661609cca8dd106de7479f23c94706bf4ccff0f943553afe7d6"
+      "bytes": 38251,
+      "sha256": "d51f5b3674a08db3852b3ea12c9d9bfd2ef7a8e20cde434d340f6dba3f981099"
     },
     {
       "path": "docs/CRITIC_REVIEW.md",
@@ -79,8 +79,8 @@
     },
     {
       "path": "docs/DELIVERY_PLAN.md",
-      "bytes": 2335,
-      "sha256": "6a904c1db333518d09668c9371dab7dfea2a0b843f20dba6c94659fd96248e0b"
+      "bytes": 2477,
+      "sha256": "659fe2dd6b133d4b51826d99c7d6e0a83531115b5861b4ebedee8d15f4c5f75f"
     },
     {
       "path": "docs/RESEARCH_AND_REUSE.md",
@@ -124,8 +124,8 @@
     },
     {
       "path": "docs/atoms/OWNER_READY_DELIVERY/ACCEPTANCE.md",
-      "bytes": 2950,
-      "sha256": "eaad644715f7b1d1dc49d923dac4b8702651e981469ce4d55e64aae50d67e55a"
+      "bytes": 3655,
+      "sha256": "7d4180058bbe9bfde31de17d47deeda12da3c142a2e3907c237189b42830d5b6"
     },
     {
       "path": "docs/atoms/OWNER_READY_DELIVERY/PRD_SSD.md",
@@ -149,13 +149,18 @@
     },
     {
       "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/D2.md",
-      "bytes": 4334,
-      "sha256": "89fe08645a9d1a8da6f14eafae07e99af9784a0aa7e5c0f6566bdaa13d859776"
+      "bytes": 4741,
+      "sha256": "3edebcc3448f193e2b4d3737ae0864b90d3c95880ec363dd9d9f4d19f8aaf2cc"
     },
     {
       "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/ORACLE.md",
       "bytes": 2662,
       "sha256": "76e9ee6d6da1c4e30cd25abf1f3d09b13d4a899fa865af9823b548ca07d47a86"
+    },
+    {
+      "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/REPAIR.md",
+      "bytes": 4047,
+      "sha256": "9b60760f0bc766bfb26f481dd024a0dc95a79a528eeb4135627811aeee70787b"
     },
     {
       "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/accepted-state.json",
@@ -219,8 +224,8 @@
     },
     {
       "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/bundle/ENOT_2026-09-30_owner-ready-synthetic_01_r04.zip",
-      "bytes": 431647,
-      "sha256": "a411f9a7f3e56395893a6e6c1aa182162afb738ef25f31a22bbf156e5a0092a2"
+      "bytes": 432053,
+      "sha256": "f06ce19c407391546255fd1d3bcf976a059c8fa7c5eb85975cbd4a980c7a1fa4"
     },
     {
       "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/bundle/Поездка.md",
@@ -229,8 +234,8 @@
     },
     {
       "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/bundle/Продолжение.md",
-      "bytes": 31996,
-      "sha256": "42a7a50758c66e541a009ad6134e7b794e8883cc160c6472177150c9e0a8b23c"
+      "bytes": 33141,
+      "sha256": "6f11ded8390db5607ef91da84400e1bde7827331c198cce9028fb431f793b387"
     },
     {
       "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/bundle/Путеводитель.html",
@@ -249,8 +254,8 @@
     },
     {
       "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/llm/README.md",
-      "bytes": 2366,
-      "sha256": "cfe16404467a8b886b26d26223bac6b0082a9e3350190a3f64da2ca618c9f65c"
+      "bytes": 3004,
+      "sha256": "ec285bcf99b94d5fb31ea520623915a9fe2afc26142f7eb8c49f3d8377a7634a"
     },
     {
       "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/llm/discovery/ENOT_2026-09-30_toskana-spokoyno_01_r02.zip",
@@ -291,6 +296,11 @@
       "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/llm/discovery/Путеводитель.html",
       "bytes": 577239,
       "sha256": "601471cc54b5221da585567f51a54f6551d95f4718809351c23b2e307347d95a"
+    },
+    {
+      "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/llm/final-resume/input-snapshot.md",
+      "bytes": 31996,
+      "sha256": "42a7a50758c66e541a009ad6134e7b794e8883cc160c6472177150c9e0a8b23c"
     },
     {
       "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/llm/final-resume/replay-transcript.md",
@@ -358,6 +368,26 @@
       "sha256": "b9fc1e440c07ae48a817490b735b78a2f98cf12b94c4f42a3f153fb155f4f9ea"
     },
     {
+      "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/repair-artifact-check.json",
+      "bytes": 948,
+      "sha256": "98560122f7032a4e8e031132265a3abc0b24984671a0b253619dd51f05fec1a1"
+    },
+    {
+      "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/repair-focused-output.txt",
+      "bytes": 474,
+      "sha256": "e70af05f5b452fd576bb6c5b307fa5e1513468c4d50baecbca62b56a0d59384f"
+    },
+    {
+      "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/repair-historical-readback.json",
+      "bytes": 3509,
+      "sha256": "c1e293e4f29735dd426313e7507d5d6f675780ea26dec0c42d9cf6d63ce66215"
+    },
+    {
+      "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/repair-test-output.txt",
+      "bytes": 293,
+      "sha256": "9193b95f445568480dc2d04955bd4762eab0ded975ad2cd70b03814554f35e64"
+    },
+    {
       "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/smoke-packet.json",
       "bytes": 21226,
       "sha256": "2e35aa77637cbe2a2b0308bcf8473a992816ba63a58c719a227da2cd5578fb9c"
@@ -409,8 +439,8 @@
     },
     {
       "path": "enotcheck/render.py",
-      "bytes": 33635,
-      "sha256": "2349169b2cc2d728f41a93237cfcdd6b609aee2ce2b330c2c14ddda2f9c0be82"
+      "bytes": 34214,
+      "sha256": "bce622f4fd76655854167e738e23728566ef93d5faf692197ad2f99870373bed"
     },
     {
       "path": "enotcheck/score.py",
@@ -419,8 +449,8 @@
     },
     {
       "path": "enotcheck/selection.py",
-      "bytes": 2529,
-      "sha256": "69bd68ea8ecc929251214179a6934ec5b1800f7d6af4819ea95ac6bc03010b20"
+      "bytes": 3338,
+      "sha256": "015837d6694e76c03dac60f3527ab7e867bf9d027461a63412d778ab36ccb7a5"
     },
     {
       "path": "enotcheck/slots.py",
@@ -429,8 +459,8 @@
     },
     {
       "path": "enotcheck/snapshot.py",
-      "bytes": 21680,
-      "sha256": "ac733773561085ab5b6cd0812926e8e54992efc6c1f984a998e9828db5279f39"
+      "bytes": 31082,
+      "sha256": "6659039bad2360a703a566ba23719ad8474b418f7648795ca7e774e354d5564f"
     },
     {
       "path": "evals/scenarios.yaml",
@@ -459,8 +489,8 @@
     },
     {
       "path": "tests/test_owner_ready_delivery.py",
-      "bytes": 18423,
-      "sha256": "8071b53f66369c2f822e1b2860f64a3584330cd1e376ee7b4929f27b3474734d"
+      "bytes": 26836,
+      "sha256": "3622b1cb81696cc13afe63b4002d8bc82fd624328e4e753647afef61d56dec87"
     },
     {
       "path": "tests/test_source_intelligence.py",

@@ -104,6 +104,132 @@ def evidence_records(value):
     return []
 
 
+def delivery_content_gaps(doc):
+    """Content needed by a reached delivery, not a quota for earlier stages.
+
+    Validate the production Guide/Budget/Score shape without reconstructing lost
+    history. Unknown amounts and score intervals are legitimate retained values.
+    """
+    gaps = []
+    def check(condition, name):
+        if not condition and name not in gaps:
+            gaps.append(name)
+    def text(value):
+        return isinstance(value, str) and bool(value.strip())
+    def amount(value):
+        try:
+            return value is None or (type(value) is not bool and
+                                    Decimal(str(value)).is_finite() and Decimal(str(value)) >= 0)
+        except (InvalidOperation, ValueError, TypeError):
+            return False
+    eids = {e.get('evidence_id') for e in _items(doc.get('evidence'))
+            if isinstance(e, dict) and isinstance(e.get('evidence_id'), str)}
+    def refs(value):
+        return isinstance(value, list) and all(isinstance(i, str) and i in eids for i in value)
+    guide = doc.get('guide')
+    check(isinstance(guide, dict), 'completion.guide')
+    guide = guide if isinstance(guide, dict) else {}
+    for key in ('title', 'date_range'):
+        check(text(guide.get(key)), 'guide.' + key)
+    brief = doc.get('brief') if isinstance(doc.get('brief'), dict) else {}
+    check(guide.get('date_range') == brief.get('dates'), 'guide.date_range.matches_brief')
+    cards = guide.get('practical_cards')
+    check(isinstance(cards, list) and bool(cards), 'guide.practical_cards')
+    practical = False
+    card_ids = []
+    for card in _items(cards):
+        check(isinstance(card, dict), 'guide.card')
+        if not isinstance(card, dict):
+            continue
+        for key in ('id', 'topic', 'summary'):
+            check(text(card.get(key)), 'guide.card.' + key)
+        cid = card.get('id')
+        check(isinstance(cid, str) and bool(re.fullmatch(r'[a-z][a-z0-9-]*', cid))
+              and cid not in card_ids, 'guide.card.id')
+        card_ids.append(cid)
+        for key in ('facts', 'actions', 'callouts'):
+            check(isinstance(card.get(key, []), list), 'guide.card.' + key)
+        for fact in _items(card.get('facts')):
+            valid = (isinstance(fact, dict) and text(fact.get('label')) and text(fact.get('value'))
+                     and refs(fact.get('evidence_ids')) and fact.get('status') in
+                     ('known', 'estimate', 'UNKNOWN', 'owner_action', 'future_recheck'))
+            check(valid, 'guide.card.fact')
+            practical = practical or valid
+        for action in _items(card.get('actions')):
+            check(text(action), 'guide.card.action')
+            practical = practical or text(action)
+        for callout in _items(card.get('callouts')):
+            valid = (isinstance(callout, dict) and text(callout.get('text'))
+                     and refs(callout.get('evidence_ids')) and callout.get('kind') in
+                     ('important', 'tip', 'fallback') and callout.get('status') in
+                     ('known', 'estimate', 'UNKNOWN', 'owner_action', 'future_recheck'))
+            check(valid, 'guide.card.callout')
+            practical = practical or valid
+    check(practical, 'guide.practical_content')
+    gates = guide.get('hard_gate_results', {})
+    check(isinstance(gates, dict) and 'FAIL' not in gates.values(), 'guide.hard_gate_results')
+    tasks = guide.get('booking_tasks')
+    check(isinstance(tasks, list), 'guide.booking_tasks')
+    check(bool(tasks) or text(guide.get('booking_tasks_not_applicable')), 'guide.owner_actions_or_reason')
+    for task in _items(tasks):
+        check(isinstance(task, dict) and all(text(task.get(k)) for k in
+              ('action', 'deadline', 'consequence')), 'guide.booking_task')
+    budget = doc.get('budget')
+    check(isinstance(budget, dict), 'completion.budget')
+    budget = budget if isinstance(budget, dict) else {}
+    for key in ('travel_spend', 'known_spend', 'deposit', 'cash_needed'):
+        check(key in budget and amount(budget.get(key)), 'budget.' + key)
+    check(text(budget.get('currency')), 'budget.currency')
+    check(budget.get('gate') in ('PASS', 'UNKNOWN'), 'budget.gate')
+    check(type(budget.get('unknown_not_zero')) is bool, 'budget.unknown_not_zero')
+    lines = budget.get('lines')
+    check(isinstance(lines, list) and bool(lines), 'budget.lines')
+    for line in _items(lines):
+        check(isinstance(line, dict) and text(line.get('category')) and text(line.get('currency'))
+              and refs(line.get('evidence_ids')) and all(amount(line.get(k)) for k in
+              ('amount', 'lower', 'upper')), 'budget.line')
+    try:
+        from enotcheck.budget import evaluate_budget
+        calculated = evaluate_budget(lines, deposit=budget['deposit'],
+                                     hard_cap=brief['budget']['hard_cap'], base_currency=budget['currency'])
+        for key in ('travel_spend', 'known_spend', 'deposit', 'cash_needed', 'gate', 'unknown_not_zero'):
+            actual, expected = budget[key], calculated[key]
+            if key in ('travel_spend', 'known_spend', 'deposit', 'cash_needed'):
+                same = actual is expected if actual is None or expected is None else Decimal(str(actual)) == expected
+            else:
+                same = actual == expected
+            check(same, 'budget.calculation.' + key)
+    except (KeyError, TypeError, ValueError, AttributeError, InvalidOperation):
+        check(False, 'budget.calculation')
+    scoring = doc.get('scoring')
+    check(isinstance(scoring, dict), 'completion.scoring')
+    scoring = scoring if isinstance(scoring, dict) else {}
+    for cid in _items(doc.get('presented_candidate_ids')):
+        entry = scoring.get(cid) if isinstance(cid, str) else None
+        entry = entry if isinstance(entry, dict) else {}
+        inputs, result = entry.get('score_inputs'), entry.get('result')
+        valid = isinstance(inputs, dict) and set(inputs) == set(DIMENSIONS)
+        check(valid, 'scoring.inputs.' + str(cid))
+        for item in inputs.values() if valid else []:
+            check(isinstance(item, dict) and 'score' in item and amount(item.get('score'))
+                  and text(item.get('rationale')) and refs(item.get('evidence_ids')), 'scoring.input.' + str(cid))
+        check(isinstance(result, dict) and all(k in result for k in ('point', 'low', 'high', 'exact')),
+              'scoring.result.' + str(cid))
+        try:
+            from enotcheck.score import evaluate_score
+            calculated = evaluate_score(doc['weights'], {k: v['score'] for k, v in inputs.items()})
+            for key in ('point', 'low', 'high'):
+                actual, expected = result[key], calculated[key]
+                same = actual is expected if actual is None or expected is None else (
+                    amount(actual) and Decimal(str(actual)) == expected)
+                check(same, 'scoring.calculation.' + str(cid) + '.' + key)
+            check(type(result['exact']) is bool and result['exact'] == calculated['exact'],
+                  'scoring.calculation.' + str(cid) + '.exact')
+        except (KeyError, TypeError, ValueError, AttributeError, InvalidOperation):
+            check(False, 'scoring.calculation.' + str(cid))
+    return gaps
+
+
 def _strict_gaps(doc):
     gaps = []
     def check(condition, name):
@@ -260,6 +386,22 @@ def _strict_gaps(doc):
     check(isinstance(doc.get("artifacts"), list), "artifacts")
     final = doc.get("stage") == "publish" and doc.get("status") == "ready"
     if final:
+        for gap in delivery_content_gaps(doc):
+            check(False, gap)
+        for critic in critics:
+            if not isinstance(critic, dict):
+                continue
+            check(critic.get('status') != 'REPAIR', 'completion.critic_repair')
+            for finding in _items(critic.get('findings')):
+                if not isinstance(finding, dict) or finding.get('severity') != 'BLOCKER':
+                    continue
+                recheck = finding.get('recheck')
+                resolved = (finding.get('resolution') == 'resolved' and isinstance(recheck, dict)
+                            and recheck.get('status') == 'PASS' and isinstance(recheck.get('summary'), str)
+                            and bool(recheck['summary'].strip()) and bool(recheck.get('evidence_ids')))
+                check(resolved, 'completion.unresolved_blocker')
+                if isinstance(recheck, dict):
+                    refs(recheck.get('evidence_ids'), 'critic.recheck.evidence_ids')
         check(doc.get("next_action") is None, "completion.next_action")
         check(2 in which, "critic_2_required")
         check(doc.get("requires_revalidation") is False, "completion.revalidation")
@@ -313,6 +455,8 @@ def serialize_snapshot(doc):
 _CONTINUATION_RULES = """Прочитайте сохранённый план ниже. Адресный вопрос не запускает новый подбор или общую анкету. Пропущенное `user_skipped` не спрашивать снова. При изменении дат сохраняйте выбранный вариант и прежние пожелания; зависимые цены, наличие, рейсы, правила и бюджет требуют повторной проверки. Старые `observed_at` не менять без нового чтения источника.
 
 При записи следующего снимка сохраняйте машинные имена полей и типы. `stage`: brief, discovery, verification, decision_review, selection, planning, operational_review, publish. `status`: draft, running, needs_input, ready, partial, failed, cancelled. Перепроверка выбранной поездки: planning/running и конкретный `next_action`; delivery.checked=false, requires_revalidation=true. Завершённая согласованная доставка: publish/ready, next_action=null; это не бронь.
+
+В финале сохраняйте достигнутые guide с практическими facts/actions/callouts и задачами владельца, рассчитанный budget со строками и неизвестными суммами, scoring всех показанных вариантов с основаниями и результатами. Утраченные разделы не восстанавливать по памяти и не называть full_integrity. Отсутствие задач допускается только с содержательным booking_tasks_not_applicable. Critic REPAIR не завершает доставку. BLOCKER закрывается resolution=resolved и recheck={status: PASS, summary, evidence_ids}; после ремонта нужен новый verdict. PARTIAL без нерешённых BLOCKER допускает честный условный guide. Условный или отозванный выбор не открывает PLAN; при неоднозначных словах уточнить выбор, а не угадывать по ID.
 
 `invalidation` — список строк, подробные пояснения можно дать рядом в Markdown. `freshness` у Evidence: current_for_scope, stale, unknown. Ссылка на свидетельство — существующий evidence_id; поле типа — evidence_kind. `brief.unresolved` — список объектов с field, clarification_status (needs_input, offered_once, user_skipped) и impact. Пропущенное поле присутствует в brief со значением null. Не заменять эти машинные значения русскими или новыми enum; пояснения пишите отдельно. Не сочинять IDs, веса, результаты критиков или историю. Все три файла и ZIP прежней ревизии становятся историческими после изменения дат; их готовность не переносится автоматически."""
 

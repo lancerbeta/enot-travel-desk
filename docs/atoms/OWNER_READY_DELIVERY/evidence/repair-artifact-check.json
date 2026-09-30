@@ -1,0 +1,34 @@
+{
+  "base_head": "7ed6e5a8b83a3565f61354c19f42e4ab0aaa385b",
+  "snapshot_validation": {
+    "compatible": true,
+    "readable": true,
+    "full_integrity": true,
+    "legacy": false,
+    "gaps": [],
+    "slot_count": 3,
+    "veto": [
+      "no-car",
+      "no-self-transfer"
+    ],
+    "selected_id": "c-02",
+    "do_not_reask": [
+      "baggage"
+    ]
+  },
+  "run_id": "2026-09-30_owner-ready-synthetic_01",
+  "revision": "r04",
+  "same_accepted_content": true,
+  "regeneration_matches": true,
+  "zip_exact_three_files": true,
+  "zip_readback_matches": true,
+  "delta_readback": [
+    "dates",
+    "party",
+    "weights",
+    "presentation"
+  ],
+  "html_sha256": "24945dca97388a0f3033eaac6730a1f9ea5a32b4d5bb1b3f323dd692fe1b0495",
+  "browser_reuse": "HTML bytes unchanged; existing 1280/390/320 offline no-JS proof applies; no new browser or model replay",
+  "snapshot_sha256": "6f11ded8390db5607ef91da84400e1bde7827331c198cce9028fb431f793b387"
+}

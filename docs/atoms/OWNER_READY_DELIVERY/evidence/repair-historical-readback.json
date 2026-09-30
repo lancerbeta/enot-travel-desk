@@ -1,0 +1,151 @@
+{
+  "discovery/Продолжение.md": {
+    "compatible": false,
+    "readable": true,
+    "full_integrity": false,
+    "legacy": false,
+    "gaps": [
+      "guide.date_range",
+      "guide.date_range.matches_brief",
+      "guide.practical_cards",
+      "guide.practical_content",
+      "guide.booking_tasks",
+      "guide.owner_actions_or_reason",
+      "budget.travel_spend",
+      "budget.known_spend",
+      "budget.deposit",
+      "budget.cash_needed",
+      "budget.currency",
+      "budget.gate",
+      "budget.unknown_not_zero",
+      "budget.calculation",
+      "scoring.inputs.c-01",
+      "scoring.result.c-01",
+      "scoring.calculation.c-01",
+      "scoring.inputs.c-02",
+      "scoring.result.c-02",
+      "scoring.calculation.c-02",
+      "scoring.inputs.c-03",
+      "scoring.result.c-03",
+      "scoring.calculation.c-03"
+    ],
+    "slot_count": 3,
+    "veto": [
+      "no-car",
+      "no-self-transfer"
+    ],
+    "selected_id": "c-02",
+    "do_not_reask": [
+      "baggage",
+      "walking_constraints"
+    ]
+  },
+  "final-resume/Продолжение.md": {
+    "compatible": true,
+    "readable": true,
+    "full_integrity": true,
+    "legacy": false,
+    "gaps": [],
+    "slot_count": 3,
+    "veto": [
+      "no-car",
+      "no-self-transfer"
+    ],
+    "selected_id": "c-02",
+    "do_not_reask": [
+      "baggage"
+    ]
+  },
+  "initial-discovery-export/Продолжение.md": {
+    "compatible": false,
+    "readable": true,
+    "full_integrity": false,
+    "legacy": false,
+    "gaps": [
+      "presented_candidate_ids",
+      "candidates",
+      "withdrawn_candidate_ids",
+      "selection_user_basis",
+      "brief.duration",
+      "brief.accommodation",
+      "brief.unresolved.item",
+      "brief.budget",
+      "brief.hard_constraints.item",
+      "preset",
+      "weights",
+      "evidence.item",
+      "selected_id",
+      "selection_user_basis.explicit",
+      "selection_required",
+      "critic_results",
+      "critic_1_required",
+      "requires_revalidation",
+      "completion.guide",
+      "guide.title",
+      "guide.date_range",
+      "guide.date_range.matches_brief",
+      "guide.practical_cards",
+      "guide.practical_content",
+      "guide.booking_tasks",
+      "guide.owner_actions_or_reason",
+      "completion.budget",
+      "budget.travel_spend",
+      "budget.known_spend",
+      "budget.deposit",
+      "budget.cash_needed",
+      "budget.currency",
+      "budget.gate",
+      "budget.unknown_not_zero",
+      "budget.lines",
+      "budget.calculation",
+      "critic_2_required",
+      "completion.revalidation",
+      "completion.delivery"
+    ],
+    "slot_count": 0,
+    "veto": [
+      "no-car",
+      "no-self-transfer"
+    ],
+    "selected_id": "c-02",
+    "do_not_reask": []
+  },
+  "initial-resume/Продолжение.md": {
+    "compatible": false,
+    "readable": true,
+    "full_integrity": false,
+    "legacy": false,
+    "gaps": [
+      "stage",
+      "status",
+      "brief.unresolved.item",
+      "evidence.freshness",
+      "invalidation"
+    ],
+    "slot_count": 3,
+    "veto": [
+      "no-car",
+      "no-self-transfer"
+    ],
+    "selected_id": "c-02",
+    "do_not_reask": [
+      "baggage"
+    ]
+  },
+  "repaired-resume/Продолжение.md": {
+    "compatible": true,
+    "readable": true,
+    "full_integrity": true,
+    "legacy": false,
+    "gaps": [],
+    "slot_count": 3,
+    "veto": [
+      "no-car",
+      "no-self-transfer"
+    ],
+    "selected_id": "c-02",
+    "do_not_reask": [
+      "baggage"
+    ]
+  }
+}
