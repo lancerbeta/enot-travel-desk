@@ -178,6 +178,29 @@ class EditorialBundle(unittest.TestCase):
         from enotcheck.render import content_from_snapshot
         return content_from_snapshot(copy.deepcopy(self.state))
 
+    def test_delivered_and_portable_guide_gate_example_matches_production(self):
+        import re
+        import yaml
+        from pathlib import Path
+        starter = (Path(__file__).resolve().parents[1] / 'ENOT_CHAT_START.md').read_text()
+        portable = serialize_snapshot(copy.deepcopy(self.state))
+        for text in (starter, portable):
+            with self.subTest(contract='starter' if text == starter else 'portable'):
+                example = re.search(r'`(hard_gate_results: \{sample-condition: UNKNOWN\})`', text)
+                self.assertIsNotNone(example)
+                gates = yaml.safe_load(example.group(1))['hard_gate_results']
+                final = copy.deepcopy(self.state)
+                final.update(stage='publish', status='ready', next_action=None,
+                             delivery={'mode': 'files', 'checked': True})
+                final['guide']['hard_gate_results'] = gates
+                self.assertTrue(validate_snapshot(read_snapshot(serialize_snapshot(final)))['full_integrity'])
+                for value in ('PASS', 'UNKNOWN', 'NOT_APPLICABLE'):
+                    final['guide']['hard_gate_results'] = {'sample-condition': value}
+                    self.assertTrue(validate_snapshot(final)['full_integrity'])
+                for invalid in ({'sample-condition': 'FAIL'}, [{'id': 'sample-condition', 'result': 'UNKNOWN'}]):
+                    final['guide']['hard_gate_results'] = invalid
+                    self.assertFalse(validate_snapshot(final)['full_integrity'])
+
     def test_final_content_loss_is_not_full_integrity_or_ready_delivery(self):
         import tempfile
         from pathlib import Path

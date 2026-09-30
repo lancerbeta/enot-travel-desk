@@ -1,0 +1,31 @@
+{
+  "widths": {
+    "1280": {
+      "body": 1280,
+      "viewport": 1280,
+      "internal_overflow": 0,
+      "photos_loaded": 4
+    },
+    "390": {
+      "body": 390,
+      "viewport": 390,
+      "internal_overflow": 0,
+      "photos_loaded": 4
+    },
+    "320": {
+      "body": 320,
+      "viewport": 320,
+      "internal_overflow": 0,
+      "photos_loaded": 4
+    }
+  },
+  "offline": true,
+  "no_js": true,
+  "details_keyboard": true,
+  "focus": true,
+  "photos": true,
+  "print": true,
+  "local_file_navigation": "Browser policy blocked file URLs; exact HTML supplied via set_content without network.",
+  "print_closed_budget_rect": 514.828125,
+  "external_requests": []
+}
