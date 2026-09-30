@@ -44,8 +44,8 @@
     },
     {
       "path": "STATE.md",
-      "bytes": 2440,
-      "sha256": "3fc38b00ec8aae418024b068dd076403fde6652505d52f77a4d7aebeaa6b66ab"
+      "bytes": 2485,
+      "sha256": "c7ca55970ff3dd66b36ebb7d45b3b2702f30d278d3e99e093b22c62548ed70c1"
     },
     {
       "path": "VALIDATION.md",
@@ -79,8 +79,8 @@
     },
     {
       "path": "docs/DELIVERY_PLAN.md",
-      "bytes": 4393,
-      "sha256": "061b8854b1e7625b4b383db44e24eec6436ad0048f822a11e548622d14854b5b"
+      "bytes": 1773,
+      "sha256": "9019a337d8763f35d6cd189568acd2afa4ba24db77eb7be1fe228c778e1f3eb2"
     },
     {
       "path": "docs/RESEARCH_AND_REUSE.md",
@@ -139,8 +139,8 @@
     },
     {
       "path": "docs/atoms/SOURCE_INTELLIGENCE/ACCEPTANCE.md",
-      "bytes": 1337,
-      "sha256": "5a822210868de2fb70faf0f5535b105825d69158e1feef78346fd87723f1fe54"
+      "bytes": 1440,
+      "sha256": "30fc902d4b0ff7bdab2b024eafecc079781f0c3a8d6d802e79963644bffa7d71"
     },
     {
       "path": "docs/atoms/SOURCE_INTELLIGENCE/evidence/PROBES.md",

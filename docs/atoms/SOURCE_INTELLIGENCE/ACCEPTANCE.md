@@ -1,10 +1,10 @@
 # ENOT_OWNER_FIRST_SOURCE_INTELLIGENCE_V1
 
 Base: `f6b26ca68cfef1821d549fdd9129809412b4338f`  
-Дата: 2026-09-30  
-Исполнитель atom не принимает.
+Принят control plane как **PASS** на ревизии `d7daf25d0811eefc391886ec3fb910deb42d7be9`.  
+Дата принятия: 2026-09-30.
 
-## Рекомендация
+## Рекомендация исполнителя
 
 `PASS_CANDIDATE`
 
@@ -14,6 +14,6 @@ Base: `f6b26ca68cfef1821d549fdd9129809412b4338f`
 
 Новый сервис, scraper, установка MCP, платёжные доступы, бронирование, A2, push. `docs/UX_BRANDBOOK.md` и `docs/CONTRACTS.md` не менялись: контракт Evidence уже содержит kind, freshness, authority и source family. `docs/WORKFLOW.md` не конфликтует с маршрутом источников.
 
-## Следующий atom, если владелец примет PASS
+## Следующий atom
 
-`OWNER_REAL_TRIP_PILOT_V1`. A2 не следует из этого решения.
+`OWNER_REAL_TRIP_PILOT_V1` стал активным после этого PASS. A2 из этого решения не следует.
