@@ -44,8 +44,8 @@
     },
     {
       "path": "STATE.md",
-      "bytes": 3825,
-      "sha256": "b3713fae3286317c976fb5814c54151c5e326af89f40375d5170ecfb3a161351"
+      "bytes": 4200,
+      "sha256": "7036b983416cc0f0850da428719cb41d32b243bf051b9a16e6f2b21d2467a714"
     },
     {
       "path": "VALIDATION.md",
@@ -79,8 +79,8 @@
     },
     {
       "path": "docs/DELIVERY_PLAN.md",
-      "bytes": 2780,
-      "sha256": "c689268fae4af1e77dce73e3e3ff2c1b81bf871a46b38ca30196e9ee85205af9"
+      "bytes": 3000,
+      "sha256": "73a9ba18ec117c716497ac8e42ea639f8b87f5e5986b5f8fa347d1ce24d8087d"
     },
     {
       "path": "docs/RESEARCH_AND_REUSE.md",
@@ -124,8 +124,8 @@
     },
     {
       "path": "docs/atoms/OWNER_READY_DELIVERY/ACCEPTANCE.md",
-      "bytes": 4916,
-      "sha256": "0cbcd01df1a1ed7f7fda2698971b92ad40431863c4c14f8212a760ab4e1bdc0e"
+      "bytes": 5339,
+      "sha256": "1f2357f0b7a64c1ec2278bf9447d6ff278ef2071757e77ea9a7b0c34964bbc60"
     },
     {
       "path": "docs/atoms/OWNER_READY_DELIVERY/PRD_SSD.md",

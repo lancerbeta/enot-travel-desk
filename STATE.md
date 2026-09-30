@@ -8,7 +8,7 @@
 
 Атом `ENOT_OWNER_FIRST_SOURCE_INTELLIGENCE_V1` принят как **PASS** на ревизии `d7daf25d0811eefc391886ec3fb910deb42d7be9`. Запись — в [docs/atoms/SOURCE_INTELLIGENCE/ACCEPTANCE.md](docs/atoms/SOURCE_INTELLIGENCE/ACCEPTANCE.md).
 
-Активный move: `ENOT_OWNER_READY_DELIVERY_V1` (D1 → D2), draft PR #1. Три P1 verdict REPAIR на `7ed6e5a` закрыты родителем на `4a3e739`: 48+3 tests и 31 negative probes, P0/P1 code defect не воспроизведён. Узкое уточнение типов guide: 49 local tests; свежий cloud final проходит неизменённый production validator и ZIP readback. Отсутствующий видимый run_id в native HTML при совпадающей ревизии — pending independent classification, не автоматически blocking defect. Итоговый независимый verdict ещё не дан. A2 не назначен.
+`ENOT_OWNER_READY_DELIVERY_V1` (D1 → D2) принят родителем как **independent PASS** на `4b0ebf82ff8081eba710b3fb490c17fea771a29d`. Независимо пройдены 49 canonical tests, 4 focused tests и 31 negative probes; нерешённых P0/P1 нет. Corrected native final: full_integrity, publish/ready/null, сохранённые записи, exact ZIP и production regeneration проверены. Это приёмка ограниченного upgrade на synthetic evidence, не live-travel acceptance. A2 не назначен.
 
 | Область | Состояние |
 |---|---|
@@ -25,4 +25,6 @@
 
 Evidence collection `OWNER_REAL_TRIP_PILOT_V1` завершён. Наблюдались DISCOVER → выбор → PLAN/Critic 2 → HTML/snapshot → содержательное resume. Это owner-runtime smoke, не состоявшийся отпуск. Поставка требует REPAIR: утрата IDs/cycle/weights/method в snapshot и мобильный/трёхслойный HTML; полный исходный ZIP/Поездка.md независимо не проверен. Исторический source PASS сохраняется.
 
-D1: один optional intake, точный перенос состояния и завершение на согласованном комплекте. D2: практический guide, фотографии, карточки, offline mobile и три файла/ZIP из одной ревизии. Публикация узкого protocol/evidence delta разрешена в существующем [draft PR #1](https://github.com/lancerbeta/enot-travel-desk/pull/1); merge ожидает независимого подтверждения delta. [План](docs/DELIVERY_PLAN.md), [постановка](docs/atoms/OWNER_READY_DELIVERY/PRD_SSD.md), [focused export evidence](docs/atoms/OWNER_READY_DELIVERY/evidence/focused-final-export/README.md).
+D1: один optional intake, точный перенос состояния и завершение на согласованном комплекте. D2: практический guide, фотографии, карточки, offline mobile и три файла/ZIP из одной ревизии. Обычный merge [PR #1](https://github.com/lancerbeta/enot-travel-desk/pull/1) с сохранением истории D1/D2 разрешён после CI финального docs-only commit; deployment и booking не входят. [Acceptance](docs/atoms/OWNER_READY_DELIVERY/ACCEPTANCE.md), [focused export evidence](docs/atoms/OWNER_READY_DELIVERY/evidence/focused-final-export/README.md).
+
+Видимый run_id отсутствует в native HTML: reviewer классифицировал это как P2, same-run identity доказана snapshot/MD/ZIP/provenance без противоречий. Browser proof canonical HTML применим; полный browser/accessibility/print audit отдельного actor HTML, provenance native host, sufficient-brief native branch, авторство отдельных фото и live travel не доказаны. Исторические failure receipts сохранены без изменения.
