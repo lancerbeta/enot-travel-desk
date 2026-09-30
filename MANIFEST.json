@@ -1,21 +1,21 @@
 {
   "project": "ENOT",
-  "bundle_version": "0.3.0",
-  "supersedes": "0.2.2",
+  "bundle_version": "0.3.1",
+  "supersedes": "0.3.0",
   "research_date": "2026-09-30",
-  "revision_scope": "owner_first_source_intelligence",
+  "revision_scope": "owner_ready_delivery",
   "type": "blueprint_and_starter_not_application",
   "entrypoints": {
     "traveler": "ENOT_CHAT_START.md",
     "developer": "README.md",
     "visual_reference": "design-preview.html",
-    "atom_status": "docs/atoms/A0_A1/ACCEPTANCE.md"
+    "atom_status": "docs/atoms/OWNER_READY_DELIVERY/ACCEPTANCE.md"
   },
   "files": [
     {
       "path": ".github/workflows/ci.yml",
-      "bytes": 510,
-      "sha256": "cdaee283b945907d568ea0632f72c845b58f9038ae0c1c7cb5caf640c6c5b336"
+      "bytes": 542,
+      "sha256": "017a5133bca06512ca3fed22fe3716bab5ad48aaad2e492ac747e7d94e508189"
     },
     {
       "path": ".gitignore",
@@ -24,18 +24,18 @@
     },
     {
       "path": "AGENTS.md",
-      "bytes": 11783,
-      "sha256": "529d516087e1ca1ba383f31d023c2e08e8ca15db1d6b3589961c6450dd2e392f"
+      "bytes": 12030,
+      "sha256": "e2b63aa4991c2126f4d87f02a768024082a3160651d8bd321a126634e76965d2"
     },
     {
       "path": "BLUEPRINT.md",
-      "bytes": 59740,
-      "sha256": "030ebd1d41fdff5e4d6b484dc266d85fb1cc766d715fc2ec60bce470090f7aee"
+      "bytes": 60869,
+      "sha256": "66de0cefe930b99a2120dd9d6b5ba71024fb3274b7d75052c06610c969fce98d"
     },
     {
       "path": "ENOT_CHAT_START.md",
-      "bytes": 36664,
-      "sha256": "1c4b8caa58d1ee8b0a4d306c1efa00b386877014912ecc8d98376e6135a79424"
+      "bytes": 40728,
+      "sha256": "33c6f4f83d48157da9a942c7767aa934b6bb46d34bb5b5ebee22671ab74ac736"
     },
     {
       "path": "README.md",
@@ -44,8 +44,8 @@
     },
     {
       "path": "STATE.md",
-      "bytes": 2485,
-      "sha256": "c7ca55970ff3dd66b36ebb7d45b3b2702f30d278d3e99e093b22c62548ed70c1"
+      "bytes": 3073,
+      "sha256": "824b87d04ff953ccc257b9d7c43740f13c0127699eed684ef86d868bc3313d7e"
     },
     {
       "path": "VALIDATION.md",
@@ -54,13 +54,13 @@
     },
     {
       "path": "config/policy.yaml",
-      "bytes": 6669,
-      "sha256": "f77a3cb6b2fc6c09567eee192dedd54b50813ccb67c89f3a19733530d6458551"
+      "bytes": 6495,
+      "sha256": "990fe3453bd5215cf5e1d350522b9bb018247e1000b6da74863104036f96d57c"
     },
     {
       "path": "config/sources.yaml",
-      "bytes": 33115,
-      "sha256": "cbed8aa88fada55ee1223b0fdc58e433114debf575be599af2a96176289c6020"
+      "bytes": 31959,
+      "sha256": "01f66cea8db6a135dc9b47449843689dcf9c2a2149fdebb2e8f5427e04ca4198"
     },
     {
       "path": "design-preview.html",
@@ -69,8 +69,8 @@
     },
     {
       "path": "docs/CONTRACTS.md",
-      "bytes": 31244,
-      "sha256": "de9d1038ed24dcefc675f724cfd2d49123069acff172059f1cb695d40a3e789a"
+      "bytes": 34130,
+      "sha256": "16d2e4b359541eb130f84744086262534ad659b12c9e791a58c707c6dd5bd433"
     },
     {
       "path": "docs/CRITIC_REVIEW.md",
@@ -79,8 +79,8 @@
     },
     {
       "path": "docs/DELIVERY_PLAN.md",
-      "bytes": 1773,
-      "sha256": "9019a337d8763f35d6cd189568acd2afa4ba24db77eb7be1fe228c778e1f3eb2"
+      "bytes": 2294,
+      "sha256": "7ee3849f1dd192521d4500961c46ac813b38f4072b1c01d147ca8c519f3cc63e"
     },
     {
       "path": "docs/RESEARCH_AND_REUSE.md",
@@ -99,8 +99,8 @@
     },
     {
       "path": "docs/WORKFLOW.md",
-      "bytes": 19503,
-      "sha256": "f0bd569500f1746303c4caa96b9829cb37bbff88f773b74ffd83b3521bc43e65"
+      "bytes": 20861,
+      "sha256": "3d0a35a2402c953f07eb7f77e675fff9d0ca5c45db508ca0204a53a8aa9c63c8"
     },
     {
       "path": "docs/atoms/A0_A1/ACCEPTANCE.md",
@@ -123,19 +123,19 @@
       "sha256": "8c6811654ae31f802c49849c46fc209ef840454fd1fbc9e53b1bfcb27da27bf2"
     },
     {
-      "path": "docs/atoms/A0_A1/evidence/synthetic-render/Поездка.md",
-      "bytes": 1171,
-      "sha256": "bd4c9520c23078488ba6a71ae86faaaa569120a7ee43e6293e5a7384a4bfb1d7"
+      "path": "docs/atoms/OWNER_READY_DELIVERY/ACCEPTANCE.md",
+      "bytes": 870,
+      "sha256": "7f7e89d30ae243ec8f512e1bf82ce10029cf42aa1d1a98bfe0ddf1c7a12be829"
     },
     {
-      "path": "docs/atoms/A0_A1/evidence/synthetic-render/Продолжение.md",
-      "bytes": 1272,
-      "sha256": "afab1d07134ff6416c984d922072d8798dae1a0b35b8abcfe442db3e72ae467c"
+      "path": "docs/atoms/OWNER_READY_DELIVERY/PRD_SSD.md",
+      "bytes": 69487,
+      "sha256": "71995b17f5a9dcd14f0e5f107fd9e08df12d8c1d484d498efb6ea0751867f299"
     },
     {
-      "path": "docs/atoms/A0_A1/evidence/synthetic-render/Путеводитель.html",
-      "bytes": 2262,
-      "sha256": "c927d6cef9698d52bfde98d9360f1ae5aafb0e14267d50e9c6dc893d33690d29"
+      "path": "docs/atoms/OWNER_READY_DELIVERY/evidence/D1.md",
+      "bytes": 876,
+      "sha256": "87dd0a1d991fa9a427f89e5a98bf4e83dd32f3d78233ed7bdf0f5c3eb6c01603"
     },
     {
       "path": "docs/atoms/SOURCE_INTELLIGENCE/ACCEPTANCE.md",
@@ -164,8 +164,8 @@
     },
     {
       "path": "enotcheck/intake.py",
-      "bytes": 1176,
-      "sha256": "934d4c32e5189961415926286159fb70641e3384bba36586b091bea97513a04a"
+      "bytes": 3587,
+      "sha256": "1062ea1b7e1bbb27b17dfde8b3d2bc5e9caa8b5b58832620b4cc663d3663c448"
     },
     {
       "path": "enotcheck/registry.py",
@@ -184,8 +184,8 @@
     },
     {
       "path": "enotcheck/selection.py",
-      "bytes": 1583,
-      "sha256": "e5c98321df223c0936d4f12eee757057b3fe59ee4f7df0d6ddc1adf1cc5d9c02"
+      "bytes": 2147,
+      "sha256": "ed654e517520596233701cace71e8258c55625e035952d48848e7eb7f381eb41"
     },
     {
       "path": "enotcheck/slots.py",
@@ -194,8 +194,8 @@
     },
     {
       "path": "enotcheck/snapshot.py",
-      "bytes": 2484,
-      "sha256": "21f951dd595e70a5e25a905b2a86986924a2e5fa464e5563f6b16aa372572adc"
+      "bytes": 16471,
+      "sha256": "94a649e14c19233cb2d84ccb57305100b1ba7589c3168d4ad4a1f4449ace298e"
     },
     {
       "path": "evals/scenarios.yaml",
@@ -221,6 +221,11 @@
       "path": "tests/test_a0_a1_seams.py",
       "bytes": 14005,
       "sha256": "aba85ef722d275a998b226a9be06c84c7db5a2c82952e94ac4bb4fa125888511"
+    },
+    {
+      "path": "tests/test_owner_ready_delivery.py",
+      "bytes": 8813,
+      "sha256": "9d62223ca9d292388c8147241d1a09a58c0c773d7e7566a93b8e582b53ae3ecb"
     },
     {
       "path": "tests/test_source_intelligence.py",

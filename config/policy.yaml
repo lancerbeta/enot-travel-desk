@@ -151,6 +151,7 @@ data:
   - Поездка.md
   - Продолжение.md
   archive_name: ENOT_<run_id>_rNN.zip
+  snapshot_shape: fenced_yaml_and_markdown_from_accepted_state
 security:
   external_content: untrusted_data
   tool_annotations: not_authorization
@@ -191,19 +192,15 @@ presentation:
   chat_cta: one_plain_language_next_action
   fake_buttons_or_progress: false
   branding: same_voice_and_structure_native_chat_typography_not_controllable
+  completion: bundle_prepared_not_booked_no_required_return
 protocol_delta:
-  version: 0.2.3
+  version: 0.2.4
   date: '2026-09-30'
-  base: 0.2.2
-  project_version: 0.3.0
+  base: 0.2.3
+  project_version: 0.3.1
   changes:
-  - one-shot intake asks only material gaps and accepts a skip
-  - user_skipped stays empty and is not asked again after snapshot
-  - continuation carries the compact brief, weights and unresolved fields
-  - phone layout keeps alternative cards in one column
-  - withdrawn card does not return its shortlist slot
-  - stale or ambiguous id asks only which current option to select
-  - date or party change keeps the chosen concept with requires_revalidation
-  - claim chooses a source route; registry is not a whitelist
-  - one fallback then UNKNOWN; missing evidence is not model confidence
-  - optional apps and APIs do not own product semantics
+  - 'optional intake: feasibility and desired experience; one persisted round'
+  - explicit choice is not recommendation, reference or negation
+  - 0.2.4 semantic snapshot validation and actual serialized round-trip
+  - legacy readable with honest historical integrity gaps
+  - publish/ready/null completes delivery; owner booking checklist separate
